@@ -1,11 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Calls</title>
+  </head>
+  <body>
     <h1>Hello</h1>
-</body>
+
+    <div id="APICalls">
+      <table style="width: 50%">
+        <tr id="postcode">
+          <td><h2>API name</h2></td>
+          <td><h2>API description</h2></td>
+          <td></td>
+        </tr>
+        <tr id="postcode">
+          <td align="left">
+            <p><b>Address Autocomplete with JSON webservice</b></p>
+          </td>
+
+          <td align="left">
+
+            <div>
+              <p>
+                This service returns a list of placenames for a given
+                postalcode.
+              </p>
+            </div>
+              <p>Fill in the inputs below</p>
+
+              <div>
+                    <div>
+                        <label for="selCountry">country</label>
+                        <select id="selCountry">
+                          <option value="GB">Great Britain</option>
+                          <option value="US">USA</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="postcode">postcode</label>
+                        <input type="text" name="postcode" id="postcodeText" />
+                      </div>
+                    </div>
+
+           
+          </td>
+
+          <td><button id="postcodebtn">Submit</button></td>
+        </tr>
+        <tr id="">
+          <td>posdecode</td>
+          <td>description</td>
+          <td><button>Submit</button></td>
+        </tr>
+        <tr>
+          <td>posdecode</td>
+          <td>description</td>
+          <td><button>Submit</button></td>
+        </tr>
+      </table>
+    </div>
+
+    <section id="results"></section>
+
+    <script
+      type="application/javascript"
+      src="libs/JS/jquery-3.7.0.min.js"
+    ></script>
+    <script type="application/javascript" src="libs/JS/script.js"></script>
+  </body>
 </html>

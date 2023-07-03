@@ -21,39 +21,46 @@
           </td>
 
           <td align="left">
-
-            <div>
               <p>
                 This service returns a list of placenames for a given
-                postalcode.
+                postalcode. Fill in the inputs below
               </p>
-            </div>
-              <p>Fill in the inputs below</p>
 
               <div>
-                    <div>
-                        <label for="selCountry">country</label>
+                <label for="selCountry">country</label>
                         <select id="selCountry">
+                          <option disabled>select a country</option>
                           <option value="GB">Great Britain</option>
                           <option value="US">USA</option>
                         </select>
                       </div>
                       <div>
                         <label for="postcode">postcode</label>
-                        <input type="text" name="postcode" id="postcodeText" />
+                        <input type="text" name="postcode" id="postcodeText" placeholder="enter postcode" />
                       </div>
                     </div>
-
-           
           </td>
-
           <td><button id="postcodebtn">Submit</button></td>
+
+
+
+
         </tr>
-        <tr id="">
-          <td>posdecode</td>
-          <td>description</td>
-          <td><button>Submit</button></td>
+        <tr>
+          <td align="left"> <b>Wikipedia Fulltext Search</b></td>
+          <td align="left">
+            <p>returns the wikipedia entries found for the searchterm as xml document. Enter your city below.</p> 
+            <input type="text" name="country" id="cityInput" placeholder="enter city" />
+          </td>
+          <td><button id="wikibtn">Submit</button></td>
         </tr>
+
+
+
+
+
+
+
         <tr>
           <td>posdecode</td>
           <td>description</td>
@@ -62,7 +69,18 @@
       </table>
     </div>
 
-    <section id="results"></section>
+    <section id="results">
+      <div>
+        <h3>postcode results</h3>
+        <ul id="postcodeResults">
+            <li> Country code: <span id="countryCode"></span> </li>
+            <li> Country: <span id="country"></span> </li>
+            <li> City: <span id="city"></span> </li>
+            <li> Latitude: <span id="lat"></span> </li>
+            <li> Longitude: <span id="lng"></span> </li>
+        </ul>
+     </div> 
+   </section>
 
     <script
       type="application/javascript"

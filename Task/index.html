@@ -50,7 +50,7 @@
           <td align="left"> <b>Wikipedia Fulltext Search</b></td>
           <td align="left">
             <p>returns the wikipedia entries found for the searchterm as xml document. Enter your city below.</p> 
-            <input type="text" name="country" id="cityInput" placeholder="enter city" />
+            <input type="text" name="city" id="cityInput" placeholder="enter city" />
           </td>
           <td><button id="wikibtn">Submit</button></td>
         </tr>
@@ -71,7 +71,7 @@
 
     <section id="results">
       <div>
-        <h3>postcode results</h3>
+        <h3>Postcode results</h3>
         <ul id="postcodeResults">
             <li> Country code: <span id="countryCode"></span> </li>
             <li> Country: <span id="country"></span> </li>
@@ -80,6 +80,11 @@
             <li> Longitude: <span id="lng"></span> </li>
         </ul>
      </div> 
+
+     <div>
+        <h3>Wiki result</h3>
+        <p id="wikiResults"></p>
+     </div>
    </section>
 
     <script

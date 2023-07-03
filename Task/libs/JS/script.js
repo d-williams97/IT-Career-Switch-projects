@@ -12,6 +12,7 @@ $(document).ready(function () {
       },
       success: function (data) {
         console.log("successsssss");
+        console.log(data)
         const results = data.data.postalcodes;
 
         if (results.length === 0) {
@@ -41,16 +42,51 @@ $(document).ready(function () {
 
 // next function call 
 $("#wikibtn").click(function () {
-    console.log('wiki');
     console.log($('#cityInput').val());
+    $.ajax({
+        url: "libs/php/getWikiData.php",
+        type: "POST",
+        dataType: "json",
+        data: {city: $('#cityInput').val(),},
+        success: function (data) {
+            let city = $('#cityInput').val().trim();
+            let firstLetter = city.charAt(0);
+            let firstLetterCap = firstLetter.toUpperCase();
+            let letters = city.slice(1); 
+            let cityCap = `${firstLetterCap}${letters}`;
+            if(data.data.entry === undefined) {
+                console.log('data not found')
+            } else {
+                const realData = data.data.entry;
+                const wikiData = $.grep(realData, function(obj) {
+                    // if(!obj )
+                    // console.log(obj.title)
+                        return obj.title === cityCap;
 
+                })
+                if (wikiData[0] === undefined) {
+                    console.log('city not found');
+                } else {
+                    console.log(wikiData[0]);
+                    let wikiSummary = wikiData[0].summary
+                    console.log(wikiSummary);
+                    $('#wikiResults').html(wikiSummary);
+                    $('#cityInput').val('');
+
+                }
     
+                
 
+            }
+         
+
+    },
+    error: function (data) {
+        console.log("err");
+        console.log(data);
+      }
+})
 });
-
-
-
-
 
 
 

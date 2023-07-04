@@ -1,5 +1,5 @@
 <?php
-// Logs message to a custom log file
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 
 $city = trim($_REQUEST['city']);
 
-error_log(print_r($city, true));
+// error_log(print_r($city, true));
 
 
 
@@ -41,10 +41,7 @@ $output['data'] = $decode;
 header('Content-Type: application/json; charset=UTF-8'); // header() is used to send a raw HTTP header which is stored in the response sent back with the data with echo below.
 
 echo json_encode($output); 
-// echo json_encode($decode); 
 
-
-// error_log(print_r($decode), true);
 
 
 

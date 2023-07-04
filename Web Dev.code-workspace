@@ -1,0 +1,13 @@
+{
+    "folders": [
+		{
+			"path": "../../../../../Users/danielwilliams/Documents/Personal/Web Dev"
+		},
+		{
+			"path": "../../.."
+		}
+	],
+    "settings": {
+        "liveServer.settings.multiRootWorkspaceName": "XAMPP"
+    }
+}

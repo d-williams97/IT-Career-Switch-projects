@@ -21,76 +21,107 @@
           </td>
 
           <td align="left">
-              <p>
-                This service returns a list of placenames for a given
-                postalcode. Fill in the inputs below
-              </p>
+            <p>
+              This service returns a list of placenames for a given postalcode.
+              Fill in the inputs below
+            </p>
 
-              <div>
-                <label for="selCountry">country</label>
-                        <select id="selCountry">
-                          <option disabled>select a country</option>
-                          <option value="GB">Great Britain</option>
-                          <option value="US">USA</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label for="postcode">postcode</label>
-                        <input type="text" name="postcode" id="postcodeText" placeholder="enter postcode" />
-                      </div>
-                    </div>
+            <div>
+              <label for="selCountry">country</label>
+              <select id="selCountry">
+                <option disabled>select a country</option>
+                <option value="GB">Great Britain</option>
+                <option value="US">USA</option>
+              </select>
+            </div>
+            <div>
+              <label for="postcode">postcode</label>
+              <input
+                type="text"
+                name="postcode"
+                id="postcodeText"
+                placeholder="enter postcode"
+              />
+            </div>
           </td>
           <td><button id="postcodebtn">Submit</button></td>
-
-
-
-
         </tr>
         <tr>
-          <td align="left"> <b>Wikipedia Fulltext Search</b></td>
+          <td align="left"><b>Wikipedia Fulltext Search</b></td>
           <td align="left">
-            <p>returns the wikipedia entries found for the searchterm as xml document. Enter your city below.</p> 
-            <input type="text" name="city" id="cityInput" placeholder="enter city" />
+            <p>
+              returns the wikipedia entries found for the searchterm as xml
+              document. Enter your city below.
+            </p>
+            <label for="cityInput">city</label>
+            <input
+              type="text"
+              name="city"
+              id="cityInput"
+              placeholder="enter city"
+            />
           </td>
           <td><button id="wikibtn">Submit</button></td>
         </tr>
 
-
-
-
-
-
-
         <tr>
-          <td>posdecode</td>
-          <td>description</td>
-          <td><button>Submit</button></td>
+          <td><b>Timezone</b></td>
+          <td>
+            <p>The timezone at the lat/lng with gmt offset.</p>
+            <div>
+              <label for="latInput">Latitude</label>
+              <input
+                type="number"
+                name="latInput"
+                id="latInput"
+                placeholder="Latitude"
+              />
+            </div>
+            <div>
+              <label for="lngInput">Longitude</label>
+              <input
+                type="number"
+                name="lngInput"
+                id="lngInput"
+                placeholder="Longitude"
+              />
+            </div>
+          </td>
+          <td><button id="tzbtn">Submit</button></td>
         </tr>
       </table>
     </div>
 
     <section id="results">
       <div>
-        <h3>Postcode results</h3>
+        <h3>Postcode Results</h3>
         <ul id="postcodeResults">
-            <li> Country code: <span id="countryCode"></span> </li>
-            <li> Country: <span id="country"></span> </li>
-            <li> City: <span id="city"></span> </li>
-            <li> Latitude: <span id="lat"></span> </li>
-            <li> Longitude: <span id="lng"></span> </li>
+          <li>Country code: <span id="countryCode"></span></li>
+          <li>Country: <span id="country"></span></li>
+          <li>City: <span id="city"></span></li>
+          <li>Latitude: <span id="lat"></span></li>
+          <li>Longitude: <span id="lng"></span></li>
         </ul>
-     </div> 
+      </div>
 
-     <div>
-        <h3>Wiki result</h3>
+      <div>
+        <h3>Wiki Result</h3>
         <p id="wikiResults"></p>
-     </div>
-   </section>
+      </div>
+      <div>
+        <h3>Timezone Results</h3>
+        <ul id="timezoneResults">
+          <li>Timezone: <span id="timezone"></span></li>
+          <li>Sunrise: <span id="sunrise"></span></li>
+          <li>Sunset: <span id="sunset"></span></li>
+        </ul>
+      </div>
+    </section>
 
     <script
       type="application/javascript"
       src="libs/JS/jquery-3.7.0.min.js"
     ></script>
-    <script type="application/javascript" src="libs/JS/script.js"></script>
+    <script type="application/javascript" src="libs/JS/Script.js"></script>
   </body>
 </html>

@@ -16,10 +16,9 @@ $(document).ready(function () {
           const results = result.data.postalcodes;
 
           if (results.length === 0) {
-            console.log(results);
             console.log("postcode not found");
           } else {
-            console.log(results);
+            // console.log(results);
             for (const result of results) {
               $("#countryCode").html(result.countryCode);
               $("#city").html(result.placeName);
@@ -41,7 +40,6 @@ $(document).ready(function () {
 
   // 2nd API call
   $("#wikibtn").click(function () {
-    console.log($("#cityInput").val());
     $.ajax({
       url: "libs/php/getWikiData.php",
       type: "POST",
@@ -64,9 +62,7 @@ $(document).ready(function () {
             if (wikiData[0] === undefined) {
               console.log("city not found");
             } else {
-              console.log(wikiData[0]);
               let wikiSummary = wikiData[0].summary;
-              console.log(wikiSummary);
               $("#wikiResults").html(wikiSummary);
               $("#cityInput").val("");
             }
@@ -82,8 +78,6 @@ $(document).ready(function () {
 
   //   Third API call
   $("#tzbtn").click(function () {
-    console.log($("#latInput").val());
-    console.log($("#lngInput").val());
     $.ajax({
       url: "libs/php/getTimezone.php",
       type: "POST",

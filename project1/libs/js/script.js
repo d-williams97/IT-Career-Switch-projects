@@ -1,3 +1,5 @@
+let map;
+
 $(window).on("load", function () {
   if ($("#preloader").length) {
     $("#preloader")
@@ -13,6 +15,8 @@ $(document).ready(function () {
     function showPosition(position) {
       let defaultLat = position.coords.latitude;
       let defaultLong = position.coords.longitude;
+
+          // ------------------------- INITIALIZE MAP -------------------------- //
       let tileLayer1 = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
@@ -20,9 +24,9 @@ $(document).ready(function () {
         }
       );
 
-      let map = L.map("map", {
+      map = L.map("map", {
         center: [defaultLat, defaultLong],
-        zoom: 12,
+        zoom: 5,
         layers: [tileLayer1],
       });
     }
@@ -42,8 +46,6 @@ $(document).ready(function () {
       });
     }
 
-
-    // ------------------------- INITIALIZE MAP -------------------------- //
     navigator.geolocation.getCurrentPosition(showPosition, geoError);
 
 
@@ -61,7 +63,6 @@ $(document).ready(function () {
             }
             return countryData
         })
-
         console.log(countries);
         countries.sort(function(a,b) {
             let countryA = a.countryName;
@@ -73,11 +74,13 @@ $(document).ready(function () {
 
         countryNames = $.map(countries, function(country, i) {
             countryNames = country.countryName;
-            $('#selectCountry').append(`<option value=${countryNames}>${countryNames}</option>`)
+            countryCodes = country.ISO
+            $('#selectCountry').append(`<option value='${countryCodes}'>${countryNames}</option>`)
         });    
     })
     .catch(error => {
         console.log(`Error: ${error}`);
+        alert(`Error: ${error}`);
      
     });
 
@@ -91,6 +94,41 @@ $(document).ready(function () {
   $('#selectCountry').on('change', function() {
     let selectedCountryOption = $(this).val();
     console.log(selectedCountryOption);
+
+    //--------- AJAX CALL TO RETRIEVE LAT AND LOG DATA ------------------//
+    $.ajax({
+        url: 'libs/php/getOpenCageData.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            countryName: selectedCountryOption,
+        },
+        success: function (result) {
+            if (result.status.name == 'ok') {
+                console.log(result)
+            const geoNameCountryData = result.data.results[0];
+            console.log(geoNameCountryData);
+            let geoNameLat = geoNameCountryData.geometry.lat;
+            let geoNameLng = geoNameCountryData.geometry.lng;
+            console.log(geoNameLat,geoNameLng);
+
+            //---   CHANGE MAP VIEW -------//  
+            map.setView([geoNameLat, geoNameLng], 10);
+
+
+
+            }
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+            console.log(errorThrown);
+          },
+    })
+
+
+
+
   })
 
 

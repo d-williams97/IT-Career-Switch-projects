@@ -49,7 +49,7 @@ $(document).ready(function () {
     navigator.geolocation.getCurrentPosition(showPosition, geoError);
 
     // ------------------------- FETCHING JSON DATA -----------------------//
-    fetch("http://localhost/ITCS/project1/libs/assets/countryBorders.geo.json")
+    fetch("libs/assets/countryBorders.geo.json")
       .then((response) => response.json())
       .then((data) => {
         const countryArr = data.features;
@@ -121,7 +121,7 @@ $(document).ready(function () {
 
           // --- ADD COUNTRY LAYER  -------//
           fetch(
-            "http://localhost/ITCS/project1/libs/assets/countryBorders.geo.json"
+            "libs/assets/countryBorders.geo.json"
           )
             .then((response) => response.json())
             .then((data) => {

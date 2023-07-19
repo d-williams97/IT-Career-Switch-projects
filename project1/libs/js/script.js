@@ -1,4 +1,3 @@
-let map;
 
 $(window).on("load", function () {
   if ($("#preloader").length) {
@@ -11,6 +10,7 @@ $(window).on("load", function () {
 });
 
 $(document).ready(function () {
+  let map;
   let countryData;
   if (navigator.geolocation) {
     function showPosition(position) {
@@ -183,3 +183,5 @@ $(document).ready(function () {
   // Map over JSON data for selects //
   //Store data for selected country//
 });
+
+{/* <script type="application/javascript" src="../assets/countryBorders.geo.json"></script> */}

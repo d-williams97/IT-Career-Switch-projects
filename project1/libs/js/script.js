@@ -100,7 +100,7 @@ $(document).ready(function () {
     let selectedCountryName = $("#selectCountry :selected").text();
     console.log(selectedCountryCode, selectedCountryName);
 
-    //--------- AJAX CALL TO RETRIEVE LAT,LNG,BOUNDS DATA ------------------//
+    //--------- AJAX CALL TO RETRIEVE LAT,LNG & BOUNDS DATA ------------------//
     $.ajax({
       url: "libs/php/getOpenCageData.php",
       type: "POST",
@@ -136,10 +136,6 @@ $(document).ready(function () {
 
 
 
-
-
-
-
     // ------------ ADDING A COUNTRY LAYER  ---------------//
     let selectedCountry = $.grep(countryData, function (e) {
       return e.countryName === selectedCountryName;
@@ -165,5 +161,53 @@ $(document).ready(function () {
         opacity: 0.65,
       })
       .addTo(map);
+
+
+
+      // ------------ WIKI API CALL ---------------//
+
+      let wikiSummary;
+      let wikiUrl;
+      $.ajax({
+        url: "libs/php/getWikiAPI.php",
+        type: "POST",
+        dataType: "json",
+        data: { country: selectedCountryName },
+        success: function (result) {
+          if (result.status.name == "ok") {
+            console.log('success');
+            console.log(result);
+            if (result.data.entry === undefined) {
+              console.log("data not found");
+            } else {
+              const resultsData = result.data.entry;
+              const wikiObj = $.grep(resultsData, function (obj) {
+                return obj.title === selectedCountryName;
+              });
+              const wikiData = wikiObj[0];
+              console.log(wikiData);
+              if (wikiData === undefined) {
+                console.log("country data not found");
+              } else {
+                wikiSummary = wikiData.summary;
+                wikiUrl = wikiData.wikipediaUrl;
+              }
+            }
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(textStatus);
+          console.log(errorThrown);
+        },
+      });
+
+
+
+
+
+
+
+
+
   });
 });

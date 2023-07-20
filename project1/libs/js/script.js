@@ -11,7 +11,6 @@ $(window).on("load", function () {
 $(document).ready(function () {
   let map;
   let countryData;
-  let polygonData;
   let countryNames;
   let countryCodes;
 
@@ -21,15 +20,16 @@ $(document).ready(function () {
       let defaultLong = position.coords.longitude;
       // ------------------------- INITIALIZE MAP -------------------------- //
       let tileLayer1 = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
         {
-          attribution: "OpenStreetMap",
+          attribution:
+            "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
         }
       );
 
       map = L.map("map", {
         center: [defaultLat, defaultLong],
-        zoom: 5,
+        zoom: 13,
         layers: [tileLayer1],
       });
     }
@@ -80,8 +80,13 @@ $(document).ready(function () {
   }
 
   //// ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- /////////
-
+  let currentPolygonLayer;
   $("#selectCountry").on("change", function () {
+
+    if (currentPolygonLayer) {
+      map.removeLayer(currentPolygonLayer);
+    }
+
     let selectedCountryCode = $(this).val();
     let selectedCountryName = $("#selectCountry :selected").text();
     console.log(selectedCountryCode, selectedCountryName);
@@ -127,8 +132,8 @@ $(document).ready(function () {
     }
     console.log(selectedCountryCoords);
     console.log(latLng);
-
-    L.polygon(latLng)
+    
+    currentPolygonLayer = L.polygon(latLng)
       .setStyle({
         color: "#ff7800",
         weight: 5,
@@ -136,6 +141,4 @@ $(document).ready(function () {
       })
       .addTo(map);
   });
-
-
 });

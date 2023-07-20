@@ -1,4 +1,3 @@
-
 $(window).on("load", function () {
   if ($("#preloader").length) {
     $("#preloader")
@@ -12,6 +11,10 @@ $(window).on("load", function () {
 $(document).ready(function () {
   let map;
   let countryData;
+  let polygonData;
+  let countryNames;
+  let countryCodes;
+
   if (navigator.geolocation) {
     function showPosition(position) {
       let defaultLat = position.coords.latitude;
@@ -49,39 +52,29 @@ $(document).ready(function () {
     navigator.geolocation.getCurrentPosition(showPosition, geoError);
 
     // ------------------------- FETCHING JSON DATA -----------------------//
-    fetch("libs/assets/countryBorders.geo.json")
-      .then((response) => response.json())
-      .then((data) => {
-        const countryArr = data.features;
-        let countries = $.map(countryArr, function (country, i) {
-          countryData = {
-            countryName: country.properties.name,
-            ISO: country.properties.iso_a2,
-            polygon: country.geometry.coordinates,
-          };
-          return countryData;
-        });
-        // console.log(countries);
-        countries.sort(function (a, b) {
-          let countryA = a.countryName;
-          let countryB = b.countryName;
-          return countryA.localeCompare(countryB);
-        });
-
-        // ------------------------- CREATING COUNTRY HTML LIST ----------------------- //
-
-        countryNames = $.map(countries, function (country, i) {
-          countryNames = country.countryName;
-          countryCodes = country.ISO;
-          $("#selectCountry").append(
-            `<option value='${countryCodes}'>${countryNames}</option>`
-          );
-        });
-      })
-      .catch((error) => {
-        console.log(`Error: ${error}`);
-        alert(`Error: ${error}`);
-      });
+    $.ajax({
+      url: "libs/php/getLocalJson.php",
+      type: "POST",
+      dataType: "json",
+      success: function (result) {
+        if (result.status.name == "ok") {
+          countryData = result.data;
+          // ------------------------- CREATING COUNTRY HTML LIST ----------------------- //
+          $.map(countryData, function (country, i) {
+            countryNames = country.countryName;
+            countryCodes = country.ISO;
+            $("#selectCountry").append(
+              `<option value='${countryCodes}'>${countryNames}</option>`
+            );
+            // ------------------------- Getting POLYGONDATA----------------------- //
+          });
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+        console.log(errorThrown);
+      },
+    });
   } else {
     console.log("Geolocation is not supported by this browser.");
   }
@@ -105,70 +98,10 @@ $(document).ready(function () {
       success: function (result) {
         if (result.status.name == "ok") {
           console.log(result);
-
-          // ---- LAT,LNG DATA ----- //
-          const geoNameCountryData = result.data.results[0];
-          let geoNameLat = geoNameCountryData.geometry.lat;
-          let geoNameLng = geoNameCountryData.geometry.lng;
-
-          // ----- BOUNDS DATA ------ //
+          // ----- GETTING BOUNDS DATA & CHANGING MAP VIEW------ //
           const countryBoundsObj = result.data.results[0].bounds;
           const countryBoundsData = Object.values(countryBoundsObj);
-          console.log(countryBoundsData);
-
-          //--- CHANGE MAP VIEW -------//
           map.fitBounds(countryBoundsData);
-
-          // --- ADD COUNTRY LAYER  -------//
-          fetch(
-            "libs/assets/countryBorders.geo.json"
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              let arr = data.features;
-              let obj = $.grep(arr, function (e) {
-                return e.properties.name === selectedCountryName;
-              });
-              console.log(obj);
-              let countryCoordinates = obj[0].geometry.coordinates[0];
-
-              let latLng = [];
-              for (const coords of countryCoordinates) {
-                console.log(coords) //goes through all coords
-                let lat = coords[1]; // Latitude (y-coordinate) is the second element in the array
-                let lng = coords[0]; // Longitude (x-coordinate) is the first element in the array.
-                let point = L.latLng(lat, lng);
-                console.log(point)
-                latLng.push(point);
-              }
-              console.log(countryCoordinates);
-              console.log(latLng);
-
-              L.polygon(latLng)
-                .setStyle({
-                    color: "#ff7800",
-                    weight: 5,
-                    opacity: 0.65,
-                  })
-                .addTo(map);
-
-              // let myLines = [
-              //   {
-              //     type: "LineString",
-              //     coordinates: latLng // or countryCoordinates//
-              //   },
-              // ];
-
-              // var myStyle = {
-              //   color: "#ff7800",
-              //   weight: 5,
-              //   opacity: 0.65,
-              // };
-
-              // L.geoJSON(myLines, {
-              //   style: myStyle,
-              // }).addTo(map);
-            });
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -177,11 +110,32 @@ $(document).ready(function () {
       },
     });
 
-    // FINDING ALTERNATIVE COORDINATES//
+    // ------------ ADDING A COUNTRY LAYER  ---------------//
+    let selectedCountry = $.grep(countryData, function (e) {
+      return e.countryName === selectedCountryName;
+    });
+    let selectedCountryCoords = selectedCountry[0].polygon[0];
+    let latLng = [];
+    for (const coords of selectedCountryCoords) {
+      console.log(coords); //goes through all coords
+      let lat = coords[1]; // Latitude (y-coordinate) is the second element in the array
+      console.log(lat);
+      let lng = coords[0]; // Longitude (x-coordinate) is the first element in the array.
+      let point = L.latLng(lat, lng);
+      console.log(point);
+      latLng.push(point);
+    }
+    console.log(selectedCountryCoords);
+    console.log(latLng);
+
+    L.polygon(latLng)
+      .setStyle({
+        color: "#ff7800",
+        weight: 5,
+        opacity: 0.65,
+      })
+      .addTo(map);
   });
 
-  // Map over JSON data for selects //
-  //Store data for selected country//
-});
 
-{/* <script type="application/javascript" src="../assets/countryBorders.geo.json"></script> */}
+});

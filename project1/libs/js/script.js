@@ -14,6 +14,7 @@ $(document).ready(function () {
   let countryNames;
   let countryCodes;
 
+
   if (navigator.geolocation) {
     function showPosition(position) {
       let defaultLat = position.coords.latitude;
@@ -42,7 +43,7 @@ $(document).ready(function () {
           attribution: "OpenStreetMap",
         }
       );
-      let map = L.map("map", {
+      map = L.map("map", {
         center: [0, 0],
         zoom: 2,
         layers: [tileLayer1],
@@ -81,10 +82,18 @@ $(document).ready(function () {
 
   //// ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- /////////
   let currentPolygonLayer;
+  let currentMarker;
+  let geoNameLat;
+  let geoNameLng;
+
   $("#selectCountry").on("change", function () {
 
     if (currentPolygonLayer) {
       map.removeLayer(currentPolygonLayer);
+    }
+
+    if (currentMarker) {
+      map.removeLayer(currentMarker);
     }
 
     let selectedCountryCode = $(this).val();
@@ -103,9 +112,19 @@ $(document).ready(function () {
       success: function (result) {
         if (result.status.name == "ok") {
           console.log(result);
+
+        // ---- LAT,LNG DATA ----- //
+        const geoNameCountryData = result.data.results[0];
+        geoNameLat = geoNameCountryData.geometry.lat;
+        geoNameLng = geoNameCountryData.geometry.lng;
+        const markerLatLng = L.latLng(geoNameLat, geoNameLng)
+        currentMarker = L.marker(markerLatLng)
+        currentMarker.addTo(map);
+
           // ----- GETTING BOUNDS DATA & CHANGING MAP VIEW------ //
           const countryBoundsObj = result.data.results[0].bounds;
           const countryBoundsData = Object.values(countryBoundsObj);
+          console.log(countryBoundsData);
           map.fitBounds(countryBoundsData);
         }
       },
@@ -114,6 +133,12 @@ $(document).ready(function () {
         console.log(errorThrown);
       },
     });
+
+
+
+
+
+
 
     // ------------ ADDING A COUNTRY LAYER  ---------------//
     let selectedCountry = $.grep(countryData, function (e) {

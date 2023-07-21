@@ -85,6 +85,7 @@ $(document).ready(function () {
   let currentMarker;
   let geoNameLat;
   let geoNameLng;
+  let wikiEasyButton;
 
   $("#selectCountry").on("change", function () {
 
@@ -94,6 +95,10 @@ $(document).ready(function () {
 
     if (currentMarker) {
       map.removeLayer(currentMarker);
+    }
+
+    if(wikiEasyButton) {
+      wikiEasyButton.removeFrom(map);
     }
 
     let selectedCountryCode = $(this).val();
@@ -164,10 +169,11 @@ $(document).ready(function () {
 
 
 
-      // ------------ WIKI API CALL ---------------//
+      // ----------------- WIKI API CALL --------------------//
 
       let wikiSummary;
       let wikiUrl;
+      let wikiImg;
       $.ajax({
         url: "libs/php/getWikiAPI.php",
         type: "POST",
@@ -175,12 +181,11 @@ $(document).ready(function () {
         data: { country: selectedCountryName },
         success: function (result) {
           if (result.status.name == "ok") {
-            console.log('success');
             console.log(result);
-            if (result.data.entry === undefined) {
+            if (result.data.status === undefined) {
               console.log("data not found");
             } else {
-              const resultsData = result.data.entry;
+              const resultsData = result.data.geonames;
               const wikiObj = $.grep(resultsData, function (obj) {
                 return obj.title === selectedCountryName;
               });
@@ -191,6 +196,8 @@ $(document).ready(function () {
               } else {
                 wikiSummary = wikiData.summary;
                 wikiUrl = wikiData.wikipediaUrl;
+                wikiImg = wikiData.thumbnailImg;
+                console.log(wikiImg);
               }
             }
           }
@@ -200,8 +207,23 @@ $(document).ready(function () {
           console.log(errorThrown);
         },
       });
+      
+      
+      wikiEasyButton = L.easyButton('fa-brands fa-wikipedia-w fa-beat fa-lg',function(btn,map) {
+        $('#wikiTitle').html(selectedCountryName);
+        $('#wikiCountrySummary').html(wikiSummary);
+        $('a').attr('href', wikiUrl);
+        $('#wikiImg').attr('src', wikiImg);
+        $('#staticBackdrop').modal('show');
+      });
+      wikiEasyButton.addTo(map);
 
 
+// Add the Easy Button to the map
+
+
+
+      
 
 
 

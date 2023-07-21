@@ -12,7 +12,7 @@ $countryData6 = str_replace("Côte d'Ivoire",'ci', $countryData5);
 $countryData7 = str_replace("Bosnia and Herz",'ba', $countryData6);
 $countryName = str_replace(' ', '%20', $countryData7);
 // $countryCode = $_REQUEST['countryCode'];
-error_log(print_r($countryName, true));
+// error_log(print_r($countryName, true));
 
 $executionStartTime = microtime(true);
 

@@ -32,7 +32,7 @@ function compare($a,$b) {
 usort($countryData,'compare');
 
 
-error_log(print_r($countryData, true));
+// error_log(print_r($countryData, true));
 
 
 $output['status']['code'] = "200";

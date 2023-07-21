@@ -6,44 +6,45 @@
     <title>Document</title>
     <link rel="stylesheet" href="./libs/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./libs/css/Styles.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
-    <script src="./libs/js/bootstrap.bundle.min.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/00ae2793ae.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <div id="”preloader”"></div>
-
+    <div id="preloader"></div>
     <div class="container text-center">
       <div class="row">
         <div class="col-3 mx-auto text-center mt-3">
-          <select class="form-select" aria-label="Default select example" id="selectCountry">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            id="selectCountry"
+          >
             <option selected>--Select a country--</option>
           </select>
         </div>
       </div>
 
-
       <div class="row min-vh-90">
         <div class="col">
-            <div id="map"></div>
+          <div id="map"></div>
         </div>
       </div>
 
-      
       <div class="row">
         <div class="col-2 me-5">
-          <!-- Button trigger modal -->
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#staticBackdrop"
-          >
-            Modal 1
-          </button>
-
-          <!-- Modal -->
+          <!----------------- Wiki Modal ----------------->
           <div
             class="modal fade"
             id="staticBackdrop"
@@ -53,30 +54,31 @@
             aria-labelledby="staticBackdropLabel"
             aria-hidden="true"
           >
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                    Modal title
+                  <h1 class="modal-title fs-5" id="wikiTitle">
                   </h1>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
                 </div>
-                <div class="modal-body">...</div>
+                <div class="modal-body" id="wikiBody">
+                  <div>
+                    <img class='img-thumbnail img-fluid'id="wikiImg"src="" alt="countryImage">
+                  </div>
+                  <div>
+                    <p> Summary: <span id="wikiCountrySummary"></span>
+                    </p>
+                    <div id="wikiCountryLink">
+                     <a href="" target="_blank">Find out more</a>
+                    </div>
+                  </div>
+                </div>
                 <div class="modal-footer">
                   <button
                     type="button"
-                    class="btn btn-secondary"
+                    class="btn btn-primary"
                     data-bs-dismiss="modal"
                   >
                     Close
-                  </button>
-                  <button type="button" class="btn btn-primary">
-                    Understood
                   </button>
                 </div>
               </div>
@@ -86,12 +88,18 @@
       </div>
     </div>
 
+    <script src="libs/js/bootstrap.bundle.min.js"></script>
+    <script src="libs/js/jquery-3.7.0.min.js"></script>
     <script
-      src="libs/js/jquery-3.7.0.min.js"
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
     ></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
     <script type="application/javascript" src="libs/js/Script.js"></script>
+    <script
+      type="application/javascript"
+      src="libs/assets/countryBorders.geo.json"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
   </body>
 </html>

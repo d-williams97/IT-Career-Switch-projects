@@ -166,11 +166,7 @@ $(document).ready(function () {
         opacity: 0.65,
       })
       .addTo(map);
-
-
-
       // ----------------- WIKI API CALL --------------------//
-
       let wikiSummary;
       let wikiUrl;
       let wikiImg;
@@ -182,10 +178,11 @@ $(document).ready(function () {
         success: function (result) {
           if (result.status.name == "ok") {
             console.log(result);
-            if (result.data.status === undefined) {
+            if (result.status === undefined) {
               console.log("data not found");
             } else {
               const resultsData = result.data.geonames;
+              console.log(resultsData)
               const wikiObj = $.grep(resultsData, function (obj) {
                 return obj.title === selectedCountryName;
               });
@@ -196,8 +193,12 @@ $(document).ready(function () {
               } else {
                 wikiSummary = wikiData.summary;
                 wikiUrl = wikiData.wikipediaUrl;
-                wikiImg = wikiData.thumbnailImg;
-                console.log(wikiImg);
+                if (!wikiData.thumbnailImg) {
+                  console.log('image not found'); // standard image
+                } else {
+                  wikiImg = wikiData.thumbnailImg
+                }
+                
               }
             }
           }
@@ -213,7 +214,10 @@ $(document).ready(function () {
         $('#wikiTitle').html(selectedCountryName);
         $('#wikiCountrySummary').html(wikiSummary);
         $('a').attr('href', wikiUrl);
-        $('#wikiImg').attr('src', wikiImg);
+        if (wikiImg) {
+          //apend wiki data instead
+          $('#wikiImg').attr('src', wikiImg);
+        }
         $('#staticBackdrop').modal('show');
       });
       wikiEasyButton.addTo(map);

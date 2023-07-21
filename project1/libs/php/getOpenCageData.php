@@ -4,13 +4,9 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 $countryData = $_REQUEST['countryName'];
-$countryData2 = str_replace('Dem.','Democratic',$countryData);
-$countryData3 = str_replace('Lao PDR', 'Lao', $countryData2);
-$countryData4 = str_replace('W. Sahara', 'Western Sahara', $countryData3);
-$countryData5 = str_replace('Rep.', 'Republic', $countryData4);
-$countryData6 = str_replace("Côte d'Ivoire",'ci', $countryData5);
-$countryData7 = str_replace("Bosnia and Herz",'ba', $countryData6);
-$countryName = str_replace(' ', '%20', $countryData7);
+// $countryData2 = str_replace('Dem.','Democratic',$countryData);
+// $countryData3 = str_replace('Rep.', 'Republic', $countryData2);
+$countryName = str_replace(' ', '%20', $countryData);
 // $countryCode = $_REQUEST['countryCode'];
 // error_log(print_r($countryName, true));
 

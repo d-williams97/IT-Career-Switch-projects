@@ -5,8 +5,7 @@ error_reporting(E_ALL);
 
 $lat = $_REQUEST['latitude'];
 $lng = $_REQUEST['longitude'];
-error_log(print_r($lat, true));
-error_log(print_r($lng, true));
+
 
 $executionStartTime = microtime(true);
 
@@ -14,7 +13,6 @@ $key = '9d163db26990640c87550f227cf50e89';
 $url = 'https://api.openweathermap.org/data/2.5/weather?lat=' . $lat . '&lon=' . $lng . '&appid=' . $key .'&units=metric';
 // $url = 'api.openweathermap.org/data/2.5/forecast?lat=' . $lat . '&lon=' . $lng . '&appid=' . $key;
 
-error_log(print_r($url, true));
 
 
 $ch = curl_init();

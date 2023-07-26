@@ -329,7 +329,6 @@ $(document).ready(function () {
               }
             );
             wikiEasyButton.addTo(map);
-
           }
         }
       },

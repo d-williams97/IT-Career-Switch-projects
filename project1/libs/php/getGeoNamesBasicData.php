@@ -1,23 +1,23 @@
 <?php
-
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-$searchQuery = ($_REQUEST['country']);
+$searchQuery = ($_REQUEST['countryCode']);
 // $searchQuery1 = str_replace('Dem.','Democratic',$searchQuery);
 // $searchQuery2= str_replace('Rep.', 'Republic', $searchQuery1);
-$country = str_replace(' ','%20',$searchQuery);
+$countryCode = trim($searchQuery);
 
-// error_log(print_r($country, true));
+
 
 
 
 $executionStartTime = microtime(true);
 
-$url = 'http://api.geonames.org/wikipediaSearchJSON?q=' . $country . '&maxRows=100&username=kwasimodo';
+// $url = 'http://api.geonames.org/wikipediaSearchJSON?q=' . $country . '&maxRows=100&username=kwasimodo';
+$url = 'http://api.geonames.org/countryInfoJSON?country=' . $countryCode . '&username=kwasimodo';
 
-
+// error_log(print_r($url, true));
 
 
 $ch = curl_init();
@@ -32,9 +32,10 @@ curl_close($ch);
 
 
 
+
 $decode = json_decode($result); // Takes a well-formed XML string and returns it as an object.
 
-// error_log(print_r($result, true));
+
 
 $output['status']['code'] = "200";
 $output['status']['name'] = "ok";

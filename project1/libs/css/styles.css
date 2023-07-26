@@ -44,3 +44,8 @@
 }
 
 #map { height: 90vh; }
+
+.modalImg img {
+  height: 50rem !important;
+
+}

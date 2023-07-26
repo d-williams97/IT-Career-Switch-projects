@@ -47,30 +47,144 @@
           <!----------------- Wiki Modal ----------------->
           <div
             class="modal fade"
-            id="staticBackdrop"
+            id="wikiModal"
             data-bs-backdrop="static"
             data-bs-keyboard="false"
             tabindex="-1"
-            aria-labelledby="staticBackdropLabel"
+            aria-labelledby="wikiModal"
             aria-hidden="true"
           >
             <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="wikiTitle">
-                  </h1>
+              <div class="modal-content shadow">
+                <div class="modal-header bg-success bg-gradient text-white">
+                  <h5 class="modal-title">
+                    <span id="wikiTitle"></span> Wiki Overview
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </div>
                 <div class="modal-body" id="wikiBody">
-                  <div>
-                    <img class='img-thumbnail img-fluid'id="wikiImg"src="" alt="countryImage">
+                  <div class="h-50">
+                    <img
+                      class="img-thumbnail img-fluid"
+                      id="wikiImg"
+                      src="alt"
+                      ="countryImage"
+                    />
                   </div>
                   <div>
-                    <p> Summary: <span id="wikiCountrySummary"></span>
-                    </p>
-                    <div id="wikiCountryLink">
-                     <a href="" target="_blank">Find out more</a>
+                    <p>Summary: <span id="wikiCountrySummary"></span></p>
+                    <div>
+                      <a id="wikiCountryLink" href="" target="_blank"
+                        >Find out more</a
+                      >
                     </div>
                   </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!----------------- Country Info Modal ----------------->
+          <div
+            class="modal fade"
+            id="basicDataModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="basicDataModal"
+            aria-hidden="true"
+          >
+            <div
+              class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+            >
+              <div class="modal-content shadow">
+                <div class="modal-header bg-primary bg-gradient text-white">
+                  <h1 class="modal-title fs-5">Country Overview</h1>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-striped">
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-flag text-primary fa-xl"></i>
+                      </td>
+                      <td>
+                        <p>Country Name:</p>
+                      </td>
+                      <td class="text-end">
+                        <p id="basicCountryName"></p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-city fa-xl text-primary"></i>
+                      </td>
+                      <td>
+                        <p>Capital City:</p>
+                      </td>
+                      <td class="text-end">
+                        <p id="basicCapitalCity"></p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="text-center">
+                        <i
+                          class="fa-solid fa-earth-americas fa-xl text-primary"
+                        ></i>
+                      </td>
+                      <td>
+                        <p>Continent:</p>
+                      </td>
+                      <td class="text-end">
+                        <p id="basicContinent"></p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-person fa-xl text-primary"></i>
+                      </td>
+                      <td>
+                        <p>Population:</p>
+                      </td>
+                      <td class="text-end">
+                        <p id="basicPopulation"></p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-mountain fa-xl text-primary"></i>
+                      </td>
+                      <td>
+                        <p>Area:</p>
+                      </td>
+                      <td class="text-end">
+                        <p><span id="basicArea"></span>km&#178;</p>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
                 <div class="modal-footer">
                   <button
@@ -81,6 +195,43 @@
                     Close
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!--------------- WEATHER MODAL ------------->
+
+          <div
+            class="modal fade"
+            id="weatherModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="weatherModal"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content shadow rounded">
+                  <div class="modal-body text-white bg-dark rounded">
+                        <h3>
+                          Weather In <span id="weatherCountryName"></span>
+                        </h3>
+                        <h2><span id="temp"></span>&deg;C</h2>
+                        <p id="weatherDescription"></p>
+                        <img id="weatherIcon" src="" alt="weather icon" class="img-fluid img-thumbnail rounded bg-secondary"/>
+                        <p>Feels Like <span id="feelsLikeTemp"></span>&deg;C</p>
+                        <p>Humidity: <span id="humidity"></span>%</p>
+                          <button
+                            type="button"
+                            class="btn btn-outline-light"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                
+
+                </div>
+                
               </div>
             </div>
           </div>
@@ -101,5 +252,6 @@
       src="libs/assets/countryBorders.geo.json"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+    <!-- <script src="libs/assets/imageNotFound.png"></script> -->
   </body>
 </html>

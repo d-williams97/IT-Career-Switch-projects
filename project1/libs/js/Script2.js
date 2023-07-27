@@ -299,7 +299,7 @@ $(document).ready(function () {
 
         // ----------------- EXCHANGE RATE DATA API CALL --------------------//
 
-        async function getExchangeRateData() {
+        async function getExchangeRateData(currencyCode) {
           console.log(currencyCode);
           try {
             const result = await $.ajax({
@@ -310,6 +310,7 @@ $(document).ready(function () {
             })
             if (result.status.name === "ok") {
               let currencyValue = result.data.rates[currencyCode];
+              console.log(currencyValue);
               let roundedCurrencyValue = currencyValue.toFixed(2);
               let currentDate = new Date().toString();
               let realDate = currentDate.split('+')[0];
@@ -330,10 +331,41 @@ $(document).ready(function () {
               throw new Error("Failed to retrieve exchange rate data.");
               // exchange rate data not found message to for HTML modal
             }
-
-
-
+          } catch (error) {
+            console.error(error);
+            throw error;
             
+          }
+        }
+
+                // ----------------- FLAG DATA API CALL --------------------//
+
+        async function getFlagData(selectedCountryName) {
+          console.log(selectedCountryName);
+          try {
+            const result = await $.ajax({
+              url: "libs/php/getFlagAPI.php",
+              type: "POST",
+              dataType: "json",
+              data: { countryName: selectedCountryName },
+            })
+            if (result.status.name === "ok") {
+              let flagLink = result.data[0].flags.png;
+              $('#flagTitle').html(`${selectedCountryName} Flag`)
+              $('#flagImg').attr('src',flagLink);
+
+              // Easy Button //
+              flagEasyButton = L.easyButton(
+                "fa-solid fa-flag fa-beat fa-lg",
+                function (btn, map) {
+                  $("#flagModal").modal("show");
+                }
+              );
+              flagEasyButton.addTo(map);
+            } else {
+              throw new Error("Failed to retrieve flag data.");
+              // exchange rate data not found message to for HTML modal
+            }
           } catch (error) {
             console.error(error);
             throw error;
@@ -361,6 +393,7 @@ $(document).ready(function () {
       let countryBasicDataButton;
       let weatherEasyButton;
       let exchangeRateEasyButton;
+      let flagEasyButton;
     
       let selectedCountryCode;
       let selectedCountryName;
@@ -394,6 +427,9 @@ $(document).ready(function () {
         exchangeRateEasyButton.removeFrom(map);
       }
 
+      if (flagEasyButton) {
+        flagEasyButton.removeFrom(map);
+      }
 
       // ------------ ADDING COUNTRY LAYER  ---------------//
       let selectedCountry = $.grep(countryData, function (e) {
@@ -439,6 +475,8 @@ $(document).ready(function () {
         const wikiData = await getWikiData(selectedCountryName);
 
         const currencyData = await getExchangeRateData(currencyCode);
+
+        const flagData = await getFlagData(selectedCountryName);
 
         // Now you have access to geolocationData, wikiData, and geonamesBasicData
         // ... (code to update UI and handle API data)

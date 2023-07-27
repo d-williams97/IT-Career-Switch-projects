@@ -202,39 +202,40 @@
           <!--------------- WEATHER MODAL ------------->
 
           <div
-          class="modal fade"
-          id="weatherModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="weatherModal"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow rounded">
+            class="modal fade"
+            id="weatherModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="weatherModal"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content shadow rounded">
                 <div class="modal-body text-white bg-dark rounded">
-                      <h3>
-                        Weather In <span id="weatherCountryName"></span>
-                      </h3>
-                      <h2><span id="temp"></span>&deg;C</h2>
-                      <p id="weatherDescription"></p>
-                      <img id="weatherIcon" src="" alt="weather icon" class="img-fluid img-thumbnail rounded bg-secondary"/>
-                      <p>Feels Like <span id="feelsLikeTemp"></span>&deg;C</p>
-                      <p>Humidity: <span id="humidity"></span>%</p>
-                        <button
-                          type="button"
-                          class="btn btn-outline-light"
-                          data-bs-dismiss="modal"
-                        >
-                          Close
-                        </button>
+                  <h3>Weather In <span id="weatherCountryName"></span></h3>
+                  <h2><span id="temp"></span>&deg;C</h2>
+                  <p id="weatherDescription"></p>
+                  <img
+                    id="weatherIcon"
+                    src=""
+                    alt="weather icon"
+                    class="img-fluid img-thumbnail rounded bg-secondary"
+                  />
+                  <p>Feels Like <span id="feelsLikeTemp"></span>&deg;C</p>
+                  <p>Humidity: <span id="humidity"></span>%</p>
+                  <button
+                    type="button"
+                    class="btn btn-outline-light"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-
-        
           <!--------------- EXCHANGE RATE MODAL ------------->
           <div
             class="modal fade"
@@ -256,26 +257,64 @@
                     aria-label="Close"
                   ></button>
                 </div>
-                  <div class="modal-body text-white bg-dark rounded">
-                        <h3 id="erCountry">
-                        </h3>
-                        <p>1 United States Dollar equals</p>
-                        <h2> <span id="erValue"></span> <span id="erCode"></span></h2>
-                        <p id="erDate"></p>
-                          <button
-                            type="button"
-                            class="btn btn-outline-light"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
+                <div class="modal-body text-white bg-dark rounded">
+                  <h3 id="erCountry"></h3>
+                  <p>1 United States Dollar equals</p>
+                  <h2><span id="erValue"></span> <span id="erCode"></span></h2>
+                  <p id="erDate"></p>
+                  <button
+                    type="button"
+                    class="btn btn-outline-light"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-
-
+          <!--------------- FLAG MODAL ------------->
+          <div
+            class="modal fade"
+            id="flagModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="flagModal"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content shadow rounded">
+                <div class="modal-header bg-primary bg-dark text-white">
+                  <h1 class="modal-title fs-5" id="flagTitle">Flag</h1>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body text-white bg-dark rounded">
+                  <img
+                    id="flagImg"
+                    src=""
+                    alt="CountryFlag"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="modal-footer bg-dark">
+                  <button
+                    type="button"
+                    class="btn btn-outline-light"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
 

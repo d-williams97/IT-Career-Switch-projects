@@ -4,19 +4,15 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-$currencyCode = ($_REQUEST['currencyCode']);
-// $searchQuery1 = str_replace('Dem.','Democratic',$searchQuery);
-// $searchQuery2= str_replace('Rep.', 'Republic', $searchQuery1);
+$searchQuery = ($_REQUEST['countryName']);
+$country = str_replace(' ','%20',$searchQuery);
+
+error_log(print_r($country, true));
+
 
 
 $executionStartTime = microtime(true);
-
-
-$appID = 'e9b26c51d8aa46a796b410c227bae478';
-
-$url = 'https://openexchangerates.org/api/latest.json?app_id=' . $appID;
-
-
+$url = 'https://restcountries.com/v3.1/name/' . $country;
 
 
 $ch = curl_init();
@@ -31,11 +27,9 @@ curl_close($ch);
 
 
 
-$decode = json_decode($result);
+$decode = json_decode($result); // Takes a well-formed XML string and returns it as an object.
 
-// $exchangeRate = $decode->rates->$currencyCode;
-
-// error_log(print_r($exchangeRate, true));
+// error_log(print_r($result, true));
 
 $output['status']['code'] = "200";
 $output['status']['name'] = "ok";

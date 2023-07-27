@@ -317,6 +317,50 @@
           </div>
 
 
+           <!--------------- TIME-ZONE MODAL ------------->
+           <div
+           class="modal fade"
+           id="tzModal"
+           data-bs-backdrop="static"
+           data-bs-keyboard="false"
+           tabindex="-1"
+           aria-labelledby="tzModal"
+           aria-hidden="true"
+         >
+           <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content shadow rounded">
+               <div class="modal-header bg-primary bg-dark text-white">
+                 <h1 class="modal-title fs-5" id="tzTitle">Country Timezone Data</h1>
+                 <button
+                   type="button"
+                   class="btn-close btn-close-white"
+                   data-bs-dismiss="modal"
+                   aria-label="Close"
+                 ></button>
+               </div>
+               <div class="modal-body text-white bg-dark rounded">
+                <p id="localTime"></p>
+                <p id="sunrise"></p>
+                <p id="sunset"></p>
+               </div>
+               <div class="modal-footer bg-dark">
+                 <button
+                   type="button"
+                   class="btn btn-outline-light"
+                   data-bs-dismiss="modal"
+                 >
+                   Close
+                 </button>
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+
+
+
+
 
 
         </div>

@@ -374,12 +374,55 @@ $(document).ready(function () {
         }
 
 
+     // ----------------- TIMEZONE DATA API CALL --------------------//
+
+     async function getTimezoneData(geoNameLat, geoNameLng) {
+      console.log(geoNameLat, geoNameLng);
+      try {
+        const result = await $.ajax({
+          url: "libs/php/getTimezoneAPI.php",
+          type: "POST",
+          dataType: "json",
+          data: { latitude: geoNameLat,
+          longitude: geoNameLng },
+        })
+        if (result.status.name === "ok") {
+          let tzData = result.data;
+          console.log(tzData);
+          let localTimeData = tzData.time;
+          let localTime = localTimeData.split(' ')[1];
+          let sunriseData = tzData.sunrise;
+          let sunrise = sunriseData.split(' ')[1];
+          let sunsetData = tzData.sunset;
+          let sunset = sunsetData.split(' ')[1];
+
+          $('#localTime').html(localTime);
+          $('#sunrise').html(sunrise);
+          $('#sunset').html(sunset);
+
+
+          // Easy Button //
+          timezoneEasyButton = L.easyButton(
+            "fa-solid fa-clock fa-beat fa-lg",
+            function (btn, map) {
+              $("#tzModal").modal("show");
+            }
+          );
+          timezoneEasyButton.addTo(map);
+        } else {
+          throw new Error("Failed to retrieve flag data.");
+          // exchange rate data not found message to for HTML modal
+        }
+      } catch (error) {
+        console.error(error);
+        throw error;
+        
+      }
+    }
 
 
 
-
-
-      //// ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- /////////
+      // ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- //
 
       //------ VARIABLES USED IN FUNCTIONS -----//
 
@@ -394,6 +437,7 @@ $(document).ready(function () {
       let weatherEasyButton;
       let exchangeRateEasyButton;
       let flagEasyButton;
+      let timezoneEasyButton;
     
       let selectedCountryCode;
       let selectedCountryName;
@@ -429,6 +473,10 @@ $(document).ready(function () {
 
       if (flagEasyButton) {
         flagEasyButton.removeFrom(map);
+      }
+
+      if (timezoneEasyButton) {
+        timezoneEasyButton.removeFrom(map);
       }
 
       // ------------ ADDING COUNTRY LAYER  ---------------//
@@ -478,11 +526,11 @@ $(document).ready(function () {
 
         const flagData = await getFlagData(selectedCountryName);
 
-        // Now you have access to geolocationData, wikiData, and geonamesBasicData
-        // ... (code to update UI and handle API data)
+        const timezoneData = await getTimezoneData(geoNameLat, geoNameLng);
+  
       } catch (error) {
         console.error(error);
-        // Handle errors here
+      
       }
     });
   }

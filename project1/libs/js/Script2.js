@@ -19,7 +19,6 @@ $(document).ready(function () {
 
 
 
-
   async function changeSelectOption(lat,long
     ) {
       console.log(lat,long)
@@ -31,14 +30,13 @@ $(document).ready(function () {
           data: {
             lat: lat,
             lng: long,
-          },
+          }
         });
-  
         if (result.status.name === "ok") {
           isoCode = result.data.countryCode;
           $('#selectCountry').val(isoCode).change();
         } else {
-          throw new Error("Failed to retrieve geonames basic data.");
+          throw new Error("Failed to get ISO code.");
         }
       } catch (error) {
         console.error(error);

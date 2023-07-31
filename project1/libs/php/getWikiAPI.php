@@ -9,13 +9,13 @@ $searchQuery = ($_REQUEST['country']);
 // $searchQuery2= str_replace('Rep.', 'Republic', $searchQuery1);
 $country = str_replace(' ','%20',$searchQuery);
 
-// error_log(print_r($country, true));
+error_log(print_r($country, true));
 
 
 
 $executionStartTime = microtime(true);
 
-$url = 'http://api.geonames.org/wikipediaSearchJSON?q=' . $country . '&maxRows=100&username=kwasimodo';
+$url = 'http://api.geonames.org/wikipediaSearchJSON?q=' . $country . '&maxRows=200&username=kwasimodo';
 
 
 

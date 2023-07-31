@@ -4,11 +4,11 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 $searchQuery = ($_REQUEST['countryCode']);
-// $searchQuery1 = str_replace('Dem.','Democratic',$searchQuery);
+$searchQuery1 = str_replace('-99','SO',$searchQuery);
 // $searchQuery2= str_replace('Rep.', 'Republic', $searchQuery1);
-$countryCode = trim($searchQuery);
+$countryCode = trim($searchQuery1);
 
-
+error_log(print_r($countryCode, true));
 
 
 
@@ -17,7 +17,7 @@ $executionStartTime = microtime(true);
 // $url = 'http://api.geonames.org/wikipediaSearchJSON?q=' . $country . '&maxRows=100&username=kwasimodo';
 $url = 'http://api.geonames.org/countryInfoJSON?country=' . $countryCode . '&username=kwasimodo';
 
-// error_log(print_r($url, true));
+
 
 
 $ch = curl_init();

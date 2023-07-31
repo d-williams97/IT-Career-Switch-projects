@@ -8,8 +8,6 @@ $(window).on("load", function () {
   }
 });
 
-
-
 $(document).ready(function () {
   let map;
   let countryData;
@@ -80,8 +78,6 @@ $(document).ready(function () {
     console.log("Geolocation is not supported by this browser.");
   }
 
-
-
   // ------------ COUNTRY LOCATION DATA API CALL ---------------- //
 
   async function getGeolocationData(selectedCountryName, selectedCountryCode) {
@@ -97,11 +93,12 @@ $(document).ready(function () {
       });
 
       if (result.status.name === "ok") {
+      console.log(result.data.results);
         const geoNameCountryData = result.data.results[0];
+        console.log(geoNameCountryData);
         geoNameLat = geoNameCountryData.geometry.lat;
         console.log(geoNameLat);
         geoNameLng = geoNameCountryData.geometry.lng;
-
 
         // ---- ADDING COUNTRY MARKER TO MAP ----- //
         const markerLatLng = L.latLng(geoNameLat, geoNameLng);
@@ -114,7 +111,6 @@ $(document).ready(function () {
         console.log(countryBoundsData);
         map.fitBounds(countryBoundsData);
         // return { geoNameLat, geoNameLng };
-
       } else {
         throw new Error("Failed to retrieve geolocation data.");
       }
@@ -123,9 +119,60 @@ $(document).ready(function () {
       throw error;
     }
   }
-  
-  // ----------------- WEATHER DATA API CALL --------------------//
 
+  // ----------------- GEONAMES BASIC DATA API CALL --------------------//
+
+  async function getGeonamesBasicData(
+    selectedCountryName,
+    selectedCountryCode
+  ) {
+    console.log(selectedCountryCode);
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getGeoNamesBasicData.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+          countryCode: selectedCountryCode,
+          countryName: selectedCountryName,
+        },
+      });
+
+      if (result.status.name === "ok") {
+        console.log(result);
+        const countryBasicData = result.data.geonames[0];
+        console.log(countryBasicData);
+        currencyCode = countryBasicData.currencyCode;
+        const countryBasicPopulation = parseFloat(countryBasicData.population);
+        const countryBasicArea = parseFloat(countryBasicData.areaInSqKm);
+        $("#basicCountryName").html(selectedCountryName);
+        $("#basicCapitalCity").html(countryBasicData.capital);
+        $("#basicContinent").html(countryBasicData.continentName);
+        $("#basicPopulation").html(
+          countryBasicPopulation.toLocaleString("en-gb")
+        );
+        $("#basicArea").html(countryBasicArea.toLocaleString("en-gb"));
+
+
+        // -- BASIC DATA EASY BUTTON -- //
+        countryBasicDataButton = L.easyButton(
+          "fa-solid fa-info fa-lg",
+          function (btn, map) {
+            $("#basicDataModal").modal("show");
+          }
+        );
+        countryBasicDataButton.addTo(map);
+        return { countryBasicPopulation, countryBasicArea };
+      } else {
+        throw new Error("Failed to retrieve geonames basic data.");
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  // ----------------- WEATHER DATA API CALL --------------------//
 
   async function getOpenWeatherData(
     selectedCountryName,
@@ -147,17 +194,11 @@ $(document).ready(function () {
       console.log(result);
       if (result.status.name == "ok") {
         const weatherData = result.data;
-        console.log(result.data);
-        let temp = weatherData.main.temp;
-        console.log(temp);
-        let feelsLikeTemp = weatherData.main.feels_like;
-        console.log(feelsLikeTemp);
+        let temp = Math.round(weatherData.main.temp);
+        let feelsLikeTemp = Math.round(weatherData.main.feels_like);
         let weatherDescription = weatherData.weather[0].description;
-        console.log(weatherDescription);
         let humidity = weatherData.main.humidity;
-        console.log(humidity);
         let iconCode = weatherData.weather[0].icon;
-        console.log(iconCode);
         let iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
         $("#temp").html(temp);
@@ -167,9 +208,9 @@ $(document).ready(function () {
         $("#weatherIcon").attr("src", iconUrl);
         $("#weatherCountryName").html(selectedCountryName);
 
-        // ---------Add the Easy Button to the map ------------ //
+        // ---------Weather Easy Button to the map ------------ //
         weatherEasyButton = L.easyButton(
-          "fa-solid fa-cloud fa-beat fa-lg",
+          "fa-solid fa-cloud fa-lg",
           function (btn, map) {
             $("#weatherModal").modal("show");
           }
@@ -184,354 +225,285 @@ $(document).ready(function () {
     }
   }
 
+  // ----------------- WIKI DATA API CALL --------------------//
 
-    // ----------------- GEONAMES BASIC DATA API CALL --------------------//
+  async function getWikiData(selectedCountryName) {
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getWikiAPI.php",
+        type: "POST",
+        dataType: "json",
+        data: { country: selectedCountryName },
+      });
 
-
-    async function getGeonamesBasicData(
-      selectedCountryName,
-      selectedCountryCode
-    ) {
-      try {
-        const result = await $.ajax({
-          url: "libs/php/getGeoNamesBasicData.php",
-          type: "POST",
-          dataType: "json",
-          data: {
-            countryCode: selectedCountryCode,
-            countryName: selectedCountryName,
-          },
-        });
-
-        if (result.status.name === "ok") {
-          const countryBasicData = result.data.geonames[0];
-          console.log(countryBasicData);
-          currencyCode = countryBasicData.currencyCode;
-          const countryBasicPopulation = parseFloat(
-            countryBasicData.population
-          );
-          const countryBasicArea = parseFloat(countryBasicData.areaInSqKm);
-          countryBasicDataButton = L.easyButton(
-            "fa-solid fa-info fa-beat fa-lg",
-            function (btn, map) {
-              $("#basicCountryName").html(selectedCountryName);
-              $("#basicCapitalCity").html(countryBasicData.capital);
-              $("#basicContinent").html(countryBasicData.continentName);
-              $("#basicPopulation").html(
-                countryBasicPopulation.toLocaleString("en-gb")
-              );
-              $("#basicArea").html(countryBasicArea.toLocaleString("en-gb"));
-              $("#basicDataModal").modal("show");
-            }
-          );
-          countryBasicDataButton.addTo(map);
-          return { countryBasicPopulation, countryBasicArea };
+      if (result.status.name === "ok") {
+        console.log(result);
+        if (result.status === undefined) {
+          console.log("data not found");
         } else {
-          throw new Error("Failed to retrieve geonames basic data.");
-        }
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    }
-
-    // ----------------- WIKI DATA API CALL --------------------//
- 
-
-    async function getWikiData(selectedCountryName) {
-      try {
-        const result = await $.ajax({
-          url: "libs/php/getWikiAPI.php",
-          type: "POST",
-          dataType: "json",
-          data: { country: selectedCountryName },
-        });
-
-        if (result.status.name === "ok") {
-          console.log(result);
-          if (result.status === undefined) {
-            console.log("data not found");
+          const resultsData = result.data.geonames;
+          let wikiObj = $.grep(resultsData, function (obj) {
+            return obj.title === selectedCountryName
+          });
+          if (wikiObj.length === 0) {
+            wikiObj = $.grep(resultsData, function (obj) {
+              return obj;
+            })
+          }
+          const wikiData = wikiObj[0];
+          console.log(wikiData);
+          if (wikiData === undefined) {
+            console.log("country data not found");
           } else {
-            const resultsData = result.data.geonames;
-            console.log(resultsData);
-            const wikiObj = $.grep(resultsData, function (obj) {
-              return obj.title === selectedCountryName;
-            });
-            const wikiData = wikiObj[0];
-            console.log(wikiData);
-            if (wikiData === undefined) {
-              console.log("country data not found");
-            } else {
-              wikiSummary = wikiData.summary;
-              wikiUrl = wikiData.wikipediaUrl;
-              $("#wikiTitle").html(selectedCountryName);
-              $("#wikiCountrySummary").html(wikiSummary);
-              $("#wikiCountryLink").attr("href", `https://${wikiUrl}`);
-            }
-            if (!wikiData.thumbnailImg) {
-              console.log("image not found");
-              wikiImg = "libs/assets/imageNotFound.png";
-              $("#wikiImg").attr("src", wikiImg);
-            } else {
-              wikiImg = wikiData.thumbnailImg;
-              $("#wikiImg").attr("src", wikiImg);
-            }
-            // ---------Add the Easy Button to the map ------------ //
-            wikiEasyButton = L.easyButton(
-              "fa-brands fa-wikipedia-w fa-beat fa-lg",
-              function (btn, map) {
-                $("#wikiModal").modal("show");
-              }
-            );
-            wikiEasyButton.addTo(map);
+            wikiSummary = wikiData.summary;
+            wikiUrl = wikiData.wikipediaUrl;
+            // $("#wikiTitle").html(selectedCountryName);
+            $("#wikiCountrySummary").html(wikiSummary);
+            $("#wikiCountryLink").attr("href", `https://${wikiUrl}`);
+            $("#wikiCountryName").html(selectedCountryName);
           }
-          // return { wikiSummary, wikiUrl, wikiImg };
-        } else {
-          throw new Error("Failed to retrieve wiki data.");
+          if (!wikiData.thumbnailImg) {
+            console.log("image not found");
+            wikiImg = "libs/assets/imageNotFound.png";
+            $("#wikiImg").attr("src", wikiImg);
+          } else {
+            wikiImg = wikiData.thumbnailImg;
+            $("#wikiImg").attr("src", wikiImg);
+          }
+          // ---------Add the Easy Button to the map ------------ //
+          wikiEasyButton = L.easyButton(
+            "fa-brands fa-wikipedia-w fa-lg",
+            function (btn, map) {
+              $("#wikiModal").modal("show");
+            }
+          );
+          wikiEasyButton.addTo(map);
         }
-      } catch (error) {
-        console.error(error);
-        throw error;
+        // return { wikiSummary, wikiUrl, wikiImg };
+      } else {
+        throw new Error("Failed to retrieve wiki data.");
       }
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
+  }
 
+  // ----------------- EXCHANGE RATE DATA API CALL --------------------//
 
-
-        // ----------------- EXCHANGE RATE DATA API CALL --------------------//
-
-        async function getExchangeRateData(currencyCode) {
-          console.log(currencyCode);
-          try {
-            const result = await $.ajax({
-              url: "libs/php/getOpenExchangeRate.php",
-              type: "POST",
-              dataType: "json",
-              data: { currencyCode: currencyCode },
-            })
-            if (result.status.name === "ok") {
-              let currencyValue = result.data.rates[currencyCode];
-              console.log(currencyValue);
-              let roundedCurrencyValue = currencyValue.toFixed(2);
-              let currentDate = new Date().toString();
-              let realDate = currentDate.split('+')[0];
-              // modal //
-              $('#erCountry').html(selectedCountryName);
-              $('#erValue').html(roundedCurrencyValue);
-              $('#erCode').html(currencyCode);
-              $('#erDate').html(realDate);
-              // Easy Button //
-              exchangeRateEasyButton = L.easyButton(
-                "fa-solid fa-dollar-sign fa-beat fa-lg",
-                function (btn, map) {
-                  $("#erModal").modal("show");
-                }
-              );
-              exchangeRateEasyButton.addTo(map);
-            } else {
-              throw new Error("Failed to retrieve exchange rate data.");
-              // exchange rate data not found message to for HTML modal
-            }
-          } catch (error) {
-            console.error(error);
-            throw error;
-            
+  async function getExchangeRateData(currencyCode) {
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getOpenExchangeRate.php",
+        type: "POST",
+        dataType: "json",
+        data: { currencyCode: currencyCode },
+      });
+      if (result.status.name === "ok") {
+        let currencyValue = result.data.rates[currencyCode];
+        let roundedCurrencyValue = currencyValue.toFixed(2);
+        let currentDate = new Date().toString();
+        let realDate = currentDate.split("+")[0];
+        // modal //
+        $("#erCountry").html(selectedCountryName);
+        $("#erValue").html(roundedCurrencyValue);
+        $("#erCode").html(currencyCode);
+        $("#erDate").html(realDate);
+        // Easy Button //
+        exchangeRateEasyButton = L.easyButton(
+          "fa-solid fa-dollar-sign fa-lg",
+          function (btn, map) {
+            $("#erModal").modal("show");
           }
+        );
+        exchangeRateEasyButton.addTo(map);
+      } else {
+        throw new Error("Failed to retrieve exchange rate data.");
+        // exchange rate data not found message to for HTML modal
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  // ----------------- FLAG DATA API CALL --------------------//
+
+  async function getFlagData(selectedCountryName) {
+    console.log(selectedCountryName);
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getFlagAPI.php",
+        type: "POST",
+        dataType: "json",
+        data: { countryName: selectedCountryName },
+      });
+      if (result.status.name === "ok") {
+        let flagData = $.grep(result.data, function (e) {
+          console.log(e)
+          return e.name.common === selectedCountryName || e.name.official === selectedCountryName 
+        });
+        console.log(flagData)
+        let flagLink;
+        if (flagData.length === 0) {
+          flagLink = "libs/assets/imageNotFound.png" 
+        } else {
+          flagLink = flagData[0].flags.png;
         }
-
-                // ----------------- FLAG DATA API CALL --------------------//
-
-        async function getFlagData(selectedCountryName) {
-          console.log(selectedCountryName);
-          try {
-            const result = await $.ajax({
-              url: "libs/php/getFlagAPI.php",
-              type: "POST",
-              dataType: "json",
-              data: { countryName: selectedCountryName },
-            })
-            if (result.status.name === "ok") {
-              let flagLink = result.data[0].flags.png;
-              $('#flagTitle').html(`${selectedCountryName} Flag`)
-              $('#flagImg').attr('src',flagLink);
-
-              // Easy Button //
-              flagEasyButton = L.easyButton(
-                "fa-solid fa-flag fa-beat fa-lg",
-                function (btn, map) {
-                  $("#flagModal").modal("show");
-                }
-              );
-              flagEasyButton.addTo(map);
-            } else {
-              throw new Error("Failed to retrieve flag data.");
-              // exchange rate data not found message to for HTML modal
-            }
-          } catch (error) {
-            console.error(error);
-            throw error;
-            
-          }
-        }
-
-
-     // ----------------- TIMEZONE DATA API CALL --------------------//
-
-     async function getTimezoneData(geoNameLat, geoNameLng) {
-      console.log(geoNameLat, geoNameLng);
-      try {
-        const result = await $.ajax({
-          url: "libs/php/getTimezoneAPI.php",
-          type: "POST",
-          dataType: "json",
-          data: { latitude: geoNameLat,
-          longitude: geoNameLng },
-        })
-        if (result.status.name === "ok") {
-          let tzData = result.data;
-          console.log(tzData);
-          let localTimeData = tzData.time;
-          let localTime = localTimeData.split(' ')[1];
-          let sunriseData = tzData.sunrise;
-          let sunrise = sunriseData.split(' ')[1];
-          let sunsetData = tzData.sunset;
-          let sunset = sunsetData.split(' ')[1];
-
-          $('#localTime').html(localTime);
-          $('#sunrise').html(sunrise);
-          $('#sunset').html(sunset);
-
+        console.log(flagLink);
+        $("#flagTitle").html(selectedCountryName);
+        $("#flagImg").attr("src", flagLink);
 
           // Easy Button //
-          timezoneEasyButton = L.easyButton(
-            "fa-solid fa-clock fa-beat fa-lg",
-            function (btn, map) {
-              $("#tzModal").modal("show");
-            }
-          );
-          timezoneEasyButton.addTo(map);
-        } else {
-          throw new Error("Failed to retrieve flag data.");
-          // exchange rate data not found message to for HTML modal
-        }
-      } catch (error) {
-        console.error(error);
-        throw error;
-        
+        flagEasyButton = L.easyButton(
+          "fa-solid fa-flag fa-lg",
+          function (btn, map) {
+            $("#flagModal").modal("show");
+          }
+        );
+        flagEasyButton.addTo(map);
+      } else {
+        throw new Error("Failed to retrieve flag data.");
+        // exchange rate data not found message to for HTML modal
       }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  // ----------------- TIMEZONE DATA API CALL --------------------//
+
+  async function getTimezoneData(geoNameLat, geoNameLng) {
+    console.log(geoNameLat, geoNameLng);
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getTimezoneAPI.php",
+        type: "POST",
+        dataType: "json",
+        data: { latitude: geoNameLat, longitude: geoNameLng },
+      });
+      if (result.status.name === "ok") {
+        let tzData = result.data;
+        console.log(tzData);
+        let localTimeData = tzData.time;
+        let localTime = localTimeData.split(" ")[1];
+        let sunriseData = tzData.sunrise;
+        let sunrise = sunriseData.split(" ")[1];
+        let sunsetData = tzData.sunset;
+        let sunset = sunsetData.split(" ")[1];
+        let gmtOffset = tzData.gmtOffset;
+        console.log(gmtOffset);
+
+        $("#localTime").html(localTime);
+        $("#sunrise").html(`Sunrise: ${sunrise}`);
+        $("#sunset").html(`Sunset: ${sunset}`);
+        $("#tzOffset").html(`Today, ${gmtOffset}HRS`);
+        $("#tzCountry").html(selectedCountryName);
+
+        // tzEasy Button //
+        timezoneEasyButton = L.easyButton(
+          "fa-solid fa-clock fa-lg",
+          function (btn, map) {
+            $("#tzModal").modal("show");
+          }
+        );
+        timezoneEasyButton.addTo(map);
+      } else {
+        throw new Error("Failed to retrieve flag data.");
+        // exchange rate data not found message to for HTML modal
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+
+
+  // ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- //
+
+  //------ VARIABLES USED IN FUNCTIONS -----//
+
+  let currentPolygonLayer;
+  let currentMarker;
+
+  let geoNameLat;
+  let geoNameLng;
+
+  let wikiEasyButton;
+  let countryBasicDataButton;
+  let weatherEasyButton;
+  let exchangeRateEasyButton;
+  let flagEasyButton;
+  let timezoneEasyButton;
+
+  let selectedCountryCode;
+  let selectedCountryName;
+  let currencyCode;
+
+  $("#selectCountry").on("change", async function () {
+    selectedCountryCode = $(this).val();
+    selectedCountryName = $("#selectCountry :selected").text();
+
+    // --------- REMOVING OLD BUTTONS ----------------- //
+    currentPolygonLayer ? map.removeLayer(currentPolygonLayer) : '';
+    currentMarker ? map.removeLayer(currentMarker): null ;
+    wikiEasyButton ? wikiEasyButton.removeFrom(map): null;
+    countryBasicDataButton ? countryBasicDataButton.removeFrom(map): null;
+    weatherEasyButton ? weatherEasyButton.removeFrom(map): null;
+    exchangeRateEasyButton ? exchangeRateEasyButton.removeFrom(map): null;
+    flagEasyButton ? flagEasyButton.removeFrom(map) : null;
+    timezoneEasyButton ? timezoneEasyButton.removeFrom(map): null;
+
+
+    // ------------ ADDING COUNTRY LAYER  ---------------//
+    let selectedCountry = $.grep(countryData, function (e) {
+      return e.countryName === selectedCountryName;
+    });
+    let selectedCountryCoords = selectedCountry[0].polygon[0];
+    let latLng = [];
+    for (const coords of selectedCountryCoords) {
+      // console.log(coords); //goes through all coords
+      let lat = coords[1]; // Latitude (y-coordinate) is the second element in the array
+      // console.log(lat);
+      let lng = coords[0]; // Longitude (x-coordinate) is the first element in the array.
+      let point = L.latLng(lat, lng);
+      // console.log(point);
+      latLng.push(point);
     }
 
+    currentPolygonLayer = L.polygon(latLng)
+      .setStyle({
+        color: "#ff7800",
+        weight: 5,
+        opacity: 0.65,
+      })
+      .addTo(map);
 
 
-      // ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- //
-
-      //------ VARIABLES USED IN FUNCTIONS -----//
-
-      let currentPolygonLayer;
-      let currentMarker;
-
-      let geoNameLat;
-      let geoNameLng;
+    // ------------- ASYNCH API CALLS ------------ //
+    try {
+      const geolocationData = await getGeolocationData(
+        selectedCountryName,
+        selectedCountryCode
+      );
+      const geonamesBasicData = await getGeonamesBasicData(
+        selectedCountryName,
+        selectedCountryCode
+      );
+      const openWeatherData = await getOpenWeatherData(
+        selectedCountryName,
+        geoNameLat,
+        geoNameLng
+      );
+      const wikiData = await getWikiData(selectedCountryName);
+      const currencyData = await getExchangeRateData(currencyCode);
+      const flagData = await getFlagData(selectedCountryName);
+      const timezoneData = await getTimezoneData(geoNameLat, geoNameLng);
+    } catch (error) {
+      console.error(error);
+    }
     
-      let wikiEasyButton;
-      let countryBasicDataButton;
-      let weatherEasyButton;
-      let exchangeRateEasyButton;
-      let flagEasyButton;
-      let timezoneEasyButton;
-    
-      let selectedCountryCode;
-      let selectedCountryName;
-      let currencyCode;
-
-    $("#selectCountry").on("change", async function () {
-
-      selectedCountryCode = $(this).val();
-      selectedCountryName = $("#selectCountry :selected").text();
- 
-      if (currentPolygonLayer) {
-        map.removeLayer(currentPolygonLayer);
-      }
-      if (currentMarker) {
-        map.removeLayer(currentMarker);
-      }
-
-      if (wikiEasyButton) {
-        wikiEasyButton.removeFrom(map);
-      }
-
-      if (countryBasicDataButton) {
-        countryBasicDataButton.removeFrom(map);
-      }
-
-      if (weatherEasyButton) {
-        weatherEasyButton.removeFrom(map);
-      }
-
-      if (exchangeRateEasyButton) {
-        exchangeRateEasyButton.removeFrom(map);
-      }
-
-      if (flagEasyButton) {
-        flagEasyButton.removeFrom(map);
-      }
-
-      if (timezoneEasyButton) {
-        timezoneEasyButton.removeFrom(map);
-      }
-
-      // ------------ ADDING COUNTRY LAYER  ---------------//
-      let selectedCountry = $.grep(countryData, function (e) {
-        return e.countryName === selectedCountryName;
-      });
-      let selectedCountryCoords = selectedCountry[0].polygon[0];
-      let latLng = [];
-      for (const coords of selectedCountryCoords) {
-        // console.log(coords); //goes through all coords
-        let lat = coords[1]; // Latitude (y-coordinate) is the second element in the array
-        // console.log(lat);
-        let lng = coords[0]; // Longitude (x-coordinate) is the first element in the array.
-        let point = L.latLng(lat, lng);
-        // console.log(point);
-        latLng.push(point);
-      }
-
-      currentPolygonLayer = L.polygon(latLng)
-        .setStyle({
-          color: "#ff7800",
-          weight: 5,
-          opacity: 0.65,
-        })
-        .addTo(map);
-
-
-        // ------------- ASYNCH API CALLS ------------ //
-
-      try {
-        const geolocationData = await getGeolocationData(
-          selectedCountryName,
-          selectedCountryCode
-        );
-        const geonamesBasicData = await getGeonamesBasicData(
-          selectedCountryName,
-          selectedCountryCode
-        );
-        const openWeatherData = await getOpenWeatherData(
-          selectedCountryName,
-          geoNameLat,
-          geoNameLng
-        );
-        const wikiData = await getWikiData(selectedCountryName);
-
-        const currencyData = await getExchangeRateData(currencyCode);
-
-        const flagData = await getFlagData(selectedCountryName);
-
-        const timezoneData = await getTimezoneData(geoNameLat, geoNameLng);
-  
-      } catch (error) {
-        console.error(error);
-      
-      }
-    });
-  }
-);
+  });
+});

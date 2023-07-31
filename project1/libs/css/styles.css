@@ -51,7 +51,7 @@
 
 #mapContainer {
   position: relative;
-  height: 90vh; /* Set the desired height for the map container */
+  height: 100vh; /* Set the desired height for the map container */
 }
 
 #map {
@@ -74,9 +74,4 @@
 #selectCountry {
   width: 250px;
   margin: 0 auto;
-}
-
-
-.modalImg img {
-  height: 50rem !important;
 }

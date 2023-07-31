@@ -13,11 +13,45 @@ $(document).ready(function () {
   let countryData;
   let countryNames;
   let countryCodes;
+  let defaultLat
+  let defaultLong
+  let isoCode
 
+
+
+
+  async function changeSelectOption(lat,long
+    ) {
+      console.log(lat,long)
+      try {
+        const result = await $.ajax({
+          url: "libs/php/getSelectOption.php",
+          type: "POST",
+          dataType: "json",
+          data: {
+            lat: lat,
+            lng: long,
+          },
+        });
+  
+        if (result.status.name === "ok") {
+          isoCode = result.data.countryCode;
+          $('#selectCountry').val(isoCode).change();
+        } else {
+          throw new Error("Failed to retrieve geonames basic data.");
+        }
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+  
+ 
   if (navigator.geolocation) {
     function showPosition(position) {
-      let defaultLat = position.coords.latitude;
-      let defaultLong = position.coords.longitude;
+      defaultLat = position.coords.latitude;
+      defaultLong = position.coords.longitude;
+
       // ------------------------- INITIALIZE MAP -------------------------- //
       let tileLayer1 = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
@@ -32,10 +66,16 @@ $(document).ready(function () {
         zoom: 13,
         layers: [tileLayer1],
       });
+      
+
+      // --- CHANGE SELECT LIST OPTION WITH GEOLOCATION DATA --- //
+      changeSelectOption(defaultLat,defaultLong);
     }
 
     function geoError(err) {
       console.log(err.message);
+      defaultLat = 0;
+      defaultLong = 0;
       let tileLayer1 = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
@@ -77,6 +117,14 @@ $(document).ready(function () {
   } else {
     console.log("Geolocation is not supported by this browser.");
   }
+
+
+
+  // ------------ CHANGE LIST OPTION TO GEOLOACTION COUNTRY -------------------
+
+
+
+
 
   // ------------ COUNTRY LOCATION DATA API CALL ---------------- //
 
@@ -421,6 +469,15 @@ $(document).ready(function () {
 
 
 
+
+
+
+
+
+
+  
+
+
   // ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- //
 
   //------ VARIABLES USED IN FUNCTIONS -----//
@@ -462,6 +519,7 @@ $(document).ready(function () {
       return e.countryName === selectedCountryName;
     });
     let selectedCountryCoords = selectedCountry[0].polygon[0];
+    console.log(selectedCountryCoords);
     let latLng = [];
     for (const coords of selectedCountryCoords) {
       // console.log(coords); //goes through all coords
@@ -472,6 +530,7 @@ $(document).ready(function () {
       // console.log(point);
       latLng.push(point);
     }
+    console.log(latLng); // Array of points fr broder
 
     currentPolygonLayer = L.polygon(latLng)
       .setStyle({

@@ -13,44 +13,40 @@ $(document).ready(function () {
   let countryData;
   let countryNames;
   let countryCodes;
-  let defaultLat
-  let defaultLong
-  let isoCode
+  let defaultLat;
+  let defaultLong;
+  let isoCode;
+
+  let overlays;
+
+  let cities;
+  let cityIcon;
+  let cityMarkers;
+  let cityData;
+
+  let airports;
+  let airportIcon;
+  let airportMarkers
+  let airportData;
 
 
 
-  async function changeSelectOption(lat,long
-    ) {
-      console.log(lat,long)
-      try {
-        const result = await $.ajax({
-          url: "libs/php/getSelectOption.php",
-          type: "POST",
-          dataType: "json",
-          data: {
-            lat: lat,
-            lng: long,
-          }
-        });
-        if (result.status.name === "ok") {
-          isoCode = result.data.countryCode;
-          $('#selectCountry').val(isoCode).change();
-        } else {
-          throw new Error("Failed to get ISO code.");
-        }
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    }
-  
- 
-  if (navigator.geolocation) {
-    function showPosition(position) {
-      defaultLat = position.coords.latitude;
-      defaultLong = position.coords.longitude;
 
-      // ------------------------- INITIALIZE MAP -------------------------- //
+  async function changeSelectOption(lat, long) {
+    console.log(lat, long);
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getSelectOption.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+          lat: lat,
+          lng: long,
+        },
+      });
+
+      // ------------------------- SETTING UP MAP -------------------------- //
+
       let tileLayer1 = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
         {
@@ -59,62 +55,218 @@ $(document).ready(function () {
         }
       );
 
+      let tileLayer2 = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution:
+            "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+        }
+      );
+
+      let baseMaps = {
+        "World Map": tileLayer1,
+        Satellite: tileLayer2,
+      };
+
+      // ------------------------- INITIALISING MAP -------------------------- //
+
       map = L.map("map", {
         center: [defaultLat, defaultLong],
         zoom: 13,
         layers: [tileLayer1],
       });
-      
 
-      // --- CHANGE SELECT LIST OPTION WITH GEOLOCATION DATA --- //
-      changeSelectOption(defaultLat,defaultLong);
+      // ------------ ADDING MODAL BUTTONS -------------------- //
+
+      // ----------------- ADD MARKERCLUSTERS ---------------------- //
+
+      airports = L.markerClusterGroup({
+        polygonOptions: {
+          fillColor: "#fff",
+          color: "#000",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.5,
+        },
+      }).addTo(map);
+
+      cities = L.markerClusterGroup({
+        polygonOptions: {
+          fillColor: "#fff",
+          color: "#000",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.5,
+        },
+      }).addTo(map);
+
+      airportIcon = L.ExtraMarkers.icon({
+        prefix: 'fa',
+        icon: 'fa-plane',
+        iconColor: 'black',
+        markerColor: 'white',
+        shape: 'square'
+      });
+
+      cityIcon = L.ExtraMarkers.icon({
+        prefix: "fa",
+        icon: "fa-city",
+        markerColor: "green",
+        shape: "square",
+      });
+
+      overlays = {
+        Cities: cities,
+        Airports: airports
+      };
+
+      // ----- ADDING LAYERS TO MAP ----- //
+
+      L.control.layers(baseMaps, overlays).addTo(map);
+
+      if (result.status.name === "ok") {
+        console.log(result);
+        if (result.data.countryCode) {
+          isoCode = result.data.countryCode;
+          $("#selectCountry").val(isoCode).change();
+        } else {
+          $("#selectCountry").val("AF").change();
+        }
+      } else {
+        throw new Error("Failed to get ISO code.");
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  if (navigator.geolocation) {
+    function showPosition(position) {
+      console.log(position);
+      defaultLat = position.coords.latitude;
+      defaultLong = position.coords.longitude;
+      changeSelectOption(defaultLat, defaultLong);
     }
 
     function geoError(err) {
       console.log(err.message);
       defaultLat = 0;
       defaultLong = 0;
-      let tileLayer1 = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution: "OpenStreetMap",
-        }
-      );
-      map = L.map("map", {
-        center: [0, 0],
-        zoom: 2,
-        layers: [tileLayer1],
-      });
+      changeSelectOption(defaultLat, defaultLong);
     }
 
     navigator.geolocation.getCurrentPosition(showPosition, geoError);
-
-    // ------------------------- FETCHING COUNTRY JSON DATA -----------------------//
-    $.ajax({
-      url: "libs/php/getLocalJson.php",
-      type: "POST",
-      dataType: "json",
-      success: function (result) {
-        if (result.status.name == "ok") {
-          countryData = result.data;
-          // ------------------------- CREATING COUNTRY HTML LIST ----------------------- //
-          $.map(countryData, function (country, i) {
-            countryNames = country.countryName;
-            countryCodes = country.ISO;
-            $("#selectCountry").append(
-              `<option value='${countryCodes}'>${countryNames}</option>`
-            );
-          });
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-        console.log(errorThrown);
-      },
-    });
   } else {
     console.log("Geolocation is not supported by this browser.");
   }
+
+  // ------------------------- FETCHING COUNTRY JSON DATA -----------------------//
+
+  $.ajax({
+    url: "libs/php/getLocalJson.php",
+    type: "POST",
+    dataType: "json",
+    success: function (result) {
+      if (result.status.name == "ok") {
+        countryData = result.data;
+        // ------------------------- CREATING COUNTRY HTML LIST ----------------------- //
+        $.map(countryData, function (country, i) {
+          countryNames = country.countryName;
+          countryCodes = country.ISO;
+          $("#selectCountry").append(
+            `<option value='${countryCodes}'>${countryNames}</option>`
+          );
+        });
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+    },
+  });
+
+  // ------------------ CITY DATA FOR MARKERS ------------------------ //
+
+  async function getCityData(selectedCountryCode, cityIcon) {
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getCities.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+          countryCode: selectedCountryCode,
+        },
+      });
+      if (result.status.code === "200") {
+        cityData = result.data;
+        console.log(cityData);
+        cityData.forEach((city) => {
+          L.marker([city.lat, city.lng], {
+            icon: cityIcon,
+          })
+            .bindTooltip(
+              `<div class='col text-center'><strong>${city.city} <strong/><br><i>${city.population}<i/><div/>`,
+              { direction: "top", sticky: true }
+            )
+            .addTo(cities);
+        });
+        cityMarkers = cities.getLayers();
+        console.log(cityMarkers);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+
+
+  // ------------------ AIRPORT DATA FOR MARKERS ------------------------ //
+
+  async function getAirportData(selectedCountryCode) {
+    try {
+      const result = await $.ajax({
+        url: "libs/php/getAirports.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+          countryCode: selectedCountryCode,
+        },
+      });
+      if (result.status.code === "200") {
+        console.log(result);
+        airportData = result.data;
+        console.log(airportData);
+        airportData.forEach((airport) => {
+          L.marker([airport.lat, airport.lng], {
+            icon: airportIcon,
+          })
+            .bindTooltip(
+              `<div class='col text-center'><strong>${airport.name} <strong/><div/>`,
+              { direction: "top", sticky: true }
+            )
+            .addTo(airports);
+        });
+        airportMarkers = airports.getLayers();
+        console.log(airportMarkers);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+
+
+
+
+
+
 
 
 
@@ -133,7 +285,7 @@ $(document).ready(function () {
       });
 
       if (result.status.name === "ok") {
-      console.log(result.data.results);
+        console.log(result.data.results);
         const geoNameCountryData = result.data.results[0];
         console.log(geoNameCountryData);
         geoNameLat = geoNameCountryData.geometry.lat;
@@ -192,7 +344,6 @@ $(document).ready(function () {
           countryBasicPopulation.toLocaleString("en-gb")
         );
         $("#basicArea").html(countryBasicArea.toLocaleString("en-gb"));
-
 
         // -- BASIC DATA EASY BUTTON -- //
         countryBasicDataButton = L.easyButton(
@@ -283,12 +434,12 @@ $(document).ready(function () {
         } else {
           const resultsData = result.data.geonames;
           let wikiObj = $.grep(resultsData, function (obj) {
-            return obj.title === selectedCountryName
+            return obj.title === selectedCountryName;
           });
           if (wikiObj.length === 0) {
             wikiObj = $.grep(resultsData, function (obj) {
               return obj;
-            })
+            });
           }
           const wikiData = wikiObj[0];
           console.log(wikiData);
@@ -380,13 +531,16 @@ $(document).ready(function () {
       });
       if (result.status.name === "ok") {
         let flagData = $.grep(result.data, function (e) {
-          console.log(e)
-          return e.name.common === selectedCountryName || e.name.official === selectedCountryName 
+          console.log(e);
+          return (
+            e.name.common === selectedCountryName ||
+            e.name.official === selectedCountryName
+          );
         });
-        console.log(flagData)
+        console.log(flagData);
         let flagLink;
         if (flagData.length === 0) {
-          flagLink = "libs/assets/imageNotFound.png" 
+          flagLink = "libs/assets/imageNotFound.png";
         } else {
           flagLink = flagData[0].flags.png;
         }
@@ -394,7 +548,7 @@ $(document).ready(function () {
         $("#flagTitle").html(selectedCountryName);
         $("#flagImg").attr("src", flagLink);
 
-          // Easy Button //
+        // Easy Button //
         flagEasyButton = L.easyButton(
           "fa-solid fa-flag fa-lg",
           function (btn, map) {
@@ -436,8 +590,8 @@ $(document).ready(function () {
         console.log(gmtOffset);
 
         $("#localTime").html(localTime);
-        $("#sunrise").html(`Sunrise ${sunrise}`);
-        $("#sunset").html(`Sunset ${sunset}`);
+        $("#sunrise").html(`Sunrise: ${sunrise}`);
+        $("#sunset").html(`Sunset: ${sunset}`);
         $("#tzOffset").html(`Today, ${gmtOffset}HRS`);
         $("#tzCountry").html(selectedCountryName);
 
@@ -458,12 +612,6 @@ $(document).ready(function () {
       throw error;
     }
   }
-
-
-
-
- 
-
 
   // ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- //
 
@@ -490,16 +638,17 @@ $(document).ready(function () {
     selectedCountryCode = $(this).val();
     selectedCountryName = $("#selectCountry :selected").text();
 
-    // --------- REMOVING OLD BUTTONS ----------------- //
-    currentPolygonLayer ? map.removeLayer(currentPolygonLayer) : '';
-    currentMarker ? map.removeLayer(currentMarker): null ;
-    wikiEasyButton ? wikiEasyButton.removeFrom(map): null;
-    countryBasicDataButton ? countryBasicDataButton.removeFrom(map): null;
-    weatherEasyButton ? weatherEasyButton.removeFrom(map): null;
-    exchangeRateEasyButton ? exchangeRateEasyButton.removeFrom(map): null;
+    // --------- REMOVING OLD BUTTONS AND LAYERS ----------------- //
+    currentPolygonLayer ? map.removeLayer(currentPolygonLayer) : null;
+    currentMarker ? map.removeLayer(currentMarker) : null;
+    cityMarkers ? cities.clearLayers(cityMarkers) : null;
+    airportMarkers ? airports.clearLayers(airportMarkers) : null;
+    wikiEasyButton ? wikiEasyButton.removeFrom(map) : null;
+    countryBasicDataButton ? countryBasicDataButton.removeFrom(map) : null;
+    weatherEasyButton ? weatherEasyButton.removeFrom(map) : null;
+    exchangeRateEasyButton ? exchangeRateEasyButton.removeFrom(map) : null;
     flagEasyButton ? flagEasyButton.removeFrom(map) : null;
-    timezoneEasyButton ? timezoneEasyButton.removeFrom(map): null;
-
+    timezoneEasyButton ? timezoneEasyButton.removeFrom(map) : null;
 
     // ------------ ADDING COUNTRY LAYER  ---------------//
     let selectedCountry = $.grep(countryData, function (e) {
@@ -527,9 +676,10 @@ $(document).ready(function () {
       })
       .addTo(map);
 
-
     // ------------- ASYNCH API CALLS ------------ //
     try {
+      const citiesData = await getCityData(selectedCountryCode, cityIcon);
+      const airportData = await getAirportData(selectedCountryCode);
       const geolocationData = await getGeolocationData(
         selectedCountryName,
         selectedCountryCode
@@ -550,6 +700,5 @@ $(document).ready(function () {
     } catch (error) {
       console.error(error);
     }
-    
   });
 });

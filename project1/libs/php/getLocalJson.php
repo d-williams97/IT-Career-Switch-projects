@@ -12,6 +12,10 @@ $jsonData = file_get_contents($localJsonFilePath);
 // ---------PROCESSING JSON DATA --------//
 
 $decodedJson = json_decode($jsonData, true);
+
+
+// if check//
+
 $countryArr = $decodedJson['features'];
 
 function countryFunc($country) {

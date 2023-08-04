@@ -10,7 +10,7 @@
 }
 #preloader:before {
   content: "";
-  position: fixed;
+  position: fixed;   /*positioned relative to the viewport, which means it always stays in the same place*/
   top: calc(50% - 30px);
   left: calc(50% - 30px);
   border: 6px solid #f2f2f2;
@@ -50,7 +50,7 @@
 
 
 #mapContainer {
-  position: relative;
+  position: relative; /* positioned relative to its normal position */
   height: 100vh; /* Set the desired height for the map container */
 }
 
@@ -60,12 +60,12 @@
 }
 
 #selectContainer {
-  position: absolute;
+  position: absolute; /* positioned absolutely relative to its closest positioned ancestor */
   top: 10px; 
   left: 50%; 
-  transform: translateX(-50%); 
+  transform: translateX(-50%); /* This transform property is used to horizontally center the element within its positioned parent. It moves the element left by 50% of its own width, */
   z-index: 1000; 
-  background-color: rgba(255, 255, 255, 0); 
+  background-color: rgba(255, 255, 255, 0); /* Transparent */
   padding: 11px 15px; 
   border-radius: 5px;
   width: 300px; 

@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Gazetteer</title>
     <link rel="stylesheet" href="./libs/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./libs/css/Styles.css" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -16,10 +15,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
     />
-    <script
-      src="https://kit.fontawesome.com/00ae2793ae.js"
-      crossorigin="anonymous"
-    ></script>
+    <link rel="stylesheet" href="./libs/css/MarkerCluster.css">
+    <link rel="stylesheet" href="./libs/css/leaflet.extra-markers.min.css">
+    <link rel="stylesheet" href="./libs/css/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="./libs/css/Styles.css" />
   </head>
   <body>
     <div id="preloader"></div>
@@ -31,7 +30,6 @@
             aria-label="Default select example"
             id="selectCountry"
           >
-            <option selected>Select a country</option>
           </select>
         </div>
       </div>
@@ -400,12 +398,18 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
-    <script type="application/javascript" src="libs/js/Script2.js"></script>
     <script
       type="application/javascript"
       src="libs/assets/countryBorders.geo.json"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+    <script src="libs/js/leaflet.markercluster.js"></script>
+    <script src="libs/js/leaflet.extra-markers.min.js"></script>
+    <script
+    src="https://kit.fontawesome.com/00ae2793ae.js"
+    crossorigin="anonymous"
+  ></script>
+    <script type="application/javascript" src="libs/js/Script3.js"></script>
     <!-- <script src="libs/assets/imageNotFound.png"></script> -->
   </body>
 </html>

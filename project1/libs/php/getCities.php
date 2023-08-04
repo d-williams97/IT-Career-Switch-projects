@@ -5,18 +5,14 @@ error_reporting(E_ALL);
 
 $searchQuery = ($_REQUEST['countryCode']);
 $searchQuery1 = str_replace('-99','SO',$searchQuery);
-// $searchQuery2= str_replace('Rep.', 'Republic', $searchQuery1);
 $countryCode = trim($searchQuery1);
 
-// error_log(print_r($countryCode, true));
 
 
 
 $executionStartTime = microtime(true);
 
-// $url = 'http://api.geonames.org/wikipediaSearchJSON?q=' . $country . '&maxRows=100&username=kwasimodo';
-$url = 'http://api.geonames.org/countryInfoJSON?country=' . $countryCode . '&username=kwasimodo';
-
+$url = 'http://api.geonames.org/searchJSON?country=' . $countryCode .  '&cities=cities1000&maxRows=50&username=kwasimodo';
 
 
 
@@ -31,9 +27,29 @@ $result = curl_exec($ch);
 curl_close($ch);
 
 
+$decode = json_decode($result, true); 
 
 
-$decode = json_decode($result); // Takes a well-formed XML string and returns it as an object.
+$cityData = [];
+
+foreach ($decode['geonames'] as $city) {
+    // error_log(print_r($city, true));
+    $temp = null;
+    $temp['lng'] = $city['lng'];
+    $temp['lat'] = $city['lat'];
+    $temp['city'] = $city['name'];
+    $temp['population'] = $city['population'];
+    array_push($cityData,$temp);
+};
+
+
+// error_log(print_r($cityData, true));
+
+
+function compare($a,$b) {
+    return ($b['population'] - $a['population']);
+}
+usort($cityData,'compare');
 
 
 
@@ -41,7 +57,7 @@ $output['status']['code'] = "200";
 $output['status']['name'] = "ok";
 $output['status']['description'] = "success";
 $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms"; //intval — Get the integer value of a variable
-$output['data'] = $decode;
+$output['data'] = $cityData;
 
 header('Content-Type: application/json; charset=UTF-8'); // header() is used to send a raw HTTP header which is stored in the response sent back with the data with echo below.
 

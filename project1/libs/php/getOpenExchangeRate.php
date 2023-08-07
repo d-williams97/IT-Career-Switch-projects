@@ -5,8 +5,6 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 $currencyCode = ($_REQUEST['currencyCode']);
-// $searchQuery1 = str_replace('Dem.','Democratic',$searchQuery);
-// $searchQuery2= str_replace('Rep.', 'Republic', $searchQuery1);
 
 
 $executionStartTime = microtime(true);
@@ -33,15 +31,16 @@ curl_close($ch);
 
 $decode = json_decode($result);
 
-// $exchangeRate = $decode->rates->$currencyCode;
+$exchangeRate = $decode->rates->$currencyCode;
 
-// error_log(print_r($exchangeRate, true));
+error_log(print_r($decode, true));
+error_log(print_r($exchangeRate, true));
 
 $output['status']['code'] = "200";
 $output['status']['name'] = "ok";
 $output['status']['description'] = "success";
 $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms"; //intval — Get the integer value of a variable
-$output['data'] = $decode;
+$output['data'] = $exchangeRate;
 
 header('Content-Type: application/json; charset=UTF-8'); // header() is used to send a raw HTTP header which is stored in the response sent back with the data with echo below.
 

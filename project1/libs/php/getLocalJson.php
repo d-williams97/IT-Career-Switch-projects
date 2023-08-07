@@ -22,8 +22,6 @@ function countryFunc($country) {
     $obj = new stdClass;
     $obj->countryName = $country['properties']['name'];
     $obj->ISO = $country['properties']['iso_a2'];
-    $obj->polygon = $country['geometry']['coordinates'];
-    // error_log(print_r($obj, true));
     return $obj;
 };
 $countryData = array_map('countryFunc',$countryArr);

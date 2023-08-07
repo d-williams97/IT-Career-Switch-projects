@@ -7,7 +7,7 @@ $searchQuery = ($_REQUEST['countryCode']);
 $searchQuery1 = str_replace('-99','SO',$searchQuery);
 $countryCode = trim($searchQuery1);
 
-error_log(print_r($countryCode, true));
+// error_log(print_r($countryCode, true));
 
 
 
@@ -29,7 +29,7 @@ curl_close($ch);
 
 $decode = json_decode($result, true); 
 
-error_log(print_r($result, true));
+// error_log(print_r($result, true));
 
 
 $airportData = [];
@@ -44,7 +44,7 @@ foreach ($decode['geonames'] as $airport) {
 };
 
 
-error_log(print_r($airportData, true));
+// error_log(print_r($airportData, true));
 
 
 

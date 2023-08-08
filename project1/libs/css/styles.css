@@ -25,7 +25,9 @@
 #weatherPreloader,
 #newsPreloader,
 #wikiPreloader,
-#erPreloader {
+#erPreloader,
+#tzPreloader,
+#newsPreloader {
   position: absolute;
   top: 0;
   left: 0;
@@ -39,7 +41,9 @@
 #weatherPreloader:before,
 #newsPreloader:before,
 #wikiPreloader:before,
-#erPreloader:before {
+#erPreloader:before,
+#tzPreloader:before,
+#newsPreloader {
   content: "";
   position: fixed; /*positioned relative to the viewport, which means it always stays in the same place*/
   top: calc(50% - 30px);

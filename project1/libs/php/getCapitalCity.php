@@ -30,39 +30,19 @@ curl_close($ch);
 $decode = json_decode($result, true); 
 
 
-error_log(print_r($decode, true));
+// error_log(print_r($decode, true));
 
 $latLng = $decode[0]['capitalInfo']['latlng'];
 $lat = $latLng[0];
 $lng = $latLng[1];
 $capitalCity = $decode[0]['capital'][0];
 
-error_log(print_r($latLng, true));
-error_log(print_r($capitalCity, true));
+// error_log(print_r($latLng, true));
+// error_log(print_r($capitalCity, true));
 
 $data['lat'] = $lat;
 $data['lng'] = $lng;
 $data['capitalCity'] = $capitalCity;
-
-// foreach ($decode['geonames'] as $city) {
-//     // error_log(print_r($city, true));
-//     $temp = null;
-//     $temp['lng'] = $city['lng'];
-//     $temp['lat'] = $city['lat'];
-//     $temp['city'] = $city['name'];
-//     $temp['population'] = $city['population'];
-//     array_push($cityData,$temp);
-// };
-
-
-// error_log(print_r($cityData, true));
-
-
-// function compare($a,$b) {
-//     return ($b['population'] - $a['population']);
-// }
-// usort($cityData,'compare');
-
 
 
 $output['status']['code'] = "200";

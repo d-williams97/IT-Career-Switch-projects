@@ -34,265 +34,275 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-2 me-5">
-        <!----------------- Country Info Modal ----------------->
-        <div
-          class="modal fade"
-          id="basicDataModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="basicDataModal"
-          aria-hidden="true"
-        >
+    <div class="container">
+      <div class="row">
+        <div class="col-2 me-5">
+          <!----------------- Country Info Modal ----------------->
           <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+            class="modal fade"
+            id="basicDataModal"
+            data-bs-backdrop="false"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="basicDataModal"
+            aria-hidden="true"
           >
-            <div class="modal-content shadow bg-dark text-white">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5">Country Overview</h1>
-                <button
-                  type="button"
-                  class="btn-close btn-close-white"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body text-white">
+            <div
+              class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+            >
+              <div class="modal-content shadow bg-gradient text-white">
                 <div id="basicPreloader"></div>
-                <table class="table table-dark table-striped table-hover">
-                  <tr>
-                    <td class="text-center">
-                      <i class="fa-solid fa-flag text-white fa-xl"></i>
-                    </td>
-                    <td>
-                      <p class="text-white">Country Name:</p>
-                    </td>
-                    <td class="text-end text-white">
-                      <p id="basicCountryName"></p>
-                    </td>
-                  </tr>
+                <div class="modal-header bg-success">
+                  <h1 id="basicCountryName" class="modal-title fs-5"></h1>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-striped table-hover">
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-city fa-xl text-success"></i>
+                      </td>
+                      <td>
+                        <p class="text-black">Capital City</p>
+                      </td>
+                      <td class="text-end text-black">
+                        <p id="basicCapitalCity"></p>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td class="text-center">
-                      <i class="fa-solid fa-city fa-xl text-white"></i>
-                    </td>
-                    <td>
-                      <p class="text-white">Capital City:</p>
-                    </td>
-                    <td class="text-end text-white">
-                      <p id="basicCapitalCity"></p>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td class="text-center">
+                        <i
+                          class="fa-solid fa-earth-americas fa-xl text-success"
+                        ></i>
+                      </td>
+                      <td class="text-black">
+                        <p>Continent</p>
+                      </td>
+                      <td class="text-end text-black">
+                        <p id="basicContinent"></p>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td class="text-center">
-                      <i
-                        class="fa-solid fa-earth-americas fa-xl text-white"
-                      ></i>
-                    </td>
-                    <td class="text-white">
-                      <p>Continent:</p>
-                    </td>
-                    <td class="text-end text-white">
-                      <p id="basicContinent"></p>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-person fa-xl text-success"></i>
+                      </td>
+                      <td class="text-black">
+                        <p>Population</p>
+                      </td>
+                      <td class="text-end text-black">
+                        <p id="basicPopulation"></p>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td class="text-center">
-                      <i class="fa-solid fa-person fa-xl text-white"></i>
-                    </td>
-                    <td class="text-white">
-                      <p>Population:</p>
-                    </td>
-                    <td class="text-end text-white">
-                      <p id="basicPopulation"></p>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-mountain fa-xl text-success"></i>
+                      </td>
+                      <td class="text-black">
+                        <p>Area</p>
+                      </td>
+                      <td class="text-end text-black">
+                        <p><span id="basicArea"></span>km&#178;</p>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td class="text-center">
-                      <i class="fa-solid fa-mountain fa-xl text-white"></i>
-                    </td>
-                    <td class="text-white">
-                      <p>Area:</p>
-                    </td>
-                    <td class="text-end text-white">
-                      <p><span id="basicArea"></span>km&#178;</p>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-outline-light"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!--------------- WEATHER MODAL ------------->
-
-        <div
-          id="weatherModal"
-          class="modal fade"
-          tabindex="-1"
-          data-bs-backdrop="false"
-          data-bs-keyboard="false"
-          aria-labelledby="weatherModalLabel"
-          aria-hidden="true"
-        >
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content shadow">
-              <div class="modal-header bg-primary bg-gradient text-white">
-                <h5 class="modal-title" id="weatherTitle"></h5>
-                <button
-                  type="button"
-                  class="btn-close btn-close-white"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-
-              <div class="modal-body">
-                <div id="weatherPreloader"></div>
-
-                <div class="row">
-                  <div class="col border m-2">
-                    <p class="fw-bold fs-5 mt-1">TODAY</p>
-
-                    <div class="row">
-                      <div class="col text-center m-3">
-                        <p id="todayConditions" class="fw-bold fs-6"></p>
-                      </div>
-
-                      <div class="col text-center">
+                    <tr>
+                      <td class="text-center">
+                        <i class="fa-solid fa-flag fa-xl text-success"></i>
+                      </td>
+                      <td class="text-black">
+                        <p>Flag</p>
+                      </td>
+                      <td class="text-end text-black">
                         <img
-                          id="todayIcon"
-                          class="img-fluid mt-0"
+                          id="flagImg"
                           src=""
-                          alt=""
-                          title=""
+                          alt="CountryFlag"
+                          class="w-25"
                         />
-                      </div>
-
-                      <div class="col text-center">
-                        <p class="fw-bold fs-4 mb-0">
-                          <span id="todayMaxTemp"></span><sup>o</sup
-                          ><span class="tempMetric">c</span>
-                        </p>
-                        <p class="fs-5 mt-0 text-secondary">
-                          <span id="todayMinTemp">-</span><sup>o</sup
-                          ><span class="tempMetric">c</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
-
-                <div class="row">
-                  <div class="col border m-2">
-                    <div class="row">
-                      <div class="col text-center">
-                        <p id="day1Date" class="fw-bold fs-6 mt-3"></p>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col text-center">
-                        <p class="fw-bold fs-4 mb-0">
-                          <span id="day1MaxTemp"></span><sup>o</sup>c
-                        </p>
-                        <p class="fs-5 mt-0 text-secondary">
-                          <span id="day1MinTemp"></span><sup>o</sup>c
-                        </p>
-                      </div>
-
-                      <div class="col text-center">
-                        <img id="day1Icon" src="" alt="" title="" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col border m-2">
-                    <div class="row">
-                      <div class="col text-center">
-                        <p id="day2Date" class="fw-bold fs-6 mt-3">Fri 16th</p>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col text-center">
-                        <p class="fw-bold fs-4 mb-0">
-                          <span id="day2MaxTemp"></span><sup>o</sup>c
-                        </p>
-                        <p class="fs-5 mt-0 text-secondary">
-                          <span id="day2MinTemp"></span><sup>o</sup>c
-                        </p>
-                      </div>
-
-                      <div class="col text-center">
-                        <img id="day2Icon" src="" alt="" title="" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="modal-footer">
-                <p class="fs-6 fw-light">
-                  Last updated <span id="lastUpdated"></span>. Powered by
-                  <a
-                    href="https://www.weatherapi.com/"
-                    target="_blank"
-                    title="Free Weather API"
-                    >WeatherAPI.com</a
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success"
+                    data-bs-dismiss="modal"
                   >
-                </p>
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!----------------- Wiki Modal ----------------->
-        <div
-          class="modal fade"
-          id="wikiModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="wikiModal"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow text-white bg-dark">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5">Wiki Overview</h1>
-                <button
-                  type="button"
-                  class="btn-close btn-close-white"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body text-wrap" id="wikiBody">
-                <div id="wikiPreloader"></div>
-                <p class="fs-3 text-start" id="wikiCountryName"></p>
-                <div>
-                  <img class="w-50 img-fluid" id="wikiImg" />
+          <!--------------- WEATHER MODAL ------------->
+
+          <div
+            id="weatherModal"
+            class="modal fade"
+            tabindex="-1"
+            data-bs-backdrop="false"
+            data-bs-keyboard="false"
+            aria-labelledby="weatherModalLabel"
+            aria-hidden="true"
+          >
+            <div
+              class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+            >
+              <div class="modal-content shadow">
+                <div id="weatherPreloader"></div>
+                <div class="modal-header bg-primary bg-gradient text-white">
+                  <h5 class="modal-title" id="weatherTitle"></h5>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </div>
-                <div>
-                  <p class="mt-3 text-wrap" id="wikiCountrySummary"></p>
+
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col border m-2">
+                      <p class="fw-bold fs-5 mt-1">TODAY</p>
+
+                      <div class="row">
+                        <div class="col text-center m-3">
+                          <p id="todayConditions" class="fw-bold fs-6"></p>
+                        </div>
+
+                        <div class="col text-center">
+                          <img
+                            id="todayIcon"
+                            class="img-fluid mt-0"
+                            src=""
+                            alt=""
+                            title=""
+                          />
+                        </div>
+
+                        <div class="col text-center">
+                          <p class="fw-bold fs-4 mb-0">
+                            <span id="todayMaxTemp"></span><sup>o</sup
+                            ><span class="tempMetric">c</span>
+                          </p>
+                          <p class="fs-5 mt-0 text-secondary">
+                            <span id="todayMinTemp">-</span><sup>o</sup
+                            ><span class="tempMetric">c</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col border m-2">
+                      <div class="row">
+                        <div class="col text-center">
+                          <p id="day1Date" class="fw-bold fs-6 mt-3"></p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-center">
+                          <p class="fw-bold fs-4 mb-0">
+                            <span id="day1MaxTemp"></span><sup>o</sup>c
+                          </p>
+                          <p class="fs-5 mt-0 text-secondary">
+                            <span id="day1MinTemp"></span><sup>o</sup>c
+                          </p>
+                        </div>
+
+                        <div class="col text-center">
+                          <img id="day1Icon" src="" alt="" title="" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col border m-2">
+                      <div class="row">
+                        <div class="col text-center">
+                          <p id="day2Date" class="fw-bold fs-6 mt-3">
+                            Fri 16th
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-center">
+                          <p class="fw-bold fs-4 mb-0">
+                            <span id="day2MaxTemp"></span><sup>o</sup>c
+                          </p>
+                          <p class="fs-5 mt-0 text-secondary">
+                            <span id="day2MinTemp"></span><sup>o</sup>c
+                          </p>
+                        </div>
+
+                        <div class="col text-center">
+                          <img id="day2Icon" src="" alt="" title="" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <p class="fs-6 fw-light">
+                    Last updated <span id="lastUpdated"></span>. Powered by
+                    <a
+                      href="https://www.weatherapi.com/"
+                      target="_blank"
+                      title="Free Weather API"
+                      >WeatherAPI.com</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!----------------- Wiki Modal ----------------->
+          <div
+            class="modal fade"
+            id="wikiModal"
+            data-bs-backdrop="false"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="wikiModal"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <div
+                class="modal-content shadow text-white bg-gradient text-center"
+              >
+                <div id="wikiPreloader"></div>
+                <div class="modal-header bg-info">
+                  <h1 id="wikiTitle" class="modal-title fs-5"></h1>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body text-wrap" id="wikiBody">
                   <div>
+                    <img class="w-50 img-fluid" id="wikiImg" />
+                  </div>
+                  <div>
+                    <p
+                      class="mt-3 text-wrap text-black"
+                      id="wikiCountrySummary"
+                    ></p>
                     <a
                       id="wikiCountryLink"
                       href=""
@@ -302,72 +312,71 @@
                     >
                   </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-outline-light"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-outline-info"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!--------------- EXCHANGE RATE MODAL ------------->
-        <div
-          class="modal fade"
-          id="erModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="erModal"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow">
-              <div class="modal-header bg-secondary text-white">
-                <h1 class="modal-title fs-5" id="erTitle"></h1>
-                <button
-                  type="button"
-                  class="btn-close btn-close-white"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body text-secondary bg-light">
+          <!--------------- EXCHANGE RATE MODAL ------------->
+          <div
+            class="modal fade"
+            id="erModal"
+            data-bs-backdrop="false"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="erModal"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <div class="modal-content shadow">
                 <div id="erPreloader"></div>
-                <form>
-                  <div class="form-floating mb-3">
-                    <input
-                      id="fromValue"
-                      type="number"
-                      class="form-control"
-                      value="1"
-                      min="1"
-                      step="1"
-                    />
-                    <label for="fromValue">From USD</label>
-                  </div>
+                <div class="modal-header bg-secondary text-white">
+                  <h1 class="modal-title fs-5" id="erTitle"></h1>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body text-secondary bg-light">
+                  <form>
+                    <div class="form-floating mb-3">
+                      <input
+                        id="fromValue"
+                        type="number"
+                        class="form-control"
+                        value="1"
+                        min="1"
+                        step="1"
+                      />
+                      <label for="fromValue">From USD</label>
+                    </div>
 
-                  <div class="form-floating mb-3">
-                    <input id="exchangeRate" class="form-control" disabled />
-                    <label for="exchangeRate">Convert to</label>
-                  </div>
+                    <div class="form-floating mb-3">
+                      <input id="exchangeRate" class="form-control" disabled />
+                      <label for="exchangeRate">Convert to</label>
+                    </div>
 
-                  <div class="form-floating">
-                    <input
-                      id="erResult"
-                      type="text"
-                      class="form-control"
-                      disabled
-                    />
-                    <label for="erResult">Result</label>
-                  </div>
-                </form>
-
+                    <div class="form-floating">
+                      <input
+                        id="erResult"
+                        type="text"
+                        class="form-control"
+                        disabled
+                      />
+                      <label for="erResult">Result</label>
+                    </div>
+                  </form>
+                </div>
                 <div class="modal-footer">
                   <button
                     type="button"
@@ -380,131 +389,95 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!--------------- FLAG MODAL ------------->
-        <div
-          class="modal fade"
-          id="flagModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="flagModal"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow">
-              <div class="modal-header bg-primary bg-dark text-white">
-                <h1 class="modal-title fs-5">Country Flag</h1>
-                <button
-                  type="button"
-                  class="btn-close btn-close-white"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body text-white bg-dark">
-                <p id="flagTitle" class="fs-3 text-start mb-4"></p>
-                <img id="flagImg" src="" alt="CountryFlag" class="img-fluid" />
-              </div>
-              <div class="modal-footer bg-dark">
-                <button
-                  type="button"
-                  class="btn btn-outline-light"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!--------------- NEWS MODAL ------------->
-        <div
-          class="modal fade"
-          id="newsModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="newsModal"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow">
-              <div class="modal-header bg-primary bg-dark text-white">
-                <h1 id="newsTitle" class="fs-5"></h1>
-                <button
-                  type="button"
-                  class="btn-close btn-close-white"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div id="newsModalData" class="modal-body text-white bg-dark">
-                <div id="newsPreloader"></div>
-              </div>
-              <div class="modal-footer bg-dark">
-                <button
-                  type="button"
-                  class="btn btn-outline-light"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!--------------- TIME-ZONE MODAL ------------->
-        <div
-          class="modal fade"
-          id="tzModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="tzModal"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow bg-dark">
-              <div class="modal-header text-white">
-                <h1 class="modal-title fs-5" id="tzTitle">Time Overview</h1>
-                <button
-                  type="button"
-                  class="btn-close btn-close-white"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body text-white pb-0">
-                <div class="row justify-content-between">
-                  <div class="col-5 text-start">
-                    <p id="tzOffset" class="fs-6 text-secondary mb-0"></p>
-                    <p id="tzCountry" class="fs-4 mb-1"></p>
-                    <div class="row text-secondary fs-6">
-                      <div class="col-6">
-                        <p class="p-0" id="sunrise"></p>
-                      </div>
-                      <div class="col-6">
-                        <p class="p-0" id="sunset"></p>
+          <!--------------- TIME-ZONE MODAL ------------->
+          <div
+            class="modal fade"
+            id="tzModal"
+            data-bs-backdrop="false"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="tzModal"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content shadow bg-gradient text-center">
+                <div id="tzPreloader"></div>
+                <div class="modal-header text-white bg-warning">
+                  <h1 class="modal-title fs-5" id="tzTitle"></h1>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body text-black pb-0">
+                  <div class="row justify-content-between">
+                    <div class="col-5 text-start">
+                      <p id="tzOffset" class="fs-6 text-secondary mb-0"></p>
+                      <p id="tzCity" class="fs-4 mb-1"></p>
+                      <div class="row text-secondary fs-6">
+                        <div class="col-6">
+                          <p class="p-0" id="sunrise"></p>
+                        </div>
+                        <div class="col-6">
+                          <p class="p-0" id="sunset"></p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-7 pt-4">
-                    <p id="localTime" class="fs-1 fw-light"></p>
+                    <div class="col-7 pt-4">
+                      <p id="localTime" class="fs-1 fw-light"></p>
+                    </div>
                   </div>
                 </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-outline-warning"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-outline-light"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
+            </div>
+          </div>
+
+          <!--------------- NEWS MODAL ------------->
+          <div
+            class="modal fade"
+            id="newsModal"
+            data-bs-backdrop="false"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="newsModal"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content shadow">
+                <div id="newsPreloader"></div>
+                <div class="modal-header bg-danger text-white">
+                  <h1 id="newsTitle" class="fs-5"></h1>
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div id="newsModalData" class="modal-body text-black">
+                  <div id="newsPreloader"></div>
+                </div>
+                <div class="modal-footer'>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
           </div>

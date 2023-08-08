@@ -3,7 +3,14 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-$city = $_REQUEST['city'];
+$searchQuery = $_REQUEST['city'];
+$searchQuery1 = str_replace(' ','%20',$searchQuery);
+$searchQuery1 = str_replace(',','',$searchQuery1);
+
+$city = trim($searchQuery1);
+
+error_log(print_r($city, true));
+
 
 
 

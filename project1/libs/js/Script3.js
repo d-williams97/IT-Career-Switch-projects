@@ -27,7 +27,7 @@ let selectedCountryData;
 let selectedCountryCode;
 let selectedCountryName;
 
-// ------------------------- SETTING UP MAP -------------------------- //
+// ------------- SETTING UP MAP --------------- //
 
 let tileLayer1 = L.tileLayer(
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
@@ -45,7 +45,7 @@ let tileLayer2 = L.tileLayer(
   }
 );
 
-// ------------------------- INITIALISING MAP -------------------------- //
+// -------------- INITIALISING MAP -------------- //
 
 let map = L.map("map", {
   center: [0, 0],
@@ -53,7 +53,7 @@ let map = L.map("map", {
   layers: [tileLayer1],
 });
 
-// ---------------------- ADDING EASY BUTTONS -------------------------- //
+// -------------- ADDING EASY BUTTONS ------------- //
 
 let countryBasicDataButton = L.easyButton(
   "fa-solid fa-info fa-lg",
@@ -62,8 +62,6 @@ let countryBasicDataButton = L.easyButton(
   }
 );
 countryBasicDataButton.addTo(map);
-
-
 
 
 let weatherEasyButton = L.easyButton(
@@ -109,7 +107,7 @@ let newsEasyButton = L.easyButton(
 );
 newsEasyButton.addTo(map);
 
-// ----------- ADD MARKERCLUSTERS ----------- //
+// ------ ADD MARKERCLUSTERS & ICONS -------- //
 
 airports = L.markerClusterGroup({
   polygonOptions: {
@@ -162,7 +160,6 @@ L.control.layers(baseMaps, overlays).addTo(map);
 $(document).ready(function () {
   if (navigator.geolocation) {
     function showPosition(position) {
-      console.log(position);
       defaultLat = position.coords.latitude;
       defaultLong = position.coords.longitude;
       changeSelectOption(defaultLat, defaultLong);
@@ -180,7 +177,7 @@ $(document).ready(function () {
     console.log("Geolocation is not supported by this browser.");
   }
 
-  // ------ FETCHING COUNTRY CODE AND COUNTRY NAME DATA ----------//
+  // ------ GET COUNTRY CODE AND COUNTRY NAME DATA ------ //
 
   $.ajax({
     url: "libs/php/getLocalJson.php",
@@ -209,16 +206,16 @@ $(document).ready(function () {
 
 
 
+// --------------------------EVENT HANDLERS ------------------------------//
 
 
-
-// ------------------------- COUNTRY LIST CHANGE EVENT ----------------------- //
+// ----- COUNTRY LIST CHANGE EVENT ----- //
 
 $("#selectCountry").on("change", async function () {
   selectedCountryCode = $(this).val();
   selectedCountryName = $("#selectCountry :selected").text();
 
-  // --------- REMOVING OLD MARKERS AND BORDER LAYER ----------------- //
+  // ----- REMOVING OLD MARKERS AND BORDER LAYER ------ //
   countryBorderLayer ? map.removeLayer(countryBorderLayer) : null;
   cityMarkers ? cities.clearLayers(cityMarkers) : null;
   airportMarkers ? airports.clearLayers(airportMarkers) : null;
@@ -229,12 +226,10 @@ $("#selectCountry").on("change", async function () {
     dataType: "json",
     success: function (result) {
       if (result.status.name == "ok") {
-        console.log(result.data.features);
         selectedCountryData = $.grep(result.data.features, function (e) {
           return e.properties.iso_a2 === selectedCountryCode;
         });
         geoJsonData = selectedCountryData[0];
-        console.log(geoJsonData);
         countryBorderLayer = L.geoJSON(geoJsonData, {
           style: {
             color: "red",
@@ -251,22 +246,23 @@ $("#selectCountry").on("change", async function () {
 
   // ------------- ASYNCH API CALLS ------------ //
   try {
-    const citiesData = await getCityData(selectedCountryCode, cityIcon);
-    const airportData = await getAirportData(selectedCountryCode);
     const geolocationData = await getGeolocationData(
       selectedCountryName,
       selectedCountryCode
     );
+    const citiesData = await getCityData(selectedCountryCode, cityIcon);
+    const airportData = await getAirportData(selectedCountryCode);
     const flagData = await getFlagData(selectedCountryName);
   } catch (error) {
     console.error(error);
   }
 });
 
-// ----------------- GEONAMES BASIC DATA API CALL --------------------//
+
+
+// -------- GEONAMES BASIC DATA API CALL ------//
 
 $("#basicDataModal").on("show.bs.modal", async function () {
-  console.log(selectedCountryCode);
   try {
     const result = await $.ajax({
       url: "libs/php/getGeoNamesBasicData.php",
@@ -279,9 +275,7 @@ $("#basicDataModal").on("show.bs.modal", async function () {
     });
 
     if (result.status.name === "ok") {
-      console.log(result);
       const countryBasicData = result.data.geonames[0];
-      console.log(countryBasicData);
       currencyCode = countryBasicData.currencyCode;
       const countryBasicPopulation = parseFloat(countryBasicData.population);
       const countryBasicArea = parseFloat(countryBasicData.areaInSqKm);
@@ -293,8 +287,6 @@ $("#basicDataModal").on("show.bs.modal", async function () {
       );
       $("#basicArea").html(countryBasicArea.toLocaleString("en-gb"));
       $("#basicPreloader").addClass("fadeOut");
-
-      // return { countryBasicPopulation, countryBasicArea };
     } else {
       throw new Error("Failed to retrieve geonames basic data.");
     }
@@ -308,7 +300,10 @@ $("#basicDataModal").on("hidden.bs.modal", async function () {
   $("#basicPreloader").removeClass("fadeOut");
 });
 
-// ----------------- WEATHER DATA API CALL --------------------//
+
+
+
+// -------- WEATHER DATA API CALL --------//
 
 let capitalCity;
 $("#weatherModal").on("show.bs.modal", async function () {
@@ -337,7 +332,6 @@ $("#weatherModal").on("show.bs.modal", async function () {
     })
     .then(function (result2) {
       if (result2.status.code === "200") {
-        console.log(result2);
         const weatherData = result2.data;
         let icon = weatherData.forecast[0].day.condition.icon;
         let icon1 = weatherData.forecast[1].day.condition.icon;
@@ -407,7 +401,8 @@ $("#weatherModal").on("show.bs.modal", async function () {
   $("#weatherPreloader").removeClass("fadeOut");
 });
 
-// ----------------- WIKI DATA API CALL --------------------//
+
+// -------- WIKI DATA API CALL -----------//
 
 $("#wikiModal").on("show.bs.modal", async function () {
   try {
@@ -419,9 +414,7 @@ $("#wikiModal").on("show.bs.modal", async function () {
     });
 
     if (result.status.name === "ok") {
-      console.log(result);
       if (result.status === undefined) {
-        console.log("data not found");
       } else {
         const resultsData = result.data.geonames;
         let wikiObj = $.grep(resultsData, function (obj) {
@@ -433,7 +426,6 @@ $("#wikiModal").on("show.bs.modal", async function () {
           });
         }
         const wikiData = wikiObj[0];
-        console.log(wikiData);
         if (wikiData === undefined) {
           console.log("country data not found");
         } else {
@@ -441,7 +433,6 @@ $("#wikiModal").on("show.bs.modal", async function () {
           wikiUrl = wikiData.wikipediaUrl;
           wikiSummary = wikiSummaryText.slice(0, -5);
 
-          // $("#wikiTitle").html(selectedCountryName);
           $("#wikiCountrySummary").html(wikiSummary);
           $("#wikiCountryLink").attr("href", `https://${wikiUrl}`);
           $("#wikiTitle").html(`Wiki Summary - ${selectedCountryName} `);
@@ -469,7 +460,8 @@ $("#wikiModal").on("hidden.bs.modal", async function () {
   $("#wikiPreloader").removeClass("fadeOut");
 });
 
-// ----------------EXCHANGE RATE DATA API CALL -------------- //
+
+// -------EXCHANGE RATE DATA API CALL------ //
 let currencyName;
 let currencyCode;
 let currencySymbol;
@@ -486,15 +478,10 @@ $("#erModal").on("show.bs.modal", function () {
   })
     .then(function (result1) {
       if (result1.status.code === "200") {
-        console.log(result1);
         let currencyObj = result1.data;
-        console.log(currencyObj);
         currencyCode = Object.keys(currencyObj)[0];
-        console.log(currencyCode);
         currencyName = currencyObj[currencyCode].name;
         currencySymbol = currencyObj[currencyCode].symbol;
-        console.log(currencySymbol);
-        console.log(currencyName);
       } else {
         throw new Error("failed to get currencyData");
       }
@@ -506,17 +493,13 @@ $("#erModal").on("show.bs.modal", function () {
           currencyCode,
         },
       }).then(function (result2) {
-        console.log(result2);
         if (result2.status.name === "ok") {
           currencyValue = result2.data;
-          console.log(currencyValue);
           roundedCurrencyValue = currencyValue.toFixed(2);
           let currentDate = new Date().toString();
-          let realDate = currentDate.split("+")[0];
+          // let realDate = currentDate.split("+")[0];
           fromVal = $("#fromValue").val();
-          console.log(fromVal);
           erResult = fromVal * roundedCurrencyValue;
-          console.log(erResult);
 
           // modal //
           $("#erTitle").html(`Exchange Rate - ${selectedCountryName}`);
@@ -554,7 +537,8 @@ $("#fromValue").on("keyup", function () {
   calcResult();
 });
 
-// --------------------------------TIMEZONE DATA API CALL ------------------------------ //
+
+// ------------- TIMEZONE DATA API CALL ----------- //
 let tzCapitalCity;
 $("#tzModal").on("show.bs.modal", function () {
   $.ajax({
@@ -565,7 +549,6 @@ $("#tzModal").on("show.bs.modal", function () {
       countryCode: selectedCountryCode,
     },
   }).then(function (result1) {
-    console.log(result1);
     let tzCapitalLat = result1.data.lat;
     let tzCapitalLng = result1.data.lng;
     tzCapitalCity = result1.data.capitalCity;
@@ -578,7 +561,6 @@ $("#tzModal").on("show.bs.modal", function () {
       .then(function (result2) {
         if (result2.status.name === "ok") {
           let tzData = result2.data;
-          console.log(tzData);
           let localTimeData = tzData.time;
           let localTime = localTimeData.split(" ")[1];
           let sunriseData = tzData.sunrise;
@@ -586,7 +568,6 @@ $("#tzModal").on("show.bs.modal", function () {
           let sunsetData = tzData.sunset;
           let sunset = sunsetData.split(" ")[1];
           let gmtOffset = tzData.gmtOffset;
-          console.log(gmtOffset);
 
           $("#localTime").html(localTime);
           $("#sunrise").html(`Sunrise: ${sunrise}`);
@@ -596,7 +577,6 @@ $("#tzModal").on("show.bs.modal", function () {
           $("#tzTitle").html(`World Clock - ${selectedCountryName}`);
         } else {
           throw new Error("Failed to retrieve flag data.");
-          // exchange rate data not found message to for HTML modal
         }
         $("#tzPreloader").addClass("fadeOut");
       })
@@ -610,7 +590,8 @@ $("#tzModal").on("hidden.bs.modal", function () {
   $("#tzPreloader").removeClass("fadeOut");
 });
 
-// ----------------- NEWS DATA API CALL --------------------//
+
+// --------- NEWS DATA API CALL -----------//
 
 let newsData;
 $("#newsModal").on("show.bs.modal", function () {
@@ -697,12 +678,11 @@ $("#newsModal").on("hidden.bs.modal", function () {
 });
 
 
-// -----------------------------FUNCTIONS --------------------------//
+// ----------------------------- FUNCTIONS --------------------------//
 
 // ----- ADDING LAYERS TO MAP ----- //
 
 async function changeSelectOption(lat, long) {
-  console.log(lat, long);
   try {
     const result = await $.ajax({
       url: "libs/php/getSelectOption.php",
@@ -715,7 +695,6 @@ async function changeSelectOption(lat, long) {
     });
 
     if (result.status.name === "ok") {
-      console.log(result);
       if (result.data.countryCode) {
         isoCode = result.data.countryCode;
         $("#selectCountry").val(isoCode).change();
@@ -731,6 +710,7 @@ async function changeSelectOption(lat, long) {
   }
 }
 
+// ------ CITY DATA FOR MARKERS ------- //
 async function getCityData(selectedCountryCode, cityIcon) {
   try {
     const result = await $.ajax({
@@ -767,6 +747,7 @@ async function getCityData(selectedCountryCode, cityIcon) {
   }
 }
 
+
 // ------ AIRPORT DATA FOR MARKERS ------- //
 
 async function getAirportData(selectedCountryCode) {
@@ -801,7 +782,8 @@ async function getAirportData(selectedCountryCode) {
   }
 }
 
-// ---- COUNTRY LOCATION DATA API CALL FOR COUNTRY LAYER ----- //
+
+// ---- COUNTRY LAYER DATA ----- //
 
 async function getGeolocationData(selectedCountryName, selectedCountryCode) {
   try {
@@ -817,7 +799,6 @@ async function getGeolocationData(selectedCountryName, selectedCountryCode) {
     if (result.status.name === "ok") {
       const countryBoundsObj = result.data.results[0].bounds;
       const countryBoundsData = Object.values(countryBoundsObj);
-      console.log(countryBoundsData);
       map.fitBounds(countryBoundsData);
     } else {
       throw new Error("Failed to retrieve geolocation data.");
@@ -828,10 +809,9 @@ async function getGeolocationData(selectedCountryName, selectedCountryCode) {
   }
 }
 
-// ----------------- FLAG DATA API CALL --------------------//
+// --------- FLAG DATA API CALL --------//
 
 async function getFlagData(selectedCountryName) {
-  console.log(selectedCountryName);
   try {
     const result = await $.ajax({
       url: "libs/php/getFlagAPI.php",
@@ -841,24 +821,20 @@ async function getFlagData(selectedCountryName) {
     });
     if (result.status.name === "ok") {
       let flagData = $.grep(result.data, function (e) {
-        console.log(e);
         return (
           e.name.common === selectedCountryName ||
           e.name.official === selectedCountryName
         );
       });
-      console.log(flagData);
       let flagLink;
       if (flagData.length === 0) {
         flagLink = "libs/assets/imageNotFound.png";
       } else {
         flagLink = flagData[0].flags.png;
       }
-      console.log(flagLink);
       $("#flagImg").attr("src", flagLink);
     } else {
       throw new Error("Failed to retrieve flag data.");
-      // exchange rate data not found message to for HTML modal
     }
   } catch (error) {
     console.error(error);

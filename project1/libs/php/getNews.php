@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 $searchQuery = ($_REQUEST['countryCode']);
 $searchQuery1 = str_replace('-99','SO',$searchQuery);
-// $searchQuery2= str_replace('Rep.', 'Republic', $searchQuery1);
 $countryCode = trim($searchQuery1);
 
 // error_log(print_r($countryCode, true));
@@ -28,7 +27,8 @@ $params = array(
 
 $url .= http_build_query($params); // appending params to url
 $headers = array(
-    'x-api-key: GxBBgzWMWCQ_LBhogEh9_zk2s4bApMmNQokib4EoA-g' // Replace with your actual API key
+    // 'x-api-key: GxBBgzWMWCQ_LBhogEh9_zk2s4bApMmNQokib4EoA-g' 
+    'x-api-key: a7a3aSeoSdChe_DoOK40yIpdTfpz0x97bU8m06HQN1g' 
 );
 
 
@@ -60,7 +60,7 @@ header('Content-Type: application/json; charset=UTF-8');
 
 echo json_encode($output); 
 
-//API has 50 call limit it 24 hours.
+//API has 50 call limit per month
 
 
 ?>

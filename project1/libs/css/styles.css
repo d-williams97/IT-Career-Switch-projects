@@ -43,7 +43,7 @@
 #wikiPreloader:before,
 #erPreloader:before,
 #tzPreloader:before,
-#newsPreloader {
+#newsPreloader:before {
   content: "";
   position: fixed; /*positioned relative to the viewport, which means it always stays in the same place*/
   top: calc(50% - 30px);

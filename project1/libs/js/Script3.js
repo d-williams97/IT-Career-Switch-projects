@@ -612,7 +612,7 @@ $("#newsModal").on("show.bs.modal", function () {
         console.log(newsData);
 
         let newsModalData = $("#newsModalData");
-        $("#newsTitle").html(`${selectedCountryName} Breaking News`);
+        $("#newsTitle").html(`Breaking News - ${selectedCountryName}`);
 
         if (newsData !== undefined) {
           for (let i = 0; i < newsData.length; i++) {
@@ -626,16 +626,18 @@ $("#newsModal").on("show.bs.modal", function () {
                 .width("50%")
                 .append(
                   $("<img>")
-                    .addClass("img-fluid rounded")
+                    .addClass("img-fluid rounded w-100")
                     .attr("src", data.media)
                     .attr("alt", `news image ${i}`)
                     .attr("title", `news article ${i}`)
                 )
             );
             row1.append(
-              $("<td>").append(
+              $("<td>")
+              .append(
                 $("<a>")
-                  .attr("href", data.link)
+                  .attr("href",data.link)
+                  .attr("target",'_blank')
                   .addClass("fw-bold fs-6 text-black")
                   .text(data.title)
               )
@@ -644,9 +646,10 @@ $("#newsModal").on("show.bs.modal", function () {
 
             let row2 = $("<tr>");
             row2
-              .append($("<td>").addClass("align-bottom pb-0"))
               .append(
-                $("<p>").addClass("fw-light fs-6 mb-1").text(data.rights)
+                $("<td>").addClass("align-bottom pb-0")
+              .append(
+                $("<p>").addClass("fw-light fs-6 mb-1").text(data.rights))
               );
             table.append(row2);
 
@@ -662,6 +665,7 @@ $("#newsModal").on("show.bs.modal", function () {
             $("<p>").addClass("newsError").text("news data not found")
           );
         }
+        $("#newsPreloader").addClass("fadeOut");
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -673,7 +677,9 @@ $("#newsModal").on("show.bs.modal", function () {
 
 $("#newsModal").on("hidden.bs.modal", function () {
   $(".table").remove();
-  $(".newsError").remove();
+  $(".table-borderless").remove();
+  $(".table-borderless").remove();
+  $("hr").remove();
   $("#newsPreloader").removeClass("fadeOut");
 });
 

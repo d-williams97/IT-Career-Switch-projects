@@ -1,4 +1,14 @@
-/* #preloader {
+html,
+ body {
+   background-color: white;
+   margin: 5px 5px 5px 5px;
+   padding: 5px 5px 5px 5px;
+   overflow: hidden;
+ }
+ 
+ 
+ 
+ #preloader {
   position: fixed;
   top: 0;
   left: 0;
@@ -21,6 +31,7 @@
   -webkit-animation: animate-preloader 1s linear infinite;
   animation: animate-preloader 1s linear infinite;
 }
+/* 
 #basicPreloader,
 #weatherPreloader,
 #newsPreloader,
@@ -55,7 +66,7 @@
   height: 60px;
   -webkit-animation: animate-preloader 1s linear infinite;
   animation: animate-preloader 1s linear infinite;
-}
+} */
 
 @-webkit-keyframes animate-preloader {
   0% {
@@ -83,16 +94,7 @@
   opacity: 0;
   transition: visibility 0s 1s, opacity 1s linear;
 }
- */
 
- html,
- body {
-   background-color: white;
-   margin: 5px 5px 5px 5px;
-   padding: 5px 5px 5px 5px;
-   overflow: hidden;
- }
- 
  .centered {
  display: flex;  /*creates a flex container */
   justify-content: center; /* aligns the flex items (content) along the horizontal axis (main axis) of the flex container and centers them horizontally */
@@ -108,4 +110,98 @@
 .nav-pills .nav-link.active {
   color: #ffffff; 
   background-color: #00000088; 
+}
+
+.table-responsive {
+  max-height: 48rem;
+}
+
+.tab-content {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+tr {
+  cursor: default;
+}
+
+/* #employeeTableBody {
+  display: flex;
+  flex-flow: column;
+  height: calc(100vh - 20px);
+} */
+
+.cell-width {
+  width: 30%;
+  height: 4rem;
+}
+
+.employeeCells {
+  width: 10%;
+  height: 4rem;
+}
+
+.departmentDepartmentCells, .departmentLocationCells  {
+  width: 45%;
+  height: 4rem;
+}
+
+.departmentButtonCell {
+  width: 10%;
+  height: 4rem;
+}
+
+
+
+
+/* --------------------------------- MEDIA QUERIES ------------------------------------- */
+
+@media screen and (max-width: 1400px) { /* 1024px or less */
+  .employeeButtons {
+    justify-content: start !important;
+
+  }
+
+
+}
+@media screen and (max-width: 1350px) { /* 1024px or less */
+  .employeeButtons {
+    justify-content: end !important;
+  }
+
+  .employeeDep {
+    display: none;
+  }
+
+  .cell-width {
+    width: 45%;
+  }
+
+
+
+}
+
+
+@media screen and (max-width: 1024px) { /* 1024px or less */
+
+}
+
+/* ============ MEDIA QUERIES (SMALL DEVCIES - MOBILE) ============= */
+
+
+
+@media screen and (max-width: 800px) {
+  .employeeEmail, .departmentLocationCells {
+    display: none;
+  }
+
+  .cell-width, .departmentDepartmentCells {
+    width: 70%;
+  }
+
+  .employeeCells, .departmentButtonCell {
+    width: 30%;
+  }
+
+  
 }

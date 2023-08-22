@@ -9,42 +9,129 @@
   </head>
 
   <body>
+    <!-- <div id="preloader"></div> -->
     <section id="Header">
-        <div class="row">
-          <div class="col-10 centered">
-            <h1>Company Directory</h1>
-          </div>
-          <div class="col-1">
-            <button id="filterButton" class="btn btn-light mt-1"> <i class="fa-solid fa-filter fa-2xl"></i> </button>
-          </div>
-          <div class="col-1">
-            <button id="plusButton" class="btn btn-light mt-1"><i class="fa-solid fa-plus fa-2xl"></i></button>
-          </div>
+      <div class="row">
+        <div class="col-10 centered">
+          <h1>Company Directory</h1>
         </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"> <i class="fa-solid fa-magnifying-glass"></i></span>
-            <input id="searchBar" type="text" class="form-control" placeholder="Search" aria-label="search" aria-describedby="basic-addon1">
-          </div>
-        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Employees</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Departments</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Locations</button>
-            </li>
-          </ul>
+        <div class="col-1">
+          <button id="filterButton" class="btn btn-light mt-1">
+            <i class="fa-solid fa-filter fa-2xl"></i>
+          </button>
+        </div>
+        <div class="col-1">
+          <button id="plusButton" class="btn btn-light mt-1">
+            <i class="fa-solid fa-plus fa-2xl"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">
+          <i class="fa-solid fa-magnifying-glass"></i
+        ></span>
+        <input
+          id="searchBar"
+          type="text"
+          class="form-control"
+          placeholder="Search"
+          aria-label="search"
+          aria-describedby="basic-addon1"
+        />
+      </div>
+      <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="pills-employees-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-employees"
+            type="button"
+            role="tab"
+            aria-controls="pills-employees"
+            aria-selected="true"
+          >
+            Employees
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="pills-departments-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-departments"
+            type="button"
+            role="tab"
+            aria-controls="pills-departments"
+            aria-selected="false"
+          >
+            Departments
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="pills-locations-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-locations"
+            type="button"
+            role="tab"
+            aria-controls="pills-locations"
+            aria-selected="false"
+          >
+            Locations
+          </button>
+        </li>
+      </ul>
     </section>
 
     <section id="tabs">
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">...</div>
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">...</div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">...</div>
-          </div>
+      <div class="tab-content" id="pills-tabContent">
+        <!-- EMPLOYEE TABLE -->
+        <div
+          class="tab-pane fade show active table-responsive"
+          id="pills-employees"
+          role="tabpanel"
+          aria-labelledby="pills-employees-tab"
+          tabindex="0"
+        >
+          <table id="employeeTable" class="table table-hover table-scroll">
+            <tbody id="employeeTableBody"></tbody>
+          </table>
+        </div>
+
+    <!-- DEPARTMENTS TABLE -->
+        <div
+          class="tab-pane fade"
+          id="pills-departments"
+          role="tabpanel"
+          aria-labelledby="pills-departments-tab"
+          tabindex="0"
+        >
+        <table id="departmentTable" class="table table-hover table-scroll">
+            <tbody id="departmentTableBody"></tbody>
+          </table>
+        </div>
+
+    <!-- LOCATIONS TABLE -->
+        <div
+          class="tab-pane fade"
+          id="pills-locations"
+          role="tabpanel"
+          aria-labelledby="pills-locations-tab"
+          tabindex="0"
+        >
+          locations
+        </div>
+      </div>
     </section>
+
+    <p>
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque iste
+      officiis placeat, soluta labore, explicabo, debitis modi ut deleniti et
+      deserunt voluptatibus eos minus rem praesentium recusandae at vero.
+      Tempora?
+    </p>
 
     <script src="libs/js/bootstrap.bundle.min.js"></script>
     <script src="libs/js/jquery-3.7.0.min.js"></script>

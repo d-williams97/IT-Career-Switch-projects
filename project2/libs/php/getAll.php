@@ -16,6 +16,8 @@
 
 	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket); // Establishes a DB connection and creates a new mySQLi object 
 
+	error_log(print_r($conn, true));
+
 	if (mysqli_connect_errno()) { // returns the error code from the last connection error, if any.
 		
 		$output['status']['code'] = "300";

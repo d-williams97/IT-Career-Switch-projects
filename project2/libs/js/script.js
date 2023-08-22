@@ -78,15 +78,15 @@ $(document).ready(function () {
             "d-flex justify-content-end employeeButtons me-3"
           );
           let editButtons = $("<button>")
-            .addClass("btn btn-primary btn-sm")
+            .addClass("btn btn-none btn-sm")
             .attr("data-bs-toggle", "modal")
             .attr("data-bs-target", "#editEmployeeModal");
-          let editIcons = $("<i>").addClass("fa-solid fa-pencil fa-fw");
+          let editIcons = $("<i>").addClass("fa-solid fa-pencil fa-lg text-primary");
           let deleteButtons = $("<button>")
-            .addClass("btn btn-primary btn-sm ms-3")
+            .addClass("btn btn-none btn-sm ms-3")
             .attr("data-bs-toggle", "modal")
             .attr("data-bs-target", "#deleteEmployeeModal");
-          let deleteIcons = $("<i>").addClass("fa-solid fa-trash fa-fw");
+          let deleteIcons = $("<i>").addClass("fa-regular fa-trash-can fa-lg text-danger");
 
           editButtons.append(editIcons);
           deleteButtons.append(deleteIcons);
@@ -105,7 +105,7 @@ $(document).ready(function () {
     },
   });
 
-  // LOADING DEPARTMENTS TABLE //
+  // -------- LOADING DEPARTMENTS TABLE ----------- //
 
   let departments = [];
 
@@ -125,7 +125,7 @@ $(document).ready(function () {
           
 
           let row = $(`<tr id=departmentRow'${[i]}'>`).addClass(
-            "d-flex align-items-center"
+            "d-flex"
           );
 
           // -- DEPARTMENT COLUMN -- //
@@ -164,15 +164,15 @@ $(document).ready(function () {
             "d-flex justify-content-end employeeButtons me-3"
           );
           let editButtons = $("<button>")
-            .addClass("btn btn-primary btn-sm")
+            .addClass("btn btn-none btn-sm")
             .attr("data-bs-toggle", "modal")
             .attr("data-bs-target", "#editDepartmentModal");
-          let editIcons = $("<i>").addClass("fa-solid fa-pencil fa-fw");
+          let editIcons = $("<i>").addClass("fa-solid fa-pencil fa-lg text-primary");
           let deleteButtons = $("<button>")
-            .addClass("btn btn-primary btn-sm ms-3")
+            .addClass("btn btn-none btn-sm ms-3")
             .attr("data-bs-toggle", "modal")
             .attr("data-bs-target", "#deleteDepartmentModal");
-          let deleteIcons = $("<i>").addClass("fa-solid fa-trash fa-fw");
+          let deleteIcons = $("<i>").addClass("fa-regular fa-trash-can fa-lg text-danger");
 
           editButtons.append(editIcons);
           deleteButtons.append(deleteIcons);
@@ -191,4 +191,89 @@ $(document).ready(function () {
       console.log(errorThrown);
     },
   });
+
+
+
+    // -------- LOADING LOCATIONS TABLE ----------- //
+
+    let locations = [];
+
+  $.ajax({
+    url: "libs/php/getLocations.php",
+    type: "POST",
+    dataType: "json",
+    success: function (result) {
+      if (result.status.name == "ok") {
+        console.log(result);
+        let allLocationData = result.data;
+
+        for (let i = 0; i < allLocationData.length; i++) {
+          let location = allLocationData[i].location;
+          locations.push(location);
+
+          
+
+          let row = $(`<tr id=locationRow'${[i]}'>`).addClass(
+            "d-flex align-items-center"
+          );
+
+          // -- LOCATION COLUMN -- //
+          let locationLocationCells = $("<td>")
+            .addClass("ps-4 locationLocationCells")
+            .attr("data-id", i);
+          let locationLocationDiv = $("<div>").addClass(
+            "d-flex align-items-start"
+          );
+          let locationLocationNames = $("<p>")
+            .html(location)
+            .addClass("fw-bold text-start mb-0");
+
+          locationLocationDiv.append(locationLocationNames);
+          locationLocationCells.append(locationLocationDiv);
+          row.append(locationLocationCells);
+
+
+          // -- BUTTONS -- //
+          let buttonCells = $("<td>").addClass("locationButtonCells pb-4 pt-2");
+          let buttonDiv = $("<div>").addClass(
+            "d-flex justify-content-end employeeButtons me-3"
+          );
+          let editButtons = $("<button>")
+            .addClass("btn btn-none btn-sm")
+            .attr("data-bs-toggle", "modal")
+            .attr("data-bs-target", "#editDepartmentModal");
+          let editIcons = $("<i>").addClass("fa-solid fa-pencil fa-lg text-primary");
+          let deleteButtons = $("<button>")
+            .addClass("btn btn-none btn-sm ms-3")
+            .attr("data-bs-toggle", "modal")
+            .attr("data-bs-target", "#deleteDepartmentModal");
+          let deleteIcons = $("<i>").addClass("fa-regular fa-trash-can fa-lg text-danger");
+
+          editButtons.append(editIcons);
+          deleteButtons.append(deleteIcons);
+          buttonDiv.append(editButtons);
+          buttonDiv.append(deleteButtons);
+          buttonCells.append(buttonDiv);
+          row.append(buttonCells);
+
+          $("#locationTableBody").append(row);
+        }
+        console.log(locations);
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+    },
+  });
+
+
+
+
+
+
+
+
+
+
 });

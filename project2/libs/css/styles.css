@@ -146,8 +146,18 @@ tr {
   height: 4rem;
 }
 
-.departmentButtonCell {
+.departmentButtonCells {
   width: 10%;
+  height: 4rem;
+}
+
+.locationLocationCells {
+  width: 70%;
+  height: 4rem;
+}
+
+.locationButtonCells {
+  width: 30%;
   height: 4rem;
 }
 

@@ -16,7 +16,7 @@
 
 	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket); // Establishes a DB connection and creates a new mySQLi object 
 
-	error_log(print_r($conn, true));
+	// error_log(print_r($conn, true));
 
 	if (mysqli_connect_errno()) { // returns the error code from the last connection error, if any.
 		
@@ -70,9 +70,8 @@
    
    	$data = []; // Will be used to store the fetched data from the database.
 
-	while ($row = mysqli_fetch_assoc($result)) { // while $row = mysqli_fetch_assoc($result) is truthy $row will will return a row from the $result as an associative array
+	while ($row = mysqli_fetch_assoc($result)) { // while $row = mysqli_fetch_assoc($result) if truthy $row will will return a row from the $result as an associative array
 
-		// error log $row 
 		array_push($data, $row); // pushes associative array into the data array.
 
 	}

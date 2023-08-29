@@ -113,7 +113,7 @@ html,
 }
 
 .table-responsive {
-  max-height: 48rem;
+  height: 75vh;
 }
 
 .tab-content {

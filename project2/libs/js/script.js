@@ -162,7 +162,6 @@ $(document).ready(function () {
 
       $("#departmentTableBody").append(row);
     }
-    console.log(departments);
   };
 
   let fillLocationTable = (data) => {
@@ -318,8 +317,8 @@ $(document).ready(function () {
   $(".nav-link").on("click", function () {
     if ($(this).hasClass("active")) {
       selectedTab = $(this).attr("id");
-      console.log(selectedTab);
       if (selectedTab === "pills-employees-tab") {
+        $('#filterButton').attr('disabled', false);
         $("#searchBar").on("keyup", function () {
           searchTerm = $(this).val().toLowerCase(); // Get the current value of the input
           let filteredData = allEmployeeData.filter(function (val) {
@@ -337,6 +336,7 @@ $(document).ready(function () {
 
         // Change to filter button to employee filter
       } else if (selectedTab === "pills-departments-tab") {
+        $('#filterButton').attr('disabled', false);
         $("#searchBar").on("keyup", function () {
           searchTerm = $(this).val().toLowerCase();
           let filteredData = allDepartmentData.filter(function (val) {
@@ -345,11 +345,12 @@ $(document).ready(function () {
             }
           });
           $("#departmentTableBody").empty();
-
           fillDepartmentTable(filteredData);
+
         });
       } else if (selectedTab === "pills-locations-tab") {
-        console.log("location");
+        //disable filter button;
+        $('#filterButton').attr('disabled', true);
 
         $("#searchBar").on("keyup", function () {
           searchTerm = $(this).val().toLowerCase();
@@ -366,7 +367,9 @@ $(document).ready(function () {
     }
   });
 
-  // ------------- EMPLOYEE FILTER ----------- //
+
+
+  // ------------- DEFAULT EMPLOYEE FILTER ----------- //
   let selectEmpDep;
   $("#selectEmpDep").on("change", function () {
     selectEmpDep = $(this).val();
@@ -391,8 +394,8 @@ $(document).ready(function () {
 
   $("#empFilterConfirm").on("click", function () {
     let filteredData = allEmployeeData.filter(function (val) {
-      const departmentMatches = selectEmpDep === null || val.department.toLowerCase() === selectEmpDep;
-      const locationMatches = selectEmpLoc === null || val.location.toLowerCase() === selectEmpLoc;
+      const departmentMatches = selectEmpDep === null || val.department.toLowerCase() === selectEmpDep; // if a value is selected
+      const locationMatches = selectEmpLoc === null || val.location.toLowerCase() === selectEmpLoc; // if a value is selected
   
       if (selectEmpDep && selectEmpLoc) {
         return departmentMatches && locationMatches;
@@ -405,5 +408,94 @@ $(document).ready(function () {
     $("#employeeTableBody").empty();
     fillTable(filteredData);
   });
+
+
+
+
+  // ------------- CHANGING FILTER MODAL BY TAB ----------- //
+
+
+  $('#filterButton').on('click', function () {
+
+    // -- DEPARTMENTS TAB -- //
+    if (selectedTab === 'pills-departments-tab') {
+      console.log(selectedTab);
+      $('#filterModalTitle').html('Filter Departments');
+      $('.modal-body').empty();
+      $('.modal-footer').empty();
+      let filterModalBody = $('.modal-body');
+      let filterDiv = $(`<div id='depLocDiv'>`);
+      let filterDivLabel = $('<label>').attr('for', 'selectDepLoc').addClass('ms-1 mb-1 fs-5').html('Locations');
+      let filterSelect = $(`<select id='selectDepLoc'>`).addClass('form-select')
+      let filterOption = $('<option>').attr('selected', true).attr('disabled', true).html('Select a location');
+
+      filterSelect.append(filterOption);
+      filterDiv.append(filterDivLabel);
+      filterModalBody.append(filterDiv);
+      filterModalBody.append(filterSelect);
+
+     $.map(locations, function (location, i ) {
+      $('#selectDepLoc').append(`<option value='${location.toLowerCase()}'>${location}</option>`)
+     }) 
+
+     let filterModalFooter = $('.modal-footer');
+     let departmentResetBtn = $(`<button id='depFilterReset'>`).addClass('btn btn-secondary').html('Reset').attr('type', 'button');
+     let departmentConfirmBtn = $(`<button id='depFilterConfirm'>`).addClass('btn btn-primary').html('Confirm');
+     filterModalFooter.append(departmentResetBtn);
+     filterModalFooter.append(departmentConfirmBtn);
+
+
+     let selectDepLoc;
+     $("#selectDepLoc").on("change", function () {
+       selectDepLoc = $(this).val();
+       console.log(selectDepLoc);
+     });
+   
+     $("#depFilterReset").on("click", function () {
+      $("#selectDepLoc").prop("selectedIndex", 0);
+      selectDepLoc = null;
+      console.log(selectDepLoc)
+      $("#departmentTableBody").empty();
+      fillDepartmentTable(allDepartmentData);
+    });
+  
+    $("#depFilterConfirm").on("click", function () {
+      let filteredData = allDepartmentData.filter(function (val) {
+        if (val.location.toLowerCase() === selectDepLoc) {
+          return val
+        }
+      });
+      console.log(filteredData);
+      $("#departmentTableBody").empty();
+      fillDepartmentTable(filteredData);
+    })
+
+
+              // -- LOCATIONS TAB -- //
+    } else if (selectedTab === 'pills-locations-tab') {
+      console.log(selectedTab);
+      // pop up message saying filter is disabled //
+
+
+
+          // -- EMPLOYEES TAB -- //
+    } else if (selectedTab === 'pills-employees-tab') {
+      console.log(selectedTab);
+    }
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 });

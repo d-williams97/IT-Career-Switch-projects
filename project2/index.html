@@ -154,7 +154,7 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="">Filter Employees</h1>
+            <h1 class="modal-title fs-5" id="filterModalTitle">Filter Employees</h1>
             <button
               type="button"
               class="btn-close"
@@ -163,7 +163,6 @@
             ></button>
           </div>
           <div class="modal-body" id="filterModalBody">
-            
             <div>
                 <label for="selectEmpDep" class="ms-1 mb-1 fs-5">Departments</label>
               <select id="selectEmpDep" class="form-select" aria-label="Departments filter">
@@ -179,7 +178,7 @@
             </div>
           </div>
 
-          <div class="modal-footer">
+          <div id='filterModalFooter'class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"

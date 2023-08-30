@@ -14,6 +14,7 @@ $(document).ready(function () {
   let allEmployeeData;
 
   let fillTable = (data) => {
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
       // console.log(allEmployeeData[i]);
       let row = $(`<tr id=employeeRow'${[i]}'>`).addClass(
@@ -42,7 +43,7 @@ $(document).ready(function () {
         .addClass("cell-width employeeEmail")
         .attr("data-id", i);
       emails
-        .html(allEmployeeData[i].email)
+        .html(data[i].email)
         .addClass("text-nowrap align-middle d-md-table-cell ps-3");
       row.append(emails);
 
@@ -53,7 +54,7 @@ $(document).ready(function () {
         "d-flex flex-column align-items-start employeeDep"
       );
       let departmentsData = $("<p>")
-        .html(allEmployeeData[i].department)
+        .html(data[i].department)
         .addClass("fw-bold text-start mb-0");
       let locations = $("<p>").addClass("text-muted text-start mb-0");
       let locationsData = $("<small>").html(data[i].location);
@@ -248,6 +249,13 @@ $(document).ready(function () {
         allDepartmentData = result.data;
         fillDepartmentTable(allDepartmentData);
       }
+
+      //-- Create Department Filter Options -- //
+      $.map(departments, function (department, i) {
+        $("#selectEmpDep").append(
+          `<option value='${department.toLowerCase()}'>${department}</option>`
+        );
+      });
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log(textStatus);
@@ -270,6 +278,12 @@ $(document).ready(function () {
         allLocationData = result.data;
         fillLocationTable(allLocationData);
       }
+      //-- Create Location Filter Options -- //
+      $.map(locations, function (location, i) {
+        $("#selectEmpLoc").append(
+          `<option value='${location.toLowerCase()}'>${location}</option>`
+        );
+      });
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log(textStatus);
@@ -295,7 +309,6 @@ $(document).ready(function () {
       });
       console.log(filteredData);
       $("#employeeTableBody").empty();
-
       fillTable(filteredData);
     });
   }
@@ -321,6 +334,8 @@ $(document).ready(function () {
 
           fillTable(filteredData);
         });
+
+        // Change to filter button to employee filter
       } else if (selectedTab === "pills-departments-tab") {
         $("#searchBar").on("keyup", function () {
           searchTerm = $(this).val().toLowerCase();
@@ -351,5 +366,44 @@ $(document).ready(function () {
     }
   });
 
+  // ------------- EMPLOYEE FILTER ----------- //
+  let selectEmpDep;
+  $("#selectEmpDep").on("change", function () {
+    selectEmpDep = $(this).val();
+    console.log(selectEmpDep);
+  });
 
+  let selectEmpLoc;
+  $("#selectEmpLoc").on("change", function () {
+    selectEmpLoc = $(this).val();
+    console.log(selectEmpLoc);
+  });
+
+  $("#empFilterReset").on("click", function () {
+    $("#selectEmpLoc").prop("selectedIndex", 0);
+    $("#selectEmpDep").prop("selectedIndex", 0);
+    selectEmpLoc = null;
+    selectEmpDep = null;
+    console.log(selectEmpDep, selectEmpLoc);
+    $("#employeeTableBody").empty();
+    fillTable(allEmployeeData);
+  });
+
+  $("#empFilterConfirm").on("click", function () {
+    let filteredData = allEmployeeData.filter(function (val) {
+      const departmentMatches = selectEmpDep === null || val.department.toLowerCase() === selectEmpDep;
+      const locationMatches = selectEmpLoc === null || val.location.toLowerCase() === selectEmpLoc;
+  
+      if (selectEmpDep && selectEmpLoc) {
+        return departmentMatches && locationMatches;
+      } else {
+        return departmentMatches || locationMatches;
+      }
+    });
+  
+    console.log(filteredData);
+    $("#employeeTableBody").empty();
+    fillTable(filteredData);
+  });
+  
 });

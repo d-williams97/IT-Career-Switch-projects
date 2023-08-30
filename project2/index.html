@@ -16,7 +16,12 @@
           <h1>Company Directory</h1>
         </div>
         <div class="col-1">
-          <button id="filterButton" class="btn btn-light mt-1">
+          <button
+            id="filterButton"
+            class="btn btn-light mt-1"
+            data-bs-toggle="modal"
+            data-bs-target="#filterModal"
+          >
             <i class="fa-solid fa-filter fa-2xl"></i>
           </button>
         </div>
@@ -95,12 +100,15 @@
           aria-labelledby="pills-employees-tab"
           tabindex="0"
         >
-          <table id="employeeTable" class="table table-hover table-scroll shadow-sm">
+          <table
+            id="employeeTable"
+            class="table table-hover table-scroll shadow-sm"
+          >
             <tbody id="employeeTableBody"></tbody>
           </table>
         </div>
 
-    <!-- DEPARTMENTS TABLE -->
+        <!-- DEPARTMENTS TABLE -->
         <div
           class="tab-pane fade"
           id="pills-departments"
@@ -108,12 +116,12 @@
           aria-labelledby="pills-departments-tab"
           tabindex="0"
         >
-        <table id="departmentTable" class="table table-hover table-scroll">
+          <table id="departmentTable" class="table table-hover table-scroll">
             <tbody id="departmentTableBody"></tbody>
           </table>
         </div>
 
-    <!-- LOCATIONS TABLE -->
+        <!-- LOCATIONS TABLE -->
         <div
           class="tab-pane fade"
           id="pills-locations"
@@ -121,10 +129,9 @@
           aria-labelledby="pills-locations-tab"
           tabindex="0"
         >
-        <table id="locationTable" class="table table-hover table-scroll">
+          <table id="locationTable" class="table table-hover table-scroll">
             <tbody id="locationTableBody"></tbody>
           </table>
-        </div>
         </div>
       </div>
     </section>
@@ -136,8 +143,58 @@
       Tempora?
     </p>
 
-    <script src="libs/js/bootstrap.bundle.min.js"></script>
+    <!-- FILTER MODAL -->
+    <div
+      class="modal fade"
+      id="filterModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="">Filter Employees</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="filterModalBody">
+            
+            <div>
+                <label for="selectEmpDep" class="ms-1 mb-1 fs-5">Departments</label>
+              <select id="selectEmpDep" class="form-select" aria-label="Departments filter">
+                <option selected disabled>Select a department</option>
+              </select>
+            </div>
+
+            <div class="mt-3 mb-2">
+                <label for="selectEmpLoc" class="ms-1 mb-1 fs-5">Locations</label>
+              <select id='selectEmpLoc' class="form-select" aria-label="Locations Filter">
+                <option selected disabled>Select a location</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="empFilterReset"
+            >
+              Reset
+            </button>
+            <button type="button" class="btn btn-primary" id='empFilterConfirm'>Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="libs/js/jquery-3.7.0.min.js"></script>
+    <script src="libs/js/bootstrap.bundle.min.js"></script>
     <script
       src="https://kit.fontawesome.com/00ae2793ae.js"
       crossorigin="anonymous"

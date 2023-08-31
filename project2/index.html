@@ -16,12 +16,7 @@
           <h1>Company Directory</h1>
         </div>
         <div class="col-1">
-          <button
-            id="filterButton"
-            class="btn btn-light mt-1"
-            data-bs-toggle="modal"
-            data-bs-target="#filterModal"
-          >
+          <button id="filterButton" class="btn btn-light mt-1">
             <i class="fa-solid fa-filter fa-2xl"></i>
           </button>
         </div>
@@ -143,7 +138,7 @@
       Tempora?
     </p>
 
-    <!-- FILTER MODAL -->
+    <!-- EMPLOYEE FILTER MODAL -->
     <div
       class="modal fade"
       id="filterModal"
@@ -154,7 +149,9 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="filterModalTitle">Filter Employees</h1>
+            <h1 class="modal-title fs-5" id="filterModalTitle">
+              Filter Employees
+            </h1>
             <button
               type="button"
               class="btn-close"
@@ -164,30 +161,189 @@
           </div>
           <div class="modal-body" id="filterModalBody">
             <div>
-                <label for="selectEmpDep" class="ms-1 mb-1 fs-5">Departments</label>
-              <select id="selectEmpDep" class="form-select" aria-label="Departments filter">
+              <label for="selectEmpDep" class="ms-1 mb-1 fs-5"
+                >Departments</label
+              >
+              <select
+                id="selectEmpDep"
+                class="form-select"
+                aria-label="Departments filter"
+              >
                 <option selected disabled>Select a department</option>
               </select>
             </div>
 
             <div class="mt-3 mb-2">
-                <label for="selectEmpLoc" class="ms-1 mb-1 fs-5">Locations</label>
-              <select id='selectEmpLoc' class="form-select" aria-label="Locations Filter">
+              <label for="selectEmpLoc" class="ms-1 mb-1 fs-5">Locations</label>
+              <select
+                id="selectEmpLoc"
+                class="form-select"
+                aria-label="Locations Filter"
+              >
                 <option selected disabled>Select a location</option>
               </select>
             </div>
           </div>
 
-          <div id='filterModalFooter'class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="empFilterReset"
-            >
+          <div id="filterModalFooter" class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="empFilterReset">
               Reset
             </button>
-            <button type="button" class="btn btn-primary" id='empFilterConfirm'>Confirm</button>
+            <button type="button" class="btn btn-primary" id="empFilterConfirm">
+              Confirm
+            </button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPARTMENTS FILTER MODAL -->
+    <div
+      class="modal fade"
+      id="depFilterModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="depFilterModalTitle">
+              Filter Departments
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="depFilterModalBody">
+            <div class="mt-3 mb-2">
+              <label for="selectDepLoc" class="ms-1 mb-1 fs-5">Locations</label>
+              <select
+                id="selectDepLoc"
+                class="form-select"
+                aria-label="Departments Filter"
+              >
+                <option selected disabled>Select a location</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="depFilterModalFooter" class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="depFilterReset">
+              Reset
+            </button>
+            <button type="button" class="btn btn-primary" id="depFilterConfirm">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!----- ADD EMPLOYEE MODAL ----->
+
+    <div
+      class="modal fade"
+      id="addEmployeeModal"
+      tabindex="-1"
+      aria-labelledby="addEmployeeModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="depFilterModalTitle">
+              Add Employee
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form>
+            <div class="modal-body" id="addEmployeeBody">
+              <div class="row mb-2">
+                <div class="col 6">
+                  <label for="firstNameInput" class="form-label"
+                    >First Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="firstNameInput"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="lastNameInput" class="form-label"
+                    >Last Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lastNameInput"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col 6">
+                  <label for="departmentInput" class="form-label"
+                    >Department</label
+                  >
+                  <select
+                    type="text"
+                    class="form-control"
+                    id="departmentSelect"
+                    required
+                  ></select>
+                </div>
+                <div class="col-6">
+                  <label for="locationInput" class="form-label">Location</label>
+                  <select
+                    type="text"
+                    class="form-control"
+                    id="locationSelect"
+                    disabled
+                  ></select>
+                </div>
+              </div>
+              <div class="row">
+                <div>
+                  <label for="emailInput" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="emailInput"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div id="addEmployeeFooter" class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="depFilterReset"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="depFilterConfirm"
+              >
+                Add
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

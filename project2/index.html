@@ -244,7 +244,6 @@
     </div>
 
     <!----- ADD EMPLOYEE MODAL ----->
-
     <div
       class="modal fade"
       id="addEmployeeModal"
@@ -255,9 +254,7 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="depFilterModalTitle">
-              Add Employee
-            </h1>
+            <h1 class="modal-title fs-5">Add Employee</h1>
             <button
               type="button"
               class="btn-close"
@@ -267,7 +264,7 @@
           </div>
           <form>
             <div class="modal-body" id="addEmployeeBody">
-              <div class="row mb-2">
+              <div class="row mb-3">
                 <div class="col 6">
                   <label for="firstNameInput" class="form-label"
                     >First Name</label
@@ -291,9 +288,9 @@
                   />
                 </div>
               </div>
-              <div class="row mb-2">
+              <div class="row mb-4">
                 <div class="col 6">
-                  <label for="departmentInput" class="form-label"
+                  <label for="departmentSelect" class="form-label"
                     >Department</label
                   >
                   <select
@@ -301,28 +298,41 @@
                     class="form-control"
                     id="departmentSelect"
                     required
-                  ></select>
+                  >
+                    <option disabled>Select a department</option>
+                  </select>
                 </div>
                 <div class="col-6">
-                  <label for="locationInput" class="form-label">Location</label>
-                  <select
+                  <label for="locationSelect" class="form-label"
+                    >Location</label
+                  >
+                  <input
                     type="text"
                     class="form-control"
-                    id="locationSelect"
+                    id="locationInput"
                     disabled
-                  ></select>
-                </div>
-              </div>
-              <div class="row">
-                <div>
-                  <label for="emailInput" class="form-label">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="emailInput"
-                    required
                   />
                 </div>
+              </div>
+              <div class="row mb-2">
+                  <div class="col-6">
+                    <label for="emailInput" class="form-label">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="emailInput"
+                      required
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="jobTitle" class="form-label">Job Title</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="jobInput"
+                      required
+                    />
+                  </div>
               </div>
             </div>
 
@@ -330,16 +340,129 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                id="depFilterReset"
+                id="cancelEmployeeBtn"
                 data-bs-dismiss="modal"
               >
                 Cancel
               </button>
               <button
                 type="submit"
+                value="Submit"
                 class="btn btn-primary"
-                id="depFilterConfirm"
+                id="addEmployeeBtn"
               >
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!----- ADD DEPARTMENT MODAL ----->
+    <div
+      class="modal fade"
+      id="addDepartmentModal"
+      tabindex="-1"
+      aria-labelledby="addDepartmentModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Add Department</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form>
+            <div class="modal-body" id="addDepartmentBody">
+              <div class="row mb-2">
+                <div class="col 6">
+                  <label for="depDepInput" class="form-label">Department</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="depDepInput"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="depLocSelect" class="form-label">Location</label>
+                  <select
+                    type="text"
+                    class="form-control"
+                    id="depSelect"
+                    required
+                  ></select>
+                </div>
+              </div>
+            </div>
+
+            <div id="addDepartmentFooter" class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="cancelDepBtn"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" id="addDepBtn">
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!----- ADD LOCATION MODAL ----->
+
+    <div
+      class="modal fade"
+      id="addLocationModal"
+      tabindex="-1"
+      aria-labelledby="addDepartmentModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Add Location</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form>
+            <div class="modal-body" id="addDepartmentBody">
+              <div>
+                <label for="locLocInput" class="form-label">Location</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="locLocInput"
+                  required
+                />
+              </div>
+            </div>
+
+            <div id="addDepartmentFooter" class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="cancelDepBtn"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" id="addDepBtn">
                 Add
               </button>
             </div>

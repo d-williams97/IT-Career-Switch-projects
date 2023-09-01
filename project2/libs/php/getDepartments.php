@@ -28,7 +28,7 @@ if(mysqli_connect_errno()) {
 
 }
 
-$query = 'SELECT d.name as department, l.name as location 
+$query = 'SELECT d.name as department, l.name as location, d.id as departmentID 
 FROM department d
 LEFT JOIN location l ON (l.id = d.locationID)
 ORDER BY d.name, l.name';

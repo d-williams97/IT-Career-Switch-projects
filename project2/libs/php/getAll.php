@@ -20,9 +20,9 @@
 
 	if (mysqli_connect_errno()) { // returns the error code from the last connection error, if any.
 		
-		$output['status']['code'] = "300";
+		$output['status']['code'] = "500";
 		$output['status']['name'] = "failure";
-		$output['status']['description'] = "database unavailable";
+		$output['status']['description'] = 'Internal server error: database';
 		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
 		$output['data'] = [];
 

@@ -161,6 +161,14 @@ tr {
   height: 4rem;
 }
 
+.error {
+  color: red; /* Change the text color to red */
+}
+
+input.error {
+  border-color: red; /* Change the border color to red */
+}
+
 
 
 

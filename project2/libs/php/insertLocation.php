@@ -10,14 +10,11 @@
 	header('Content-Type: application/json; charset=UTF-8');
 
 
-	$firstName = trim($_REQUEST['firstName']);
-	$lastName = trim($_REQUEST['lastName']);
-	$jobTitle = trim($_REQUEST['job']);
-	$email = trim($_REQUEST['email']);
-	$departmentID = $_REQUEST['departmentID'];
+	$location = trim(ucfirst($_REQUEST['location']));
 
 
-	// error_log(print_r($firstName, true));
+
+	// error_log(print_r($location, true));
 
 
 
@@ -30,16 +27,16 @@
 		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . 'ms';
 		$output['data'] = [];
 
-		mysqli_close($conn); // Close a previously opened database connection
+		mysqli_close($conn); 
 
 		echo json_encode($output);
 
-		exit; //stops the execution of the script
+		exit; 
 	};
 
-	$query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES(?,?,?,?,?)');
+	$query = $conn->prepare('INSERT INTO location (name) VALUES(?)');
 
-	$query->bind_param("ssssi", $firstName, $lastName, $jobTitle, $email, $departmentID);
+	$query->bind_param("s", $location);
 
 	$query->execute();
 

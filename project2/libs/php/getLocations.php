@@ -28,7 +28,7 @@ if(mysqli_connect_errno()) {
 
 }
 
-$query = 'SELECT l.name as location 
+$query = 'SELECT l.name as location, l.id as locationID
 FROM location l
 ORDER BY l.name';
 

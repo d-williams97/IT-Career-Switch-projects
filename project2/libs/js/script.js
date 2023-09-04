@@ -12,7 +12,6 @@ $(document).ready(function () {
   let allEmployeeData;
 
   let fillTable = (data) => {
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
       // console.log(allEmployeeData[i]);
       let row = $(`<tr id=employeeRow'${[i]}'>`).addClass(
@@ -95,8 +94,9 @@ $(document).ready(function () {
   };
 
   let fillDepartmentTable = (data) => {
+    departments = [];
+    $("#departmentTableBody").empty();
     for (let i = 0; i < data.length; i++) {
-      // console.log(data);
       let department = data[i];
       departments.push(department);
 
@@ -164,8 +164,10 @@ $(document).ready(function () {
   };
 
   let fillLocationTable = (data) => {
+    locations = [];
     for (let i = 0; i < data.length; i++) {
-      let location = data[i].location;
+      console.log(data[i]);
+      let location = data[i];
       locations.push(location);
 
       let row = $(`<tr id=locationRow'${[i]}'>`).addClass(
@@ -178,7 +180,7 @@ $(document).ready(function () {
         .attr("data-id", i);
       let locationLocationDiv = $("<div>").addClass("d-flex align-items-start");
       let locationLocationNames = $("<p>")
-        .html(location)
+        .html(location.location)
         .addClass("fw-bold text-start mb-0");
 
       locationLocationDiv.append(locationLocationNames);
@@ -237,6 +239,16 @@ $(document).ready(function () {
 
   let departments = [];
   let allDepartmentData;
+  let updateDepartmentOptions = function (location) {
+    $("#selectEmpDep").empty();
+    $.map(departments, function (location, i) {
+      $("#selectEmpDep").append(
+        `<option value='${location.department.toLowerCase()}'>${
+          location.department
+        }</option>`
+      );
+    });
+  }
 
   $.ajax({
     url: "libs/php/getDepartments.php",
@@ -246,16 +258,8 @@ $(document).ready(function () {
       if (result.status.name == "ok") {
         allDepartmentData = result.data;
         fillDepartmentTable(allDepartmentData);
+        updateDepartmentOptions(departments);
       }
-
-      //-- Create Department Filter Options -- //
-      $.map(departments, function (department, i) {
-        $("#selectEmpDep").append(
-          `<option value='${department.department.toLowerCase()}'>${
-            department.department
-          }</option>`
-        );
-      });
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log(textStatus);
@@ -267,6 +271,22 @@ $(document).ready(function () {
 
   let locations = [];
   let allLocationData;
+  let updateLocationOptions = function (locations) {
+    $("#selectEmpLoc").empty()
+    $.map(locations, function (location, i) {
+      $("#selectEmpLoc").append(
+        `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
+      );
+    });
+
+    $("#selectDepLoc").empty()
+    $.map(locations, function (location, i) {
+      $("#selectDepLoc").append(
+        `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
+      );
+    });
+
+  }
 
   $.ajax({
     url: "libs/php/getLocations.php",
@@ -274,16 +294,10 @@ $(document).ready(function () {
     dataType: "json",
     success: function (result) {
       if (result.status.name == "ok") {
-        console.log(result);
         allLocationData = result.data;
         fillLocationTable(allLocationData);
+        updateLocationOptions(locations);
       }
-      //-- Create Location Filter Options -- //
-      $.map(locations, function (location, i) {
-        $("#selectEmpLoc").append(
-          `<option value='${location.toLowerCase()}'>${location}</option>`
-        );
-      });
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log(textStatus);
@@ -373,11 +387,7 @@ $(document).ready(function () {
     if (selectedTab === "pills-departments-tab") {
       $("#depFilterModal").modal("show");
 
-      $.map(locations, function (location, i) {
-        $("#selectDepLoc").append(
-          `<option value='${location.toLowerCase()}'>${location}</option>`
-        );
-      });
+      updateLocationOptions(locations);
 
       let selectDepLoc;
       $("#selectDepLoc").on("change", function () {
@@ -478,6 +488,7 @@ $(document).ready(function () {
     if (selectedTab === "pills-employees-tab") {
       console.log(selectedTab);
       $("#addEmployeeModal").modal("show");
+
       $.map(departments, function (department, i) {
         console.log(department)
         $("#departmentSelect").append(
@@ -529,7 +540,28 @@ $(document).ready(function () {
 
  // ---------- ADDING NEW EMPLOYEE ----------- //
       $('#addEmployeeBtn').on('click', function(e) {
-        e.preventDefault();
+        e.preventDefault()
+
+        $('#addEmpForm').validate({
+          rules: {
+            firstName: 'required',
+            lastName: 'required',
+            empDepSel: 'required',
+            empLocation: 'required',
+            email: { required: true,
+              email: true
+            },
+            jobTitle: 'required'
+          },
+          messages: {
+            firstName: 'Please enter a first name.',
+            lastName: 'Please enter a last name.',
+            empDepSel: 'Please enter a email.',
+            jobTitle: 'Please enter a job title.'
+          }
+          });
+
+          if ($('#addEmpForm').valid()) {
 
         $.ajax({
           url: "libs/php/insertEmployee.php",
@@ -556,6 +588,9 @@ $(document).ready(function () {
                     $("#employeeTableBody").empty();
                     allEmployeeData = result.data;
                     fillTable(allEmployeeData);
+                    //ADD A TOAST TO CONFIRM data added
+                  } else {
+                    // TOAST TO SAY THERE WAS AN ERROR
                   }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -572,20 +607,191 @@ $(document).ready(function () {
         });
 
         $("#addEmployeeModal").modal("hide");
+        $("#firstNameInput").val('');
+        $("#lastNameInput").val('');
+        $("#departmentSelect").prop("selectedIndex", 0);
+        $("#emailInput").val('');
+        $("#jobInput").val('');
+          } else {
+            console.log('form not valid')
+          }
+      })
+    
 
+ // ---------- ADD NEW DEPARTMENT ----------- //
+    } else if (selectedTab === "pills-departments-tab") {
+      console.log(selectedTab);
+      let depDepVal
+
+
+      $("#addDepartmentModal").modal("show");
+
+      $.map(locations, function(location, i) {
+        $('#depLocSelect').append(`<option value='${location.locationID}'>${
+          location.location
+        }</option>`)
+      })
+
+      let depLocVal = $('#depLocSelect').val();
+
+      $('#depLocSelect').on('change', function() {
+        depLocVal = $('#depLocSelect').val()
+        console.log(depLocVal);
+      })
+
+      $('#depDepInput').on('keyup', function() {
+        depDepVal = $('#depDepInput').val()
+        console.log(depDepVal);
+      })
+
+      $('#cancelDepBtn').on('click', function () {
+        $('#depDepInput').val('');
+      })
+
+
+      $('#addDepBtn').on('click', function(e) {
+        e.preventDefault()
+
+        $('#addDepForm').validate({
+          rules: {
+            depDepInput: 'required',
+            depLocSel: 'required'
+          },
+          messages: {
+            depDepInput: 'Please enter a department name.',
+            depLocSel: 'Please select a department.'
+          }
+          });
+
+          if ($('#addDepForm').valid()) {
+            console.log(depDepVal);
+            console.log(depLocVal);
+            
+            $.ajax({
+                url: "libs/php/insertDepartment.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                  department: depDepVal,
+                  locationID: depLocVal
+                },
+                success: function (result) {
+                  if (result.status.name == "ok") {
+                    console.log(result);
+                    $.ajax({
+                      url: "libs/php/getDepartments.php",
+                      type: "POST",
+                      dataType: "json",
+                      success: function (result) {
+                        if (result.status.name == "ok") {
+                          allDepartmentData = result.data;
+                          console.log(allDepartmentData);
+                          fillDepartmentTable(allDepartmentData);
+                          updateDepartmentOptions(departments)
+                        }
+                      },
+                      error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                      },
+                    });
+      
+                  }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus);
+                  console.log(errorThrown);
+                },
+              });
+
+              $("#addDepartmentModal").modal("hide");
+              $('#depDepInput').val('');
+              $("#depLocSelect").prop("selectedIndex", 0);
+
+          } else {
+            console.log('false')
+            //Could not add department
+          }
+      })
+
+ // ---------- ADD NEW LOCATION ----------- //
+    } else if (selectedTab === "pills-locations-tab") {
+      console.log(selectedTab);
+      let locLocVal;
+      $("#addLocationModal").modal("show");
+
+      $('#locLocInput').on('keyup', function() {
+         locLocVal = $(this).val()
+        console.log(locLocVal);
+      })
+
+      $('#addLocBtn').on('click', function(e) {
+        e.preventDefault()
+
+        $('#addLocForm').validate({
+          rules: {
+            locLocInput: 'required',
+          },
+          messages: {
+            locLocInput: 'Please enter a location.',
+          }
+          });
+          if ($('#addLocForm').valid()) {
+            console.log(locLocVal);
+            $.ajax({
+              url: "libs/php/insertLocation.php",
+              type: "POST",
+              dataType: "json",
+              data: {
+                  location: locLocVal
+              },
+              success: function (result) {
+                if (result.status.name == "ok") {
+
+                  $.ajax({
+                    url: "libs/php/getLocations.php",
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                      if (result.status.name == "ok") {
+                        allLocationData = result.data;
+                        fillLocationTable(allLocationData);
+                        updateLocationOptions(locations);
+                      }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                      console.log(textStatus);
+                      console.log(errorThrown);
+                    },
+                  });
+                  fillLocationTable(allLocationData);
+                  $("#locationTableBody").empty();
+                  updateLocationOptions(locations);
+                }
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+                console.log(errorThrown);
+              },
+            });
+
+            $("#addLocationModal").modal("hide");
+            $('#locLocInput').val('');
+          } else {
+            console.log('invalid');
+          }
+
+
+       
+      })
+
+      $('#cancelLocBtn').on('click', function() {
+        $('#locLocInput').val('');
       })
 
 
 
-    } else if (selectedTab === "pills-departments-tab") {
-      console.log(selectedTab);
-      $("#addDepartmentModal").modal("show");
 
-
-
-    } else if (selectedTab === "pills-locations-tab") {
-      console.log(selectedTab);
-      $("#addLocationModal").modal("show");
     }
   });
 });

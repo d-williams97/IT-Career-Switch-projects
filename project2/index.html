@@ -10,6 +10,7 @@
 
   <body>
     <!-- <div id="preloader"></div> -->
+
     <section id="Header">
       <div class="row">
         <div class="col-10 centered">
@@ -105,20 +106,20 @@
 
         <!-- DEPARTMENTS TABLE -->
         <div
-          class="tab-pane fade"
+          class="tab-pane fade table-responsive"
           id="pills-departments"
           role="tabpanel"
           aria-labelledby="pills-departments-tab"
           tabindex="0"
         >
-          <table id="departmentTable" class="table table-hover table-scroll">
+          <table id="departmentTable" class="table table-hover table-scroll shadow-sm">
             <tbody id="departmentTableBody"></tbody>
           </table>
         </div>
 
         <!-- LOCATIONS TABLE -->
         <div
-          class="tab-pane fade"
+          class="tab-pane fade table-responsive"
           id="pills-locations"
           role="tabpanel"
           aria-labelledby="pills-locations-tab"
@@ -262,7 +263,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <form>
+          <form id="addEmpForm">
             <div class="modal-body" id="addEmployeeBody">
               <div class="row mb-3">
                 <div class="col 6">
@@ -273,6 +274,7 @@
                     type="text"
                     class="form-control"
                     id="firstNameInput"
+                    name="firstName"
                     required
                   />
                 </div>
@@ -284,6 +286,7 @@
                     type="text"
                     class="form-control"
                     id="lastNameInput"
+                    name="lastName"
                     required
                   />
                 </div>
@@ -297,42 +300,42 @@
                     type="text"
                     class="form-control"
                     id="departmentSelect"
+                    name="empDepSel"
                     required
-                  >
-                    <option disabled>Select a department</option>
-                  </select>
+                  ></select>
                 </div>
                 <div class="col-6">
-                  <label for="locationSelect" class="form-label"
-                    >Location</label
-                  >
+                  <label for="locationInput" class="form-label">Location</label>
                   <input
                     type="text"
                     class="form-control"
                     id="locationInput"
+                    name="empLocation"
                     disabled
                   />
                 </div>
               </div>
               <div class="row mb-2">
-                  <div class="col-6">
-                    <label for="emailInput" class="form-label">Email</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="emailInput"
-                      required
-                    />
-                  </div>
-                  <div class="col-6">
-                    <label for="jobTitle" class="form-label">Job Title</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="jobInput"
-                      required
-                    />
-                  </div>
+                <div class="col-6">
+                  <label for="emailInput" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="emailInput"
+                    name="email"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="jobTitle" class="form-label">Job Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="jobInput"
+                    name="jobTitle"
+                    required
+                  />
+                </div>
               </div>
             </div>
 
@@ -347,7 +350,6 @@
               </button>
               <button
                 type="submit"
-                value="Submit"
                 class="btn btn-primary"
                 id="addEmployeeBtn"
               >
@@ -378,7 +380,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <form>
+          <form id="addDepForm">
             <div class="modal-body" id="addDepartmentBody">
               <div class="row mb-2">
                 <div class="col 6">
@@ -387,15 +389,17 @@
                     type="text"
                     class="form-control"
                     id="depDepInput"
+                    name="depDepInput"
                     required
                   />
                 </div>
                 <div class="col-6">
-                  <label for="depLocSelect" class="form-label">Location</label>
+                  <label for="depLocSel" class="form-label">Location</label>
                   <select
                     type="text"
                     class="form-control"
-                    id="depSelect"
+                    id="depLocSelect"
+                    name="depLocSel"
                     required
                   ></select>
                 </div>
@@ -411,7 +415,7 @@
               >
                 Cancel
               </button>
-              <button type="submit" class="btn btn-primary" id="addDepBtn">
+              <button class="btn btn-primary" id="addDepBtn">
                 Add
               </button>
             </div>
@@ -426,7 +430,7 @@
       class="modal fade"
       id="addLocationModal"
       tabindex="-1"
-      aria-labelledby="addDepartmentModal"
+      aria-labelledby="addLocationModal"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -440,29 +444,30 @@
               aria-label="Close"
             ></button>
           </div>
-          <form>
-            <div class="modal-body" id="addDepartmentBody">
+          <form id="addLocForm">
+            <div class="modal-body" id="addLocationBody">
               <div>
                 <label for="locLocInput" class="form-label">Location</label>
                 <input
                   type="text"
                   class="form-control"
                   id="locLocInput"
+                  name="locLocInput"
                   required
                 />
               </div>
             </div>
 
-            <div id="addDepartmentFooter" class="modal-footer">
+            <div id="addLocationFooter" class="modal-footer">
               <button
                 type="button"
                 class="btn btn-secondary"
-                id="cancelDepBtn"
+                id="cancelLocBtn"
                 data-bs-dismiss="modal"
               >
                 Cancel
               </button>
-              <button type="submit" class="btn btn-primary" id="addDepBtn">
+              <button class="btn btn-primary" id="addLocBtn">
                 Add
               </button>
             </div>
@@ -478,6 +483,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="libs/js/numeral.min.js"></script>
+    <script src="libs/js/jquery.validate.min.js"></script>
     <script type="application/javascript" src="libs/js/script.js"></script>
   </body>
 </html>

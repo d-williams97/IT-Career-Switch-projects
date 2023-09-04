@@ -9,6 +9,10 @@
 	error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
+
+	$department = $_REQUEST['department'];
+	$locationID = $_REQUEST['locationID'];
+
 	
 	// this includes the login details
 	
@@ -20,9 +24,9 @@
 
 	if (mysqli_connect_errno()) {
 		
-		$output['status']['code'] = "300";
+		$output['status']['code'] = "500";
 		$output['status']['name'] = "failure";
-		$output['status']['description'] = "database unavailable";
+		$output['status']['description'] = 'Internal server error: database';
 		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
 		$output['data'] = [];
 
@@ -34,12 +38,12 @@
 
 	}	
 
-	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
-	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
+	// // SQL statement accepts parameters and so is prepared to avoid SQL injection.
+	// // $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
 	$query = $conn->prepare('INSERT INTO department (name, locationID) VALUES(?,?)'); // tableName, (tableName columns) VALUES (valuesToInsert).
 
-	$query->bind_param("si", $_REQUEST['name'], $_REQUEST['locationID']); //state each datatype for each param the state the params themselves.
+	$query->bind_param("si", $department, $locationID); //state each datatype for each param the state the params themselves.
 
 	$query->execute();
 	

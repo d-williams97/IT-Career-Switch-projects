@@ -68,14 +68,14 @@ $(document).ready(function () {
         "d-flex justify-content-end employeeButtons me-3"
       );
       let editButtons = $("<button>")
-        .addClass("btn btn-none btn-sm")
-        .attr("data-bs-toggle", "modal")
-        .attr("data-bs-target", "#editEmployeeModal");
+        .addClass("btn btn-none btn-sm editBtn")
+        // .attr("data-bs-toggle", "modal")
+        // .attr("data-bs-target", "#editEmployeeModal");
       let editIcons = $("<i>").addClass(
         "fa-solid fa-pencil fa-lg text-primary"
       );
       let deleteButtons = $("<button>")
-        .addClass("btn btn-none btn-sm ms-3")
+        .addClass("btn btn-none btn-sm ms-3 deleteBtn")
         .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#deleteEmployeeModal");
       let deleteIcons = $("<i>").addClass(
@@ -89,9 +89,167 @@ $(document).ready(function () {
       buttonCells.append(buttonDiv);
       row.append(buttonCells);
 
+
+      editButtons.on("click", function () {
+        let firstName = data[i].firstName;
+        let lastName = data[i].lastName;
+        let jobTitle = data[i].jobTitle;
+        let email = data[i].email;
+        let department = data[i].department;
+        let location = data[i].location;
+        let id = data[i].id;
+        let departmentID = data[i].departmentID;
+        console.log(departmentID);
+
+        openEditEmpModal(firstName, lastName, jobTitle, email, department, id, departmentID)
+      });
+
+
+
       $("#employeeTableBody").append(row);
     }
   };
+
+  let newFirstName;
+  let newLastName;
+  let newDepartment
+  let newEmail;
+  let newJobTitle;
+  let employeeID;
+  let departmentID;
+  let depOption;
+  
+
+  function editEmpIDFunc (selectVal, departments) {
+    console.log(selectVal);
+    let empObj = $.grep(departments, function (department, i) {
+      return department.department.toLowerCase() === selectVal.toLowerCase();
+    });
+    departmentID = empObj[0].departmentID;
+    console.log(departmentID);
+  };
+
+
+
+function openEditEmpModal(firstName, lastName, jobTitle, email, department,id, depID) {
+
+  newFirstName = firstName;
+  newLastName = lastName;
+  newDepartment = department;
+  newEmail =  email;
+  newJobTitle = jobTitle;
+  employeeID = id;
+  departmentID = depID;
+
+
+  let selectedOption = $('#editEmpDepSel option').filter(function () {
+    return $(this).text() === department;
+  });
+
+  selectedOption.prop("selected", true);
+  console.log(newDepartment);
+
+
+
+  $('#editEmpTitle').html(`Edit ${firstName}, ${lastName}`);
+  $('#editFirstName').val(firstName);
+  $('#editLastName').val(lastName);
+  $('#editEmail').val(email);
+  $('#editJob').val(jobTitle);
+
+
+  $('#editFirstName').on('keyup', function() {
+    newFirstName = $(this).val()
+    console.log(newFirstName)
+  })
+  $('#editLastName').on('keyup', function() {
+    newLastName = $(this).val();
+    console.log(newLastName)
+  })
+  $('#editEmail').on('keyup', function() {
+    newEmail = $(this).val();
+    console.log(newEmail)
+  })
+  $('#editJob').on('keyup', function() {
+    newJobTitle = $(this).val();
+    console.log(newJobTitle)
+  })
+
+  $('#editEmpDepSel').on('change', function() {
+    newDepartment = $(this).val();
+    editEmpIDFunc(newDepartment, departments)
+ 
+  })
+
+  $('#editEmpModal').modal('show');
+
+}
+
+
+$('#cancelEditEmpBtn').on('click', function () {
+  $('#editEmpTitle').html('');
+  $('#editFirstName').val('');
+  $('#editLastName').val('');
+  $('#editEmail').val('');
+  $('#editJob').val('');
+})
+
+
+
+$('#editEmpBtn').on('click', function (e) {
+  e.preventDefault();
+  $('#editEmpForm').validate({
+    rules: {
+      editFirstName: 'required',
+      editLastName: 'required',
+      editEmpDepSel: 'required',
+      editEmpLoc: 'required',
+      editEmail: {
+        required: true,
+        email: true
+      },
+      editJob: 'required'
+
+    },
+    messages: {
+        editFirstName: 'Please enter a first name.',
+        editLastName: 'Please enter a last name',
+        editJob: 'Please enter a job title.',
+        editEmail: 'Please enter a valid email address.'
+    }
+    });
+    if ($('#editEmpForm').valid()) {
+      console.log('valid');
+      console.log(departmentID);
+      $.ajax({
+        url: "libs/php/getEmployeeByID.php",
+        type: "POST",
+        dataType: "json",
+        data: { newFirstName, newLastName, newDepartment, newEmail, newJobTitle, employeeID, departmentID},
+        success: function (result) {
+          if (result.status.name == "ok") {
+            $("#employeeTableBody").empty();
+            fillTable(result.data)
+
+            $('#editEmpModal').modal('hide');
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(textStatus);
+          console.log(errorThrown);
+        },
+      });
+      $('#locLocInput').val('');
+    } else {
+      console.log('invalid');
+    }
+  
+  
+  
+})
+
+
+
 
   let fillDepartmentTable = (data) => {
     departments = [];
@@ -100,7 +258,7 @@ $(document).ready(function () {
       let department = data[i];
       departments.push(department);
 
-      let row = $(`<tr id=departmentRow'${[i]}'>`).addClass("d-flex");
+      let row = $(`<tr id=departmentRow${[i]}>`).addClass("d-flex");
 
       // -- DEPARTMENT COLUMN -- //
       let departmentDepartmentCells = $("<td>")
@@ -138,14 +296,14 @@ $(document).ready(function () {
         "d-flex justify-content-end employeeButtons me-3"
       );
       let editButtons = $("<button>")
-        .addClass("btn btn-none btn-sm")
+        .addClass("btn btn-none btn-sm editBtn")
         .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#editDepartmentModal");
       let editIcons = $("<i>").addClass(
         "fa-solid fa-pencil fa-lg text-primary"
       );
       let deleteButtons = $("<button>")
-        .addClass("btn btn-none btn-sm ms-3")
+        .addClass("btn btn-none btn-sm ms-3 deleteBtn")
         .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#deleteDepartmentModal");
       let deleteIcons = $("<i>").addClass(
@@ -166,7 +324,6 @@ $(document).ready(function () {
   let fillLocationTable = (data) => {
     locations = [];
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i]);
       let location = data[i];
       locations.push(location);
 
@@ -193,14 +350,14 @@ $(document).ready(function () {
         "d-flex justify-content-end employeeButtons me-3"
       );
       let editButtons = $("<button>")
-        .addClass("btn btn-none btn-sm")
+        .addClass("btn btn-none btn-sm editBtn")
         .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#editDepartmentModal");
       let editIcons = $("<i>").addClass(
         "fa-solid fa-pencil fa-lg text-primary"
       );
       let deleteButtons = $("<button>")
-        .addClass("btn btn-none btn-sm ms-3")
+        .addClass("btn btn-none btn-sm ms-3 deleteBtn")
         .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#deleteDepartmentModal");
       let deleteIcons = $("<i>").addClass(
@@ -248,6 +405,16 @@ $(document).ready(function () {
         }</option>`
       );
     });
+    $("#editEmpDepSel").empty();
+    $.map(departments, function (location, i) {
+      $("#editEmpDepSel").append(
+        `<option value='${location.department.toLowerCase()}'>${
+          location.department
+        }</option>`
+      );
+    });
+
+
   }
 
   $.ajax({
@@ -285,6 +452,13 @@ $(document).ready(function () {
         `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
       );
     });
+
+    // $("#editEmpLoc").empty()
+    // $.map(locations, function (location, i) {
+    //   $("#editEmpLoc").append(
+    //     `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
+    //   );
+    // });
 
   }
 
@@ -490,7 +664,6 @@ $(document).ready(function () {
       $("#addEmployeeModal").modal("show");
 
       $.map(departments, function (department, i) {
-        console.log(department)
         $("#departmentSelect").append(
           `<option value='${department.departmentID}'>${
             department.department
@@ -781,17 +954,19 @@ $(document).ready(function () {
             console.log('invalid');
           }
 
-
-       
       })
-
       $('#cancelLocBtn').on('click', function() {
         $('#locLocInput').val('');
       })
-
-
-
-
     }
+
+
+
+
+
+
+
+
+
   });
 });

@@ -476,6 +476,130 @@
       </div>
     </div>
 
+
+
+<!----- EDIT EMPLOYEE MODAL ----->
+<div
+class="modal fade"
+id="editEmpModal"
+tabindex="-1"
+aria-labelledby="editEmployeeModal"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="editEmpTitle"></h1>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <form id="editEmpForm">
+      <div class="modal-body" id="editEmpBody">
+        <div class="row mb-3">
+          <div class="col 6">
+            <label for="editFirstName" class="form-label"
+              >First Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="editFirstName"
+              name="editFirstName"
+              required
+            />
+          </div>
+          <div class="col-6">
+            <label for="editLastName" class="form-label"
+              >Last Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="editLastName"
+              name="editLastName"
+              required
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col 6">
+            <label for="editEmpDepSel" class="form-label"
+              >Department</label
+            >
+            <select
+              type="text"
+              class="form-control"
+              id="editEmpDepSel"
+              name="editEmpDepSel"
+              required
+            ></select>
+          </div>
+          <div class="col-6">
+            <label for="editJob" class="form-label">Job Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="editJob"
+              name="editJob"
+              required
+            />
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12">
+            <label for="editEmail" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="editEmail"
+              name="editEmail"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div id="editEmployeeFooter" class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="cancelEditEmpBtn"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          id="editEmpBtn"
+        >
+          Edit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="libs/js/jquery-3.7.0.min.js"></script>
     <script src="libs/js/bootstrap.bundle.min.js"></script>
     <script
@@ -487,3 +611,5 @@
     <script type="application/javascript" src="libs/js/script.js"></script>
   </body>
 </html>
+
+

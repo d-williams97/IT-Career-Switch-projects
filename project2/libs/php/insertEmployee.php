@@ -10,10 +10,10 @@
 	header('Content-Type: application/json; charset=UTF-8');
 
 
-	$firstName = trim($_REQUEST['firstName']);
-	$lastName = trim($_REQUEST['lastName']);
-	$jobTitle = trim($_REQUEST['job']);
-	$email = trim($_REQUEST['email']);
+	$firstName = trim(ucfirst( $_REQUEST['firstName']));
+	$lastName = trim(ucfirst( $_REQUEST['lastName']));
+	$jobTitle = trim(ucfirst($_REQUEST['job']));
+	$email = trim(strtolower( $_REQUEST['email']));
 	$departmentID = $_REQUEST['departmentID'];
 
 

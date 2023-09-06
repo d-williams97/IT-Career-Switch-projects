@@ -13,7 +13,127 @@
 
     <section id="Header">
       <div class="row">
-        <div class="col-10 centered">
+        <!------- TOASTS ---------->
+        <div class="div col-3">
+
+
+            <div
+            class="toast align-items-center text-bg-success border-0"
+            id="addEmpToast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div class="d-flex">
+              <div class="toast-body">Employee added</div>
+              <button
+                type="button"
+                class="btn-close btn-close-white m-auto me-2"
+                data-bs-dismiss="toast"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+
+
+          <div
+          class="toast align-items-center text-bg-success border-0"
+          id="addDepToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Department added</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+        class="toast align-items-center text-bg-success border-0"
+        id="addLocToast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body">Location added</div>
+          <button
+            type="button"
+            class="btn-close btn-close-white m-auto me-2"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+
+
+
+
+
+            <div
+            class="toast align-items-center text-bg-success border-0"
+            id="empEditToast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div class="d-flex">
+              <div class="toast-body">Employee updated</div>
+              <button
+                type="button"
+                class="btn-close btn-close-white m-auto me-2"
+                data-bs-dismiss="toast"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+            
+          <div
+            class="toast align-items-center text-bg-success border-0"
+            id="depEditToast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div class="d-flex">
+              <div class="toast-body">Department updated</div>
+              <button
+                type="button"
+                class="btn-close btn-close-white m-auto me-2"
+                data-bs-dismiss="toast"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+
+          <div
+          class="toast align-items-center text-bg-success border-0"
+          id="locEditToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Location updated</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+
+        </div>
+
+        <div class="col-7 centered">
           <h1>Company Directory</h1>
         </div>
         <div class="col-1">
@@ -135,12 +255,12 @@
       </div>
     </section>
 
-    <p>
+    <!-- <p>
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque iste
       officiis placeat, soluta labore, explicabo, debitis modi ut deleniti et
       deserunt voluptatibus eos minus rem praesentium recusandae at vero.
       Tempora?
-    </p>
+    </p> -->
 
     <!-- EMPLOYEE FILTER MODAL -->
     <div
@@ -421,7 +541,6 @@
       </div>
     </div>
 
-
     <!----- ADD LOCATION MODAL ----->
 
     <div
@@ -637,57 +756,55 @@
       </div>
     </div>
 
+    <!----- ADD LOCATION MODAL ----->
 
-     <!----- ADD LOCATION MODAL ----->
+    <div
+      class="modal fade"
+      id="editLocationModal"
+      tabindex="-1"
+      aria-labelledby="addLocationModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Add Location</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form id="editLocForm">
+            <div class="modal-body" id="editLocationBody">
+              <div>
+                <label for="editLocInput" class="form-label">Location</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editLocInput"
+                  name="editLocInput"
+                  required
+                />
+              </div>
+            </div>
 
-     <div
-     class="modal fade"
-     id="editLocationModal"
-     tabindex="-1"
-     aria-labelledby="addLocationModal"
-     aria-hidden="true"
-   >
-     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-       <div class="modal-content">
-         <div class="modal-header">
-           <h1 class="modal-title fs-5">Add Location</h1>
-           <button
-             type="button"
-             class="btn-close"
-             data-bs-dismiss="modal"
-             aria-label="Close"
-           ></button>
-         </div>
-         <form id="editLocForm">
-           <div class="modal-body" id="editLocationBody">
-             <div>
-               <label for="editLocInput" class="form-label">Location</label>
-               <input
-                 type="text"
-                 class="form-control"
-                 id="editLocInput"
-                 name="editLocInput"
-                 required
-               />
-             </div>
-           </div>
-
-           <div id="editLocationFooter" class="modal-footer">
-             <button
-               type="button"
-               class="btn btn-secondary"
-               id="cancelEditLocBtn"
-               data-bs-dismiss="modal"
-             >
-               Cancel
-             </button>
-             <button class="btn btn-primary" id="editLocBtn">Edit</button>
-           </div>
-         </form>
-       </div>
-     </div>
-   </div>
-
+            <div id="editLocationFooter" class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="cancelEditLocBtn"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button class="btn btn-primary" id="editLocBtn">Edit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <script src="libs/js/jquery-3.7.0.min.js"></script>
     <script src="libs/js/bootstrap.bundle.min.js"></script>

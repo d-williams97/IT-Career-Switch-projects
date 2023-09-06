@@ -9,6 +9,17 @@ $(window).on("load", function () {
 });
 
 $(document).ready(function () {
+  // -- TOASTS -- //
+  let addEmpToast = new bootstrap.Toast($('#addEmpToast'));
+  let addDepToast = new bootstrap.Toast($('#addDepToast'));
+  let addLocToast = new bootstrap.Toast($('#addLocToast'));
+
+  let depEditToast = new bootstrap.Toast($('#depEditToast'));
+  let empEditToast = new bootstrap.Toast($('#empEditToast'));
+  let locEditToast = new bootstrap.Toast($('#locEditToast'));
+
+
+
   let allEmployeeData;
 
   let fillTable = (data) => {
@@ -224,8 +235,8 @@ $('#editEmpBtn').on('click', function (e) {
         success: function (result) {
           if (result.status.name == "ok") {
             fillTable(result.data)
-
             $('#editEmpModal').modal('hide');
+            empEditToast.show();
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -391,6 +402,7 @@ $('#editEmpBtn').on('click', function (e) {
               fillTable(result.allData);
               fillDepartmentTable(result.departmentData);
               $('#editDepartmentModal').modal('hide');
+              depEditToast.show();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -509,6 +521,7 @@ $('#editEmpBtn').on('click', function (e) {
               fillDepartmentTable(result.departmentData);
               fillLocationTable(result.locationData)
               $('#editLocationModal').modal('hide');
+              locEditToast.show()
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -907,7 +920,6 @@ $('#editEmpBtn').on('click', function (e) {
                   if (result.status.name == "ok") {
                     allEmployeeData = result.data;
                     fillTable(allEmployeeData);
-                    //ADD A TOAST TO CONFIRM data added
                   } else {
                     // TOAST TO SAY THERE WAS AN ERROR
                   }
@@ -931,6 +943,7 @@ $('#editEmpBtn').on('click', function (e) {
         $("#departmentSelect").prop("selectedIndex", 0);
         $("#emailInput").val('');
         $("#jobInput").val('');
+        addEmpToast.show();
           } else {
             console.log('form not valid')
           }
@@ -1027,6 +1040,7 @@ $('#editEmpBtn').on('click', function (e) {
               $("#addDepartmentModal").modal("hide");
               $('#depDepInput').val('');
               $("#depLocSelect").prop("selectedIndex", 0);
+              addDepToast.show()
 
           } else {
             console.log('false')
@@ -1085,7 +1099,6 @@ $('#editEmpBtn').on('click', function (e) {
                     },
                   });
                   fillLocationTable(allLocationData);
-                  // $("#locationTableBody").empty();
                   updateLocationOptions(locations);
                 }
               },
@@ -1097,6 +1110,7 @@ $('#editEmpBtn').on('click', function (e) {
 
             $("#addLocationModal").modal("hide");
             $('#locLocInput').val('');
+            addLocToast.show()
           } else {
             console.log('invalid');
           }

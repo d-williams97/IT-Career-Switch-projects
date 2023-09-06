@@ -421,6 +421,7 @@
       </div>
     </div>
 
+
     <!----- ADD LOCATION MODAL ----->
 
     <div
@@ -635,6 +636,58 @@
         </div>
       </div>
     </div>
+
+
+     <!----- ADD LOCATION MODAL ----->
+
+     <div
+     class="modal fade"
+     id="editLocationModal"
+     tabindex="-1"
+     aria-labelledby="addLocationModal"
+     aria-hidden="true"
+   >
+     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h1 class="modal-title fs-5">Add Location</h1>
+           <button
+             type="button"
+             class="btn-close"
+             data-bs-dismiss="modal"
+             aria-label="Close"
+           ></button>
+         </div>
+         <form id="editLocForm">
+           <div class="modal-body" id="editLocationBody">
+             <div>
+               <label for="editLocInput" class="form-label">Location</label>
+               <input
+                 type="text"
+                 class="form-control"
+                 id="editLocInput"
+                 name="editLocInput"
+                 required
+               />
+             </div>
+           </div>
+
+           <div id="editLocationFooter" class="modal-footer">
+             <button
+               type="button"
+               class="btn btn-secondary"
+               id="cancelEditLocBtn"
+               data-bs-dismiss="modal"
+             >
+               Cancel
+             </button>
+             <button class="btn btn-primary" id="editLocBtn">Edit</button>
+           </div>
+         </form>
+       </div>
+     </div>
+   </div>
+
 
     <script src="libs/js/jquery-3.7.0.min.js"></script>
     <script src="libs/js/bootstrap.bundle.min.js"></script>

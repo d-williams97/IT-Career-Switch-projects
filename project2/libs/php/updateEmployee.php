@@ -24,7 +24,7 @@
 	$job = trim(ucfirst($_REQUEST['newJobTitle']));
 
 
-		error_log(print_r($departmentID, true));
+		// error_log(print_r($departmentID, true));
 
 
 	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);

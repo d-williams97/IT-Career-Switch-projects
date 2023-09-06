@@ -12,6 +12,7 @@ $(document).ready(function () {
   let allEmployeeData;
 
   let fillTable = (data) => {
+    $("#employeeTableBody").empty();
     for (let i = 0; i < data.length; i++) {
       // console.log(allEmployeeData[i]);
       let row = $(`<tr id=employeeRow'${[i]}'>`).addClass(
@@ -176,9 +177,7 @@ function openEditEmpModal(firstName, lastName, jobTitle, email, department,id, d
     editEmpIDFunc(newDepartment, departments)
  
   })
-
   $('#editEmpModal').modal('show');
-
 }
 
 
@@ -224,7 +223,6 @@ $('#editEmpBtn').on('click', function (e) {
         data: { newFirstName, newLastName, newDepartment, newEmail, newJobTitle, employeeID, departmentID},
         success: function (result) {
           if (result.status.name == "ok") {
-            $("#employeeTableBody").empty();
             fillTable(result.data)
 
             $('#editEmpModal').modal('hide');
@@ -363,7 +361,6 @@ $('#editEmpBtn').on('click', function (e) {
   }
 
 
-
   $('#editDepBtn').on('click', function (e) {
     e.preventDefault();
     $('#editDepForm').validate({
@@ -391,8 +388,6 @@ $('#editEmpBtn').on('click', function (e) {
         },
           success: function (result) {
             if (result.status.name == "ok") {
-              console.log(result)
-              $("#employeeTableBody").empty();
               fillTable(result.allData);
               fillDepartmentTable(result.departmentData);
               $('#editDepartmentModal').modal('hide');
@@ -414,6 +409,7 @@ $('#editEmpBtn').on('click', function (e) {
 
 
   let fillLocationTable = (data) => {
+    $("#locationTableBody").empty();
     locations = [];
     for (let i = 0; i < data.length; i++) {
       let location = data[i];
@@ -444,7 +440,7 @@ $('#editEmpBtn').on('click', function (e) {
       let editButtons = $("<button>")
         .addClass("btn btn-none btn-sm editBtn")
         .attr("data-bs-toggle", "modal")
-        .attr("data-bs-target", "#editDepartmentModal");
+        .attr("data-bs-target", "#editLocationModal");
       let editIcons = $("<i>").addClass(
         "fa-solid fa-pencil fa-lg text-primary"
       );
@@ -464,8 +460,69 @@ $('#editEmpBtn').on('click', function (e) {
       row.append(buttonCells);
 
       $("#locationTableBody").append(row);
+
+      editButtons.on('click', function() {
+        let editLocation = location.location;
+        let locationID  = location.locationID;
+        openEditLocModal(editLocation, locationID);
+      })
+
     }
   };
+
+
+  let newLocLoc
+  let locLocID
+  function openEditLocModal(location,locationID) {
+    newLocLoc = location;
+    locLocID = locationID;
+    $('#editLocInput').val(location);
+    $('#editLocInput').on('keyup', function() {
+      newLocLoc = $(this).val();
+    })
+  }
+
+  $('#editLocBtn').on('click', function(e) {
+    e.preventDefault();
+
+    $('#editLocForm').validate({
+      rules: {
+        editLocInput: 'required',
+      },
+      messages: {
+        editLocInput: 'Please enter a location.',
+      }
+      });
+      if ($('#editLocForm').valid()) {
+        $.ajax({
+          url: "libs/php/updateLocation.php",
+          type: "POST",
+          dataType: "json",
+          data: {
+            location: newLocLoc,
+            locationID: locLocID
+        },
+          success: function (result) {
+            if (result.status.name == "ok") {
+              console.log(result)
+              fillTable(result.allData);
+              fillDepartmentTable(result.departmentData);
+              fillLocationTable(result.locationData)
+              $('#editLocationModal').modal('hide');
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+            console.log(errorThrown);
+          },
+        });
+      } else {
+        console.log('invalid');
+      }
+
+  })
+
+
 
   // -------- LOADING EMPLOYEE TABLE -------- //
   $.ajax({
@@ -572,6 +629,11 @@ $('#editEmpBtn').on('click', function (e) {
     },
   });
 
+
+
+
+
+
   // ------------- GET SELECTED TAB ----------- //
 
   let searchTerm;
@@ -589,7 +651,6 @@ $('#editEmpBtn').on('click', function (e) {
         }
       });
       console.log(filteredData);
-      $("#employeeTableBody").empty();
       fillTable(filteredData);
     });
   }
@@ -612,7 +673,6 @@ $('#editEmpBtn').on('click', function (e) {
               return val;
             }
           });
-          $("#employeeTableBody").empty();
           fillTable(filteredData);
         });
 
@@ -638,8 +698,6 @@ $('#editEmpBtn').on('click', function (e) {
               return val;
             }
           });
-          $("#locationTableBody").empty();
-
           fillLocationTable(filteredData);
         });
       }
@@ -703,7 +761,6 @@ $('#editEmpBtn').on('click', function (e) {
         selectEmpLoc = "";
         selectEmpDep = "";
         console.log(selectEmpDep, selectEmpLoc);
-        $("#employeeTableBody").empty();
         fillTable(allEmployeeData);
       });
 
@@ -719,8 +776,6 @@ $('#editEmpBtn').on('click', function (e) {
             return departmentMatches || locationMatches;
           }
         });
-
-        $("#employeeTableBody").empty();
         fillTable(filteredData);
       });
     }
@@ -850,7 +905,6 @@ $('#editEmpBtn').on('click', function (e) {
                 dataType: "json",
                 success: function (result) {
                   if (result.status.name == "ok") {
-                    $("#employeeTableBody").empty();
                     allEmployeeData = result.data;
                     fillTable(allEmployeeData);
                     //ADD A TOAST TO CONFIRM data added
@@ -953,6 +1007,7 @@ $('#editEmpBtn').on('click', function (e) {
                           console.log(allDepartmentData);
                           fillDepartmentTable(allDepartmentData);
                           updateDepartmentOptions(departments)
+                          //add a toast to confirm to user
                         }
                       },
                       error: function (jqXHR, textStatus, errorThrown) {
@@ -1030,7 +1085,7 @@ $('#editEmpBtn').on('click', function (e) {
                     },
                   });
                   fillLocationTable(allLocationData);
-                  $("#locationTableBody").empty();
+                  // $("#locationTableBody").empty();
                   updateLocationOptions(locations);
                 }
               },

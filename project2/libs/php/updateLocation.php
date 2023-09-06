@@ -13,11 +13,11 @@ $executionStartTime = microtime(true);
 include("config.php");
 
 
-$department = trim(ucfirst($_REQUEST['department']));
-$departmentID = $_REQUEST['departmentID'];
 $location = trim(ucfirst($_REQUEST['location']));
 $locationID = $_REQUEST['locationID'];
 
+// error_log(print_r($location, true));
+// error_log(print_r($locationID, true));
 
 
 $conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
@@ -37,9 +37,9 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-$query = $conn->prepare('UPDATE department SET name = ?, locationID = ? WHERE id = ?');
+$query = $conn->prepare('UPDATE location SET name = ? WHERE id = ?');
 
-$query->bind_param("sii", $department, $locationID, $departmentID);
+$query->bind_param("si", $location, $locationID);
 
 $query->execute();
 
@@ -56,6 +56,36 @@ if ($query = false) {
 
 	exit;
 }
+
+// // -------- GETTING LOCATION DATA ----------- //
+
+$getLocationData = 'SELECT l.name as location, l.id as locationID
+FROM location l
+ORDER BY l.name';
+
+$locationResult = $conn->query($getLocationData);
+
+if (!$locationResult) {
+	$output['status']['code'] = "400";
+	$output['status']['name'] = "executed";
+	$output['status']['description'] = "query failed";	
+	$output['data'] = [];
+
+	mysqli_close($conn);
+
+	echo json_encode($output); 
+
+	exit; 
+}
+
+
+$locationData = []; 
+
+while ($row = mysqli_fetch_assoc($locationResult)) {
+	array_push($locationData, $row);
+};
+
+
 
 
 // -------- GETTING DEPARTMENT DATA ----------- //
@@ -124,6 +154,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
 	$output['status']['code'] = '200';
 	$output['status']['name'] = 'ok';
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . ' ms';
+	$output['locationData'] = $locationData;
 	$output['departmentData'] = $departmentData;
 	$output['allData'] = $allData;
 	

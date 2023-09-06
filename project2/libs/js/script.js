@@ -103,9 +103,6 @@ $(document).ready(function () {
 
         openEditEmpModal(firstName, lastName, jobTitle, email, department, id, departmentID)
       });
-
-
-
       $("#employeeTableBody").append(row);
     }
   };
@@ -128,7 +125,6 @@ $(document).ready(function () {
     departmentID = empObj[0].departmentID;
     console.log(departmentID);
   };
-
 
 
 function openEditEmpModal(firstName, lastName, jobTitle, email, department,id, depID) {
@@ -222,7 +218,7 @@ $('#editEmpBtn').on('click', function (e) {
       console.log('valid');
       console.log(departmentID);
       $.ajax({
-        url: "libs/php/getEmployeeByID.php",
+        url: "libs/php/updateEmployee.php",
         type: "POST",
         dataType: "json",
         data: { newFirstName, newLastName, newDepartment, newEmail, newJobTitle, employeeID, departmentID},
@@ -243,9 +239,6 @@ $('#editEmpBtn').on('click', function (e) {
     } else {
       console.log('invalid');
     }
-  
-  
-  
 })
 
 
@@ -256,6 +249,7 @@ $('#editEmpBtn').on('click', function (e) {
     $("#departmentTableBody").empty();
     for (let i = 0; i < data.length; i++) {
       let department = data[i];
+      // console.log(department);
       departments.push(department);
 
       let row = $(`<tr id=departmentRow${[i]}>`).addClass("d-flex");
@@ -318,8 +312,106 @@ $('#editEmpBtn').on('click', function (e) {
       row.append(buttonCells);
 
       $("#departmentTableBody").append(row);
+
+      editButtons.on('click',function() {
+        let editDep = data[i].department;
+        let editDepLoc= data[i].location;
+        let editDepID = data[i].departmentID;
+        openEditDepModal(editDep, editDepLoc, editDepID);
+      });
     }
   };
+
+
+
+  let newDepLoc;
+  let newDepDep;
+  let newDepId;
+  let locId
+
+  function editDepIDFunc (selectLoc) {
+    console.log(selectLoc);
+    let depObj = $.grep(locations, function (location, i) {
+      return location.location.toLowerCase() === selectLoc.toLowerCase();
+    });
+    locId = depObj[0].locationID;
+    console.log(locId);
+  };
+
+  function openEditDepModal (department,location, depID) {
+    newDepLoc = location;
+    newDepDep = department;
+    newDepId = depID
+
+
+    editDepIDFunc(location);
+   
+    $('#editDepInput').val(department);
+
+    let selectedOption = $('#editDepLocSel option').filter(function () {
+      return $(this).text() === location;
+    })
+    selectedOption.prop("selected", true);
+
+    $('#editDepLocSel').on('change', function() {
+      newDepLoc = $(this).val();
+      editDepIDFunc(newDepLoc)
+    })
+    $('#editDepInput').on('keyup', function() {
+      newDepDep = $(this).val();
+    })
+  }
+
+
+
+  $('#editDepBtn').on('click', function (e) {
+    e.preventDefault();
+    $('#editDepForm').validate({
+      rules: {
+        editDepLocSel: 'required',
+        editDepInput: 'required',
+      },
+      messages: {
+        editDepInput: 'Please enter a department.',
+        editDepLocSel: 'Please select a location',
+         
+      }
+      });
+      if ($('#editDepForm').valid()) {
+        console.log(locId, newDepLoc, newDepDep, newDepId);
+        $.ajax({
+          url: "libs/php/updateDepartment.php",
+          type: "POST",
+          dataType: "json",
+          data: {
+            locationID: locId, 
+            department: newDepDep,
+            departmentID: newDepId,
+            location: newDepLoc
+        },
+          success: function (result) {
+            if (result.status.name == "ok") {
+              console.log(result)
+              $("#employeeTableBody").empty();
+              fillTable(result.allData);
+              fillDepartmentTable(result.departmentData);
+              $('#editDepartmentModal').modal('hide');
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+            console.log(errorThrown);
+          },
+        });
+      } else {
+        console.log('invalid');
+      }
+  })
+
+
+
+
+
 
   let fillLocationTable = (data) => {
     locations = [];
@@ -453,13 +545,14 @@ $('#editEmpBtn').on('click', function (e) {
       );
     });
 
-    // $("#editEmpLoc").empty()
-    // $.map(locations, function (location, i) {
-    //   $("#editEmpLoc").append(
-    //     `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
-    //   );
-    // });
+    $("#editDepLocSel").empty()
+    $.map(locations, function (location, i) {
+      $("#editDepLocSel").append(
+        `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
+      );
+    });
 
+   
   }
 
   $.ajax({
@@ -520,7 +613,6 @@ $('#editEmpBtn').on('click', function (e) {
             }
           });
           $("#employeeTableBody").empty();
-
           fillTable(filteredData);
         });
 

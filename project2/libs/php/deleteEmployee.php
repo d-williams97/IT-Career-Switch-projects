@@ -15,7 +15,7 @@
 
 	$ID = $_REQUEST['id'];
 
-	error_log(print_r($ID, true));
+	// error_log(print_r($ID, true));
 
 
 

@@ -22,6 +22,9 @@ $(document).ready(function () {
   let delDepToast = new bootstrap.Toast($('#delDepToast'));
   let delLocToast = new bootstrap.Toast($('#delLocToast'));
 
+  let failDelDepToast = new bootstrap.Toast($('#failDelDepToast'));
+  let failDelLocToast = new bootstrap.Toast($('#failDelLocToast'));
+
   let allEmployeeData;
 
   let fillTable = (data) => {
@@ -120,7 +123,6 @@ $(document).ready(function () {
         let lastName = data[i].lastName;
         let id = data[i].id;
         deleteEmployee(firstName,lastName,id)
-
       })
 
       $("#employeeTableBody").append(row);
@@ -141,7 +143,7 @@ $(document).ready(function () {
   function deleteEmployee (firstName, lastName, id) {
     console.log(firstName, lastName, id);
     delID = id;
-    $('#deleteEmpMessage').html(`Are you sure you want to delete ${firstName} ${lastName}?`);
+    $('#deleteEmpMessage').html(`Are you sure you want to delete <b>${firstName} ${lastName}<b>?`);
     $('#deleteEmpModal').modal('show');
   }
 
@@ -347,7 +349,6 @@ $('#editEmpBtn').on('click', function (e) {
       );
       let deleteButtons = $("<button>")
         .addClass("btn btn-none btn-sm ms-3 deleteBtn")
-        .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#deleteDepartmentModal");
       let deleteIcons = $("<i>").addClass(
         "fa-regular fa-trash-can fa-lg text-danger"
@@ -368,9 +369,54 @@ $('#editEmpBtn').on('click', function (e) {
         let editDepID = data[i].departmentID;
         openEditDepModal(editDep, editDepLoc, editDepID);
       });
+
+      deleteButtons.on('click', function () {
+        let depId = data[i].departmentID;
+        let departmentName = data[i].department;
+        deleteDepartment(departmentName,depId);
+      })
     }
   };
 
+  let delDepID;
+  let delDepName;
+
+  function deleteDepartment (departmentName, id) {
+    delDepID = id;
+    delDepName = departmentName
+    $('#deleteDepMessage').html(`Are you sure you want to delete <b>${departmentName}</b>?`);
+    $('#deleteDepModal').modal('show');
+  }
+
+$('#deleteDepConfirm').on('click', function() {
+  $.ajax({
+    url: 'libs/php/deleteDepartment.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: delDepID,
+      department: delDepName
+    },
+    success: function(result) {
+      if (result.status.name == 'ok') {
+        $('#deleteDepModal').modal('hide');
+        fillDepartmentTable(result.data)
+        delDepToast.show();
+
+      } else {
+        console.log(result)
+      $('#deleteDepModal').modal('hide');
+      failDelDepToast.show();
+      }
+     
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+    },
+
+  })
+})
 
 
   let newDepLoc;
@@ -459,7 +505,6 @@ $('#editEmpBtn').on('click', function (e) {
 
 
 
-
   let fillLocationTable = (data) => {
     $("#locationTableBody").empty();
     locations = [];
@@ -498,7 +543,6 @@ $('#editEmpBtn').on('click', function (e) {
       );
       let deleteButtons = $("<button>")
         .addClass("btn btn-none btn-sm ms-3 deleteBtn")
-        .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#deleteDepartmentModal");
       let deleteIcons = $("<i>").addClass(
         "fa-regular fa-trash-can fa-lg text-danger"
@@ -519,8 +563,53 @@ $('#editEmpBtn').on('click', function (e) {
         openEditLocModal(editLocation, locationID);
       })
 
+      deleteButtons.on('click', function () {
+        let locName = location.location;
+        let LocID  = location.locationID;
+        deleteLocation(locName,LocID);
+      })
     }
   };
+
+
+  let delLocID;
+  let delLocName;
+
+  function deleteLocation (locationName, id) {
+    delLocID = id;
+    delLocName = locationName;
+    $('#deleteLocMessage').html(`Are you sure you want to delete <b>${locationName}</b>?`);
+    $('#deleteLocModal').modal('show');
+  }
+
+$('#deleteLocConfirm').on('click', function() {
+  $.ajax({
+    url: 'libs/php/deleteLocation.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: delLocID,
+      location: delLocName
+    },
+    success: function(result) {
+      if (result.status.name == 'ok') {
+        fillLocationTable(result.data)
+        $('#deleteLocModal').modal('hide');
+        delLocToast.show();
+
+      } else {
+      $('#deleteLocModal').modal('hide');
+      failDelLocToast.show();
+      }
+  
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+    },
+
+  })
+})
 
 
   let newLocLoc

@@ -13,194 +13,8 @@
 
     <section id="Header">
       <div class="row">
-        <div class="div col-3">
-          <!------- ADD TOASTS ---------->
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="addEmpToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Employee added</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="addDepToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Department added</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="addLocToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Location added</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <!------- EDIT TOASTS ---------->
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="empEditToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Employee updated</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="depEditToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Department updated</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="locEditToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Location updated</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <!------- DELETE TOASTS ---------->
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="delEmpToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Employee deleted.</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="delDepToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Employee deleted.</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="delDepToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Department deleted.</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-
-          <div
-            class="toast align-items-center text-bg-success border-0"
-            id="delLocToast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div class="d-flex">
-              <div class="toast-body">Location deleted.</div>
-              <button
-                type="button"
-                class="btn-close btn-close-white m-auto me-2"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-          </div>
-        </div>
-
         <!-------  TITLE ---------->
-        <div class="col-7 centered">
+        <div class="col-10 centered">
           <h1>Company Directory</h1>
         </div>
         <div class="col-1">
@@ -214,7 +28,7 @@
           </button>
         </div>
       </div>
-      <div class="input-group mb-3">
+      <div class="input-group mb-3 mt-2">
         <span class="input-group-text" id="basic-addon1">
           <i class="fa-solid fa-magnifying-glass"></i
         ></span>
@@ -874,7 +688,6 @@
     </div>
 
     <!----- DELETE EMPLOYEE MODAL ----->
-
     <div
       class="modal fade"
       id="deleteEmpModal"
@@ -915,6 +728,354 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!----- DELETE DEPARTMENT MODAL ----->
+    <div
+      class="modal fade"
+      id="deleteDepModal"
+      tabindex="-1"
+      aria-labelledby="deleteDepModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Warning</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="deleteDepModalBody">
+            <p class="fs-5" id="deleteDepMessage"></p>
+
+            <div id="deleteDepModalFooter" class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="deleteDepCancel"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="deleteDepConfirm"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!----- DELETE LOCATION MODAL ----->
+    <div
+      class="modal fade"
+      id="deleteLocModal"
+      tabindex="-1"
+      aria-labelledby="deleteLocModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Warning</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="deleteLocModalBody">
+            <p class="fs-5" id="deleteLocMessage"></p>
+
+            <div id="deleteLocModalFooter" class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="deleteLocCancel"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="deleteLocConfirm"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!----- DELETE LOCATION MODAL ----->
+    <div
+      class="modal fade"
+      id="deleteLocModal"
+      tabindex="-1"
+      aria-labelledby="deleteLocModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Warning</h1>
+            <b></b>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="deleteLocModalBody">
+            <p class="fs-5" id="deleteLocMessage"></p>
+
+            <div id="deleteLocModalFooter" class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="deleteLocCancel"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="deleteLocConfirm"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+        <!------- ADD TOASTS ---------->
+    <div class="row mb-2">
+      <div class="div col-3">
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="addEmpToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Employee added</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="addDepToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Department added</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="addLocToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Location added</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <!------- EDIT TOASTS ---------->
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="empEditToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Employee updated</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="depEditToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Department updated</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="locEditToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Location updated</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <!------- DELETE TOASTS ---------->
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="delEmpToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Employee deleted.</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="delDepToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Department deleted.</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+          class="toast align-items-center text-bg-success border-0"
+          id="delLocToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body">Location deleted.</div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <!-- FAILED TOASTS -->
+        <div
+          class="toast align-items-center text-bg-danger border-0"
+          id="failDelDepToast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex mb-0 mt-0">
+            <div class="toast-body">
+              Please delete associated employees before deleting the department.
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white m-auto me-2"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div
+        class="toast align-items-center text-bg-danger border-0"
+        id="failDelLocToast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex mb-0 mt-0">
+          <div class="toast-body">
+            Please delete associated department before deleting the location.
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white m-auto me-2"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+
+
       </div>
     </div>
 

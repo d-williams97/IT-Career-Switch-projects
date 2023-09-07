@@ -18,7 +18,9 @@ $(document).ready(function () {
   let empEditToast = new bootstrap.Toast($('#empEditToast'));
   let locEditToast = new bootstrap.Toast($('#locEditToast'));
 
-
+  let delEmpToast = new bootstrap.Toast($('#delEmpToast'));
+  let delDepToast = new bootstrap.Toast($('#delDepToast'));
+  let delLocToast = new bootstrap.Toast($('#delLocToast'));
 
   let allEmployeeData;
 
@@ -81,14 +83,12 @@ $(document).ready(function () {
       );
       let editButtons = $("<button>")
         .addClass("btn btn-none btn-sm editBtn")
-        // .attr("data-bs-toggle", "modal")
         // .attr("data-bs-target", "#editEmployeeModal");
       let editIcons = $("<i>").addClass(
         "fa-solid fa-pencil fa-lg text-primary"
       );
       let deleteButtons = $("<button>")
         .addClass("btn btn-none btn-sm ms-3 deleteBtn")
-        .attr("data-bs-toggle", "modal")
         .attr("data-bs-target", "#deleteEmployeeModal");
       let deleteIcons = $("<i>").addClass(
         "fa-regular fa-trash-can fa-lg text-danger"
@@ -111,10 +111,18 @@ $(document).ready(function () {
         let location = data[i].location;
         let id = data[i].id;
         let departmentID = data[i].departmentID;
-        console.log(departmentID);
 
         openEditEmpModal(firstName, lastName, jobTitle, email, department, id, departmentID)
       });
+
+      deleteButtons.on('click', function () {
+        let firstName = data[i].firstName;
+        let lastName = data[i].lastName;
+        let id = data[i].id;
+        deleteEmployee(firstName,lastName,id)
+
+      })
+
       $("#employeeTableBody").append(row);
     }
   };
@@ -127,6 +135,40 @@ $(document).ready(function () {
   let employeeID;
   let departmentID;
   let depOption;
+  let delID;
+
+
+  function deleteEmployee (firstName, lastName, id) {
+    console.log(firstName, lastName, id);
+    delID = id;
+    $('#deleteEmpMessage').html(`Are you sure you want to delete ${firstName} ${lastName}?`);
+    $('#deleteEmpModal').modal('show');
+  }
+
+$('#deleteEmpConfirm').on('click', function() {
+  console.log(delID);
+  $.ajax({
+    url: 'libs/php/deleteEmployee.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: delID
+    },
+    success: function(result) {
+      fillTable(result.data);
+      delEmpToast.show();
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+    },
+
+  })
+  $('#deleteEmpModal').modal('hide');
+})
+
+
+
   
 
   function editEmpIDFunc (selectVal, departments) {
@@ -156,8 +198,6 @@ function openEditEmpModal(firstName, lastName, jobTitle, email, department,id, d
 
   selectedOption.prop("selected", true);
   console.log(newDepartment);
-
-
 
   $('#editEmpTitle').html(`Edit ${firstName}, ${lastName}`);
   $('#editFirstName').val(firstName);

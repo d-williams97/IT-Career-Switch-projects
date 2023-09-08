@@ -86,7 +86,6 @@ $(document).ready(function () {
       );
       let editButtons = $("<button>")
         .addClass("btn btn-none btn-sm editBtn")
-        // .attr("data-bs-target", "#editEmployeeModal");
       let editIcons = $("<i>").addClass(
         "fa-solid fa-pencil fa-lg text-primary"
       );
@@ -127,6 +126,7 @@ $(document).ready(function () {
 
       $("#employeeTableBody").append(row);
     }
+    updateDepartmentOptions(departments);
   };
 
   let newFirstName;
@@ -170,8 +170,6 @@ $('#deleteEmpConfirm').on('click', function() {
 })
 
 
-
-  
 
   function editEmpIDFunc (selectVal, departments) {
     console.log(selectVal);
@@ -376,6 +374,7 @@ $('#editEmpBtn').on('click', function (e) {
         deleteDepartment(departmentName,depId);
       })
     }
+    updateDepartmentOptions(departments);
   };
 
   let delDepID;
@@ -400,7 +399,7 @@ $('#deleteDepConfirm').on('click', function() {
     success: function(result) {
       if (result.status.name == 'ok') {
         $('#deleteDepModal').modal('hide');
-        fillDepartmentTable(result.data)
+        fillDepartmentTable(result.data);
         delDepToast.show();
 
       } else {
@@ -569,6 +568,7 @@ $('#deleteDepConfirm').on('click', function() {
         deleteLocation(locName,LocID);
       })
     }
+    updateLocationOptions(locations);
   };
 
 
@@ -689,6 +689,7 @@ $('#deleteLocConfirm').on('click', function() {
   let allDepartmentData;
   let updateDepartmentOptions = function (location) {
     $("#selectEmpDep").empty();
+    $("#selectEmpDep").append('<option> Select a department </option>');
     $.map(departments, function (location, i) {
       $("#selectEmpDep").append(
         `<option value='${location.department.toLowerCase()}'>${
@@ -704,8 +705,6 @@ $('#deleteLocConfirm').on('click', function() {
         }</option>`
       );
     });
-
-
   }
 
   $.ajax({
@@ -716,7 +715,6 @@ $('#deleteLocConfirm').on('click', function() {
       if (result.status.name == "ok") {
         allDepartmentData = result.data;
         fillDepartmentTable(allDepartmentData);
-        updateDepartmentOptions(departments);
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -731,6 +729,7 @@ $('#deleteLocConfirm').on('click', function() {
   let allLocationData;
   let updateLocationOptions = function (locations) {
     $("#selectEmpLoc").empty()
+    $("#selectEmpLoc").append('<option>Select a location</option>')
     $.map(locations, function (location, i) {
       $("#selectEmpLoc").append(
         `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
@@ -750,6 +749,14 @@ $('#deleteLocConfirm').on('click', function() {
         `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
       );
     });
+    $("#depLocSel").empty()
+    $.map(locations, function (location, i) {
+      $("#depLocSel").append(
+        `<option value='${location.location.toLowerCase()}'>${location.location}</option>`
+      );
+    });
+
+
 
    
   }
@@ -762,7 +769,6 @@ $('#deleteLocConfirm').on('click', function() {
       if (result.status.name == "ok") {
         allLocationData = result.data;
         fillLocationTable(allLocationData);
-        updateLocationOptions(locations);
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -853,8 +859,6 @@ $('#deleteLocConfirm').on('click', function() {
     if (selectedTab === "pills-departments-tab") {
       $("#depFilterModal").modal("show");
 
-      updateLocationOptions(locations);
-
       let selectDepLoc;
       $("#selectDepLoc").on("change", function () {
         selectDepLoc = $(this).val();
@@ -902,15 +906,13 @@ $('#deleteLocConfirm').on('click', function() {
         $("#selectEmpDep").prop("selectedIndex", 0);
         selectEmpLoc = "";
         selectEmpDep = "";
-        console.log(selectEmpDep, selectEmpLoc);
         fillTable(allEmployeeData);
       });
 
       $("#empFilterConfirm").on("click", function () {
         let filteredData = allEmployeeData.filter(function (val) {
-          const departmentMatches =
-            val.department.toLowerCase() === selectEmpDep; // if a value is selected
-          const locationMatches = val.location.toLowerCase() === selectEmpLoc; // if a value is selected
+          const departmentMatches = val.department.toLowerCase() === selectEmpDep; 
+          const locationMatches = val.location.toLowerCase() === selectEmpLoc; 
 
           if (selectEmpDep && selectEmpLoc) {
             return departmentMatches && locationMatches;
@@ -918,7 +920,13 @@ $('#deleteLocConfirm').on('click', function() {
             return departmentMatches || locationMatches;
           }
         });
-        fillTable(filteredData);
+        console.log(filteredData);
+        if (filteredData.length === 0) {
+          console.log('0')
+        } else {
+          fillTable(filteredData);
+        }
+        
       });
     }
   });
@@ -1041,23 +1049,14 @@ $('#deleteLocConfirm').on('click', function() {
           success: function (result) {
             if (result.status.name == "ok") {
               console.log(result);
-              $.ajax({
-                url: "libs/php/getAll.php",
-                type: "POST",
-                dataType: "json",
-                success: function (result) {
-                  if (result.status.name == "ok") {
-                    allEmployeeData = result.data;
-                    fillTable(allEmployeeData);
-                  } else {
-                    // TOAST TO SAY THERE WAS AN ERROR
-                  }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                  console.log(textStatus);
-                  console.log(errorThrown);
-                },
-              });
+              fillTable(result.data)
+              $("#addEmployeeModal").modal("hide");
+              $("#firstNameInput").val('');
+              $("#lastNameInput").val('');
+              $("#departmentSelect").prop("selectedIndex", 0);
+              $("#emailInput").val('');
+              $("#jobInput").val('');
+              addEmpToast.show();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -1065,14 +1064,6 @@ $('#deleteLocConfirm').on('click', function() {
             console.log(errorThrown);
           },
         });
-
-        $("#addEmployeeModal").modal("hide");
-        $("#firstNameInput").val('');
-        $("#lastNameInput").val('');
-        $("#departmentSelect").prop("selectedIndex", 0);
-        $("#emailInput").val('');
-        $("#jobInput").val('');
-        addEmpToast.show();
           } else {
             console.log('form not valid')
           }
@@ -1083,7 +1074,6 @@ $('#deleteLocConfirm').on('click', function() {
     } else if (selectedTab === "pills-departments-tab") {
       console.log(selectedTab);
       let depDepVal
-
 
       $("#addDepartmentModal").modal("show");
 
@@ -1139,25 +1129,11 @@ $('#deleteLocConfirm').on('click', function() {
                 success: function (result) {
                   if (result.status.name == "ok") {
                     console.log(result);
-                    $.ajax({
-                      url: "libs/php/getDepartments.php",
-                      type: "POST",
-                      dataType: "json",
-                      success: function (result) {
-                        if (result.status.name == "ok") {
-                          allDepartmentData = result.data;
-                          console.log(allDepartmentData);
-                          fillDepartmentTable(allDepartmentData);
-                          updateDepartmentOptions(departments)
-                          //add a toast to confirm to user
-                        }
-                      },
-                      error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus);
-                        console.log(errorThrown);
-                      },
-                    });
-      
+                    fillDepartmentTable(result.data);
+                    $("#addDepartmentModal").modal("hide");
+                    $('#depDepInput').val('');
+                    $("#depLocSelect").prop("selectedIndex", 0);
+                    addDepToast.show();
                   }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -1166,14 +1142,8 @@ $('#deleteLocConfirm').on('click', function() {
                 },
               });
 
-              $("#addDepartmentModal").modal("hide");
-              $('#depDepInput').val('');
-              $("#depLocSelect").prop("selectedIndex", 0);
-              addDepToast.show()
-
           } else {
             console.log('false')
-            //Could not add department
           }
       })
 
@@ -1210,25 +1180,10 @@ $('#deleteLocConfirm').on('click', function() {
               },
               success: function (result) {
                 if (result.status.name == "ok") {
-
-                  $.ajax({
-                    url: "libs/php/getLocations.php",
-                    type: "POST",
-                    dataType: "json",
-                    success: function (result) {
-                      if (result.status.name == "ok") {
-                        allLocationData = result.data;
-                        fillLocationTable(allLocationData);
-                        updateLocationOptions(locations);
-                      }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                      console.log(textStatus);
-                      console.log(errorThrown);
-                    },
-                  });
-                  fillLocationTable(allLocationData);
-                  updateLocationOptions(locations);
+                  fillLocationTable(result.data);
+                  $("#addLocationModal").modal("hide");
+                  $('#locLocInput').val('');
+                  addLocToast.show();
                 }
               },
               error: function (jqXHR, textStatus, errorThrown) {
@@ -1236,12 +1191,8 @@ $('#deleteLocConfirm').on('click', function() {
                 console.log(errorThrown);
               },
             });
-
-            $("#addLocationModal").modal("hide");
-            $('#locLocInput').val('');
-            addLocToast.show()
           } else {
-            console.log('invalid');
+            console.log('data not found');
           }
 
       })
@@ -1249,13 +1200,6 @@ $('#deleteLocConfirm').on('click', function() {
         $('#locLocInput').val('');
       })
     }
-
-
-
-
-
-
-
 
 
   });

@@ -58,11 +58,45 @@
 
 	}
 
+	//  ----- GETTING ALL DATA -------- //
+
+	$getAllData = 'SELECT p.lastName, p.firstName, p.jobTitle, p.email, p.id, d.name as department, d.id as departmentID, l.name as location 
+	FROM personnel p
+	 LEFT JOIN department d ON (d.id = p.departmentID)
+	  LEFT JOIN location l ON (l.id = d.locationID) 
+	  ORDER BY p.lastName, p.firstName, d.name, l.name';
+
+	$allDataResult = $conn->query($getAllData); 
+	
+	if (!$allDataResult) {
+
+		$output['status']['code'] = "400";
+		$output['status']['name'] = "executed";
+		$output['status']['description'] = "query failed";	
+		$output['data'] = [];
+
+		mysqli_close($conn);
+
+		echo json_encode($output); 
+
+		exit; 
+
+	}
+   
+   	$allData = []; 
+
+	while ($row = mysqli_fetch_assoc($allDataResult)) { 
+
+		array_push($allData, $row); 
+
+	}
+
+
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = [];
+	$output['data'] = $allData;
 	
 	mysqli_close($conn);
 

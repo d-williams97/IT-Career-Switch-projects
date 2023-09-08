@@ -17,10 +17,6 @@ include("config.php");
 $location = $_REQUEST['location'];
 $ID = $_REQUEST['id'];
 
-// error_log(print_r($ID, true));
-// error_log(print_r($location, true));
-
-
 
 $conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 
@@ -53,18 +49,18 @@ $filterDataResult = $conn->query($filterDataQuery);
 if (!$filterDataResult) {
 	$output['status']['code'] = "400";
 	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";	
+	$output['status']['description'] = "query failed";
 	$output['data'] = [];
 
 	mysqli_close($conn);
 
-	echo json_encode($output); 
+	echo json_encode($output);
 
-	exit; 
+	exit;
 }
 
 
-$filterData = []; 
+$filterData = [];
 
 while ($row = mysqli_fetch_assoc($filterDataResult)) {
 	array_push($filterData, $row);
@@ -84,9 +80,6 @@ function findLocID($val, $ID)
 	return $val['locationID'] == $ID;
 };
 
-error_log(print_r($findData, true));
-
-
 
 // IF ANY DEPARTMENT LOC ID'S = THE SELECTED LOC ID THEN LOCATION CANNOT BE DELETED.
 
@@ -102,7 +95,7 @@ if (count($findData) !== 0) {
 	echo json_encode($output);
 
 	exit;
-} 
+}
 // IF SELECTED LOCATION ID IS NOT PRESENT IN DEPARTMENT DATA THEN DELETE QUERY EXECUTES.
 else {
 
@@ -133,32 +126,32 @@ else {
 FROM location l
 ORDER BY l.name';
 
-$locationResult = $conn->query($getLocationData);
+	$locationResult = $conn->query($getLocationData);
 
-if (!$locationResult) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";	
-	$output['data'] = [];
+	if (!$locationResult) {
+		$output['status']['code'] = "400";
+		$output['status']['name'] = "executed";
+		$output['status']['description'] = "query failed";
+		$output['data'] = [];
 
-	mysqli_close($conn);
+		mysqli_close($conn);
 
-	echo json_encode($output); 
+		echo json_encode($output);
 
-	exit; 
-}
+		exit;
+	}
 
 
-$locationData = []; 
+	$locationData = [];
 
-while ($row = mysqli_fetch_assoc($locationResult)) {
-	array_push($locationData, $row);
-};
+	while ($row = mysqli_fetch_assoc($locationResult)) {
+		array_push($locationData, $row);
+	};
 
-$output['status']['code'] = '200';
-$output['status']['name'] = 'ok';
-$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . ' ms';
-$output['data'] = $locationData;
+	$output['status']['code'] = '200';
+	$output['status']['name'] = 'ok';
+	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . ' ms';
+	$output['data'] = $locationData;
 
 	mysqli_close($conn);
 

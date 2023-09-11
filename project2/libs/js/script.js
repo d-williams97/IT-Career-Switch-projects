@@ -157,13 +157,6 @@ function openEditEmpModal(firstName, lastName, jobTitle, email, department,id, d
       name_JobTableCell.append(namesDiv);
       row.append(name_JobTableCell);
 
-      let emails = $("<td>")
-        .addClass("cell-width employeeEmail")
-        .attr("data-id", i);
-      emails
-        .html(data[i].email)
-        .addClass("text-nowrap align-middle d-md-table-cell ps-3");
-      row.append(emails);
 
       let department_locationCell = $("<td>")
         .addClass("cell-width pb-0 employeeDep")
@@ -182,6 +175,14 @@ function openEditEmpModal(firstName, lastName, jobTitle, email, department,id, d
       departmentsDiv.append(departmentsData);
       department_locationCell.append(departmentsDiv);
       row.append(department_locationCell);
+
+      let emails = $("<td>")
+      .addClass("cell-width employeeEmail")
+      .attr("data-id", i);
+    emails
+      .html(data[i].email)
+      .addClass("text-nowrap align-middle d-md-table-cell ps-3");
+    row.append(emails);
 
       // -- BUTTONS -- //
       let buttonCells = $("<td>").addClass("employeeCells");

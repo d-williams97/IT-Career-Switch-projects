@@ -159,7 +159,7 @@ input.error {
 
 
 }
-@media screen and (max-width: 1350px) { /* 1024px or less */
+@media screen and (max-width: 1250px) { /* 1024px or less */
   .employeeButtons {
     justify-content: end !important;
   }

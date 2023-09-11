@@ -134,7 +134,6 @@ function openEditEmpModal(firstName, lastName, jobTitle, email, department,id, d
   let fillTable = (data) => {
     $("#employeeTableBody").empty();
     for (let i = 0; i < data.length; i++) {
-      // console.log(allEmployeeData[i]);
       let row = $(`<tr id=employeeRow'${[i]}'>`).addClass(
         "d-flex align-items-center"
       );
@@ -249,6 +248,7 @@ $('#deleteEmpConfirm').on('click', function() {
     },
     success: function(result) {
       fillTable(result.data);
+      allEmployeeData = result.data;
       delEmpToast.show();
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -304,6 +304,7 @@ $('#editEmpBtn').on('click', function (e) {
         success: function (result) {
           if (result.status.name == "ok") {
             fillTable(result.data)
+            allEmployeeData = result.data;
             $('#editEmpModal').modal('hide');
             empEditToast.show();
           }
@@ -400,7 +401,7 @@ function openEditDepModal (department,location, depID) {
 
 
   let fillDepartmentTable = (data) => {
-    console.log(data);
+    // console.log(data);
     departments = [];
     $("#departmentTableBody").empty();
     for (let i = 0; i < data.length; i++) {
@@ -501,7 +502,7 @@ $('#deleteDepConfirm').on('click', function() {
     },
     success: function(result) {
       if (result.status.name == 'ok') {
-        console.log(result.data);
+        allDepartmentData = result.data;
         $('#deleteDepModal').modal('hide');
         fillDepartmentTable(result.data);
         delDepToast.show();
@@ -552,6 +553,7 @@ $('#deleteDepConfirm').on('click', function() {
             if (result.status.name == "ok") {
               fillTable(result.allData);
               fillDepartmentTable(result.departmentData);
+              allDepartmentData = result.departmentData;
               $('#editDepartmentModal').modal('hide');
               depEditToast.show();
             }
@@ -711,6 +713,7 @@ $('#deleteLocConfirm').on('click', function() {
     },
     success: function(result) {
       if (result.status.name == 'ok') {
+        allLocationData = result.data
         fillLocationTable(result.data)
         $('#deleteLocModal').modal('hide');
         delLocToast.show();
@@ -756,6 +759,7 @@ $('#deleteLocConfirm').on('click', function() {
               fillTable(result.allData);
               fillDepartmentTable(result.departmentData);
               fillLocationTable(result.locationData)
+              allLocationData = result.locationData;
               $('#editLocationModal').modal('hide');
               locEditToast.show()
             }
@@ -781,16 +785,15 @@ $('#deleteLocConfirm').on('click', function() {
   if (selectedTab === "pills-employees-tab") {
     $("#searchBar").on("keyup", function () {
       searchTerm = $(this).val().toLowerCase(); // Get the current value of the input
-      console.log(allEmployeeData);
-      let filteredData = allEmployeeData.filter(function (val) {
+      let filteredData = [];
+       allEmployeeData.filter(function (val) {
         if (
           val.firstName.toLowerCase().startsWith(searchTerm) ||
           val.lastName.toLowerCase().startsWith(searchTerm)
         ) {
-          return val;
+          filteredData.push(val);
         }
       });
-      console.log(filteredData);
       fillTable(filteredData);
     });
   }
@@ -805,12 +808,13 @@ $('#deleteLocConfirm').on('click', function() {
         $("#filterButton").attr("disabled", false);
         $("#searchBar").on("keyup", function () {
           searchTerm = $(this).val().toLowerCase(); // Get the current value of the input
-          let filteredData = allEmployeeData.filter(function (val) {
+          let filteredData = [];
+          allEmployeeData.filter(function (val) {
             if (
               val.firstName.toLowerCase().startsWith(searchTerm) ||
               val.lastName.toLowerCase().startsWith(searchTerm)
             ) {
-              return val;
+              filteredData.push(val);
             }
           });
           fillTable(filteredData);
@@ -818,24 +822,28 @@ $('#deleteLocConfirm').on('click', function() {
 
         // Change to filter button to employee filter
       } else if (selectedTab === "pills-departments-tab") {
+        console.log(departments);
         $("#filterButton").attr("disabled", false);
         $("#searchBar").on("keyup", function () {
           searchTerm = $(this).val().toLowerCase();
-          let filteredData = allDepartmentData.filter(function (val) {
+          let filteredData = [];
+          allDepartmentData.filter(function (val) {
             if (val.department.toLowerCase().startsWith(searchTerm)) {
-              return val;
+              filteredData.push(val);
             }
           });
-          $("#departmentTableBody").empty();
           fillDepartmentTable(filteredData);
         });
       } else if (selectedTab === "pills-locations-tab") {
+        // console.log(locations)
         $("#filterButton").attr("disabled", true);
+
         $("#searchBar").on("keyup", function () {
           searchTerm = $(this).val().toLowerCase();
-          let filteredData = allLocationData.filter(function (val) {
+          let filteredData = [];
+          allLocationData.filter(function (val) {
             if (val.location.toLowerCase().startsWith(searchTerm)) {
-              return val;
+              filteredData.push(val)
             }
           });
           fillLocationTable(filteredData);
@@ -1020,7 +1028,7 @@ $('#deleteLocConfirm').on('click', function() {
           },
           success: function (result) {
             if (result.status.name == "ok") {
-              console.log(result);
+              allEmployeeData = result.data;
               fillTable(result.data)
               $("#addEmployeeModal").modal("hide");
               $("#firstNameInput").val('');
@@ -1093,8 +1101,8 @@ $('#deleteLocConfirm').on('click', function() {
                 },
                 success: function (result) {
                   if (result.status.name == "ok") {
-                    console.log(result);
                     fillDepartmentTable(result.data);
+                    allDepartmentData = result.data;
                     $("#addDepartmentModal").modal("hide");
                     $('#depDepInput').val('');
                     $("#depLocSel").prop("selectedIndex", 0);
@@ -1145,6 +1153,7 @@ $('#deleteLocConfirm').on('click', function() {
               success: function (result) {
                 if (result.status.name == "ok") {
                   fillLocationTable(result.data);
+                  allLocationData = result.data;
                   $("#addLocationModal").modal("hide");
                   $('#locLocInput').val('');
                   addLocToast.show();

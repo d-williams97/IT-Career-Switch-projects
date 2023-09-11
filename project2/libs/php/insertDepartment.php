@@ -12,6 +12,7 @@
 
 	$department = trim(ucfirst($_REQUEST['department']));
 	$locationID = $_REQUEST['locationID'];
+	error_log(print_r($locationID, true));
 
 	
 	// this includes the login details
@@ -68,6 +69,9 @@ LEFT JOIN location l ON (l.id = d.locationID)
 ORDER BY d.name, l.name';
 
 $departmentDataResult = $conn->query($getDepartmentData);
+
+error_log(print_r($departmentDataResult, true));
+error_log(print_r('ran', true));
 
 if (!$departmentDataResult) {
 	$output['status']['code'] = "400";

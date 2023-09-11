@@ -5,9 +5,8 @@ html,
    padding: 5px 5px 5px 5px;
    overflow: hidden;
  }
- 
- 
- 
+
+
  #preloader {
   position: fixed;
   top: 0;
@@ -31,42 +30,7 @@ html,
   -webkit-animation: animate-preloader 1s linear infinite;
   animation: animate-preloader 1s linear infinite;
 }
-/* 
-#basicPreloader,
-#weatherPreloader,
-#newsPreloader,
-#wikiPreloader,
-#erPreloader,
-#tzPreloader,
-#newsPreloader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  overflow: hidden;
-  background: #fff;
-}
-#basicPreloader:before,
-#weatherPreloader:before,
-#newsPreloader:before,
-#wikiPreloader:before,
-#erPreloader:before,
-#tzPreloader:before,
-#newsPreloader:before {
-  content: "";
-  position: fixed; 
-  top: calc(50% - 30px);
-  left: calc(50% - 30px);
-  border: 6px solid #f2f2f2;
-  border-top: 6px solid #56829e;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  -webkit-animation: animate-preloader 1s linear infinite;
-  animation: animate-preloader 1s linear infinite;
-} */
+
 
 @-webkit-keyframes animate-preloader {
   0% {
@@ -95,12 +59,30 @@ html,
   transition: visibility 0s 1s, opacity 1s linear;
 }
 
+#appTitle{
+  padding-left: 7rem;
+ }
+
+
  .centered {
  display: flex;  /*creates a flex container */
   justify-content: center; /* aligns the flex items (content) along the horizontal axis (main axis) of the flex container and centers them horizontally */
   align-items: center; /* This property aligns the flex items along the vertical axis (cross axis) of the flex container and centers them vertically */
   height: 100%; /* Sets the height of the flex container to 100% of its parent's height. */
 }
+
+#empNumber, #depNumber, #locNumber {
+  display: flex;  /*creates a flex container */
+   justify-content: center; /* aligns the flex items (content) along the horizontal axis (main axis) of the flex container and centers them horizontally */
+   align-items: center; /* This property aligns the flex items along the vertical axis (cross axis) of the flex container and centers them vertically */
+ }
+
+.end {
+  display: flex;  /*creates a flex container */
+   justify-content: end; 
+   align-items: center; 
+   height: 100%; 
+ }
 
 .nav-pills .nav-link {
   color: #000000;
@@ -113,7 +95,7 @@ html,
 }
 
 .table-responsive {
-  height: 70vh;
+  height: 72vh;
 }
 
 .tab-content {
@@ -125,11 +107,6 @@ tr {
   cursor: default;
 }
 
-/* #employeeTableBody {
-  display: flex;
-  flex-flow: column;
-  height: calc(100vh - 20px);
-} */
 
 .cell-width {
   width: 30%;
@@ -194,6 +171,12 @@ input.error {
   .cell-width {
     width: 45%;
   }
+  
+
+  .fa-filter:hover {
+    color: #000000;
+    background-color: black;
+  }
 
 
 
@@ -217,7 +200,7 @@ input.error {
     width: 70%;
   }
 
-  .employeeCells, .departmentButtonCell {
+  .employeeCells, .departmentButtonCells {
     width: 30%;
   }
 

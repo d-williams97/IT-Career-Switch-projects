@@ -6,6 +6,8 @@
     <title>Company Directory</title>
     <link rel="stylesheet" href="./libs/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./libs/css/styles.css" />
+    <link rel="icon" href="./libs/assets/favicon.png" type="image/x-icon">
+
   </head>
 
   <body>
@@ -14,17 +16,15 @@
     <section id="Header">
       <div class="row">
         <!-------  TITLE ---------->
-        <div class="col-10 centered">
+        <div class="col-11 centered" id="appTitle">
           <h1>Company Directory</h1>
         </div>
-        <div class="col-1">
-          <button id="filterButton" class="btn btn-light mt-1">
-            <i class="fa-solid fa-filter fa-2xl"></i>
+        <div class="col-1 end">
+          <button id="filterButton" class="btn btn-light mt-1 bg-white">
+            <i class="fa-solid fa-filter fa-2xl text-primary"></i>
           </button>
-        </div>
-        <div class="col-1">
-          <button id="plusButton" class="btn btn-light mt-1">
-            <i class="fa-solid fa-plus fa-2xl"></i>
+          <button id="plusButton" class="btn btn-light mt-1 bg-white">
+            <i class="fa-solid fa-plus fa-2xl text-primary"></i>
           </button>
         </div>
       </div>
@@ -44,7 +44,7 @@
       <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
-            class="nav-link active"
+            class="nav-link active "
             id="pills-employees-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-employees"
@@ -103,7 +103,11 @@
           >
             <tbody id="employeeTableBody"></tbody>
           </table>
+          <div class="text-secondary fs-3 ">
+            <p id="empNumber"></p>
         </div>
+        </div>
+ 
 
         <!-- DEPARTMENTS TABLE -->
         <div
@@ -119,6 +123,9 @@
           >
             <tbody id="departmentTableBody"></tbody>
           </table>
+          <div class="text-secondary fs-3 ">
+            <p id="depNumber"></p>
+        </div>
         </div>
 
         <!-- LOCATIONS TABLE -->
@@ -132,16 +139,13 @@
           <table id="locationTable" class="table table-hover table-scroll">
             <tbody id="locationTableBody"></tbody>
           </table>
+          <div class="text-secondary fs-3 ">
+            <p id="locNumber"></p>
+        </div>
         </div>
       </div>
     </section>
 
-    <!-- <p>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque iste
-      officiis placeat, soluta labore, explicabo, debitis modi ut deleniti et
-      deserunt voluptatibus eos minus rem praesentium recusandae at vero.
-      Tempora?
-    </p> -->
 
     <!-- EMPLOYEE FILTER MODAL -->
     <div
@@ -375,8 +379,7 @@
             <button
               type="button"
               class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
+              id="closeDepBtn"
             ></button>
           </div>
           <form id="addDepForm">
@@ -410,7 +413,6 @@
                 type="button"
                 class="btn btn-secondary"
                 id="cancelDepBtn"
-                data-bs-dismiss="modal"
               >
                 Cancel
               </button>

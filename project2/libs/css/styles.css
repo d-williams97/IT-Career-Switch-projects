@@ -59,10 +59,6 @@ html,
   transition: visibility 0s 1s, opacity 1s linear;
 }
 
-#appTitle{
-  padding-left: 7rem;
- }
-
 
  .centered {
  display: flex;  /*creates a flex container */
@@ -70,12 +66,6 @@ html,
   align-items: center; /* This property aligns the flex items along the vertical axis (cross axis) of the flex container and centers them vertically */
   height: 100%; /* Sets the height of the flex container to 100% of its parent's height. */
 }
-
-#empNumber, #depNumber, #locNumber {
-  display: flex;  /*creates a flex container */
-   justify-content: center; /* aligns the flex items (content) along the horizontal axis (main axis) of the flex container and centers them horizontally */
-   align-items: center; /* This property aligns the flex items along the vertical axis (cross axis) of the flex container and centers them vertically */
- }
 
 .end {
   display: flex;  /*creates a flex container */
@@ -89,13 +79,18 @@ html,
   background-color: #ffffff;
 }
 
-.nav-pills .nav-link.active {
+.nav-tabs .nav-link.active {
   color: #ffffff; 
   background-color: #00000088; 
 }
 
 .table-responsive {
-  height: 72vh;
+  height: 82vh;
+}
+
+section {
+  display: flex;
+  flex-flow: column;
 }
 
 .tab-content {
@@ -107,37 +102,6 @@ tr {
   cursor: default;
 }
 
-
-.cell-width {
-  width: 30%;
-  height: 4rem;
-}
-
-.employeeCells {
-  width: 10%;
-  height: 4rem;
-}
-
-.departmentDepartmentCells, .departmentLocationCells  {
-  width: 45%;
-  height: 4rem;
-}
-
-.departmentButtonCells {
-  width: 10%;
-  height: 4rem;
-}
-
-.locationLocationCells {
-  width: 70%;
-  height: 4rem;
-}
-
-.locationButtonCells {
-  width: 30%;
-  height: 4rem;
-}
-
 .error {
   color: red; /* Change the text color to red */
 }
@@ -147,7 +111,11 @@ input.error {
 }
 
 
-
+#empNumber, #depNumber, #locNumber {
+  display: flex;  /*creates a flex container */
+   justify-content: center; /* aligns the flex items (content) along the horizontal axis (main axis) of the flex container and centers them horizontally */
+   align-items: center; /* This property aligns the flex items along the vertical axis (cross axis) of the flex container and centers them vertically */
+ }
 
 /* --------------------------------- MEDIA QUERIES ------------------------------------- */
 

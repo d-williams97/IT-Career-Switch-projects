@@ -13,4 +13,8 @@
 	$cd_user = "root";
 	$cd_password = "";
 
+	// $cd_dbname = "u633091747_companydir";
+	// $cd_user = "u633091747_root";
+	// $cd_password = "pakIuo22";
+
 ?>

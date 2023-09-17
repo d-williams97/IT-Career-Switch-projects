@@ -752,7 +752,6 @@ $(".nav-link").on("click", function () {
 
       // Change to filter button to employee filter
     } else if (selectedTab === "pills-departments-tab") {
-      console.log(departments);
       $("#filterButton").attr("disabled", false);
       $("#searchBar").on("keyup", function () {
         searchTerm = $(this).val().toLowerCase();
@@ -765,9 +764,7 @@ $(".nav-link").on("click", function () {
         fillDepartmentTable(filteredData);
       });
     } else if (selectedTab === "pills-locations-tab") {
-      // console.log(locations)
       $("#filterButton").attr("disabled", true);
-
       $("#searchBar").on("keyup", function () {
         searchTerm = $(this).val().toLowerCase();
         let filteredData = [];
@@ -795,15 +792,7 @@ $("#filterButton").on("click", function () {
       console.log(selectDepLoc);
     });
 
-    $("#depFilterReset").on("click", function () {
-      $("#selectDepLoc").prop("selectedIndex", 0);
-      selectDepLoc = null;
-      console.log(selectDepLoc);
-      $("#departmentTableBody").empty();
-      fillDepartmentTable(allDepartmentData);
-    });
-
-    $("#depFilterConfirm").on("click", function () {
+    $("#depFilterSave").on("click", function () {
       let filteredData = allDepartmentData.filter(function (val) {
         if (val.location.toLowerCase() === selectDepLoc) {
           return val;
@@ -831,15 +820,8 @@ $("#filterButton").on("click", function () {
       console.log(selectEmpLoc);
     });
 
-    $("#empFilterReset").on("click", function () {
-      $("#selectEmpLoc").prop("selectedIndex", 0);
-      $("#selectEmpDep").prop("selectedIndex", 0);
-      selectEmpLoc = "";
-      selectEmpDep = "";
-      fillTable(allEmployeeData);
-    });
 
-    $("#empFilterConfirm").on("click", function () {
+    $("#empFilterSave").on("click", function () {
       let filteredData = allEmployeeData.filter(function (val) {
         const departmentMatches = val.department.toLowerCase() === selectEmpDep;
         const locationMatches = val.location.toLowerCase() === selectEmpLoc;
@@ -970,7 +952,7 @@ $("#plusButton").on("click", function () {
       }
     });
 
-    // --------------- ADD NEW DEPARTMENT ----------- //
+    // ---- ADD NEW DEPARTMENT ---- //
   } else if (selectedTab === "pills-departments-tab") {
     console.log(selectedTab);
     let depDepVal;
@@ -1091,6 +1073,43 @@ $("#plusButton").on("click", function () {
     });
   }
 });
+
+
+
+
+// ------------------- RESET DATA FEATURE BY TAB ------------------- //
+
+$('#refreshBtn').on('click', function() {
+
+  if (selectedTab === "pills-employees-tab") {
+    $("#selectEmpLoc").prop("selectedIndex", 0);
+    $("#selectEmpDep").prop("selectedIndex", 0);
+    selectEmpLoc = "";
+    selectEmpDep = "";
+    fillTable(allEmployeeData);
+ 
+  } else if (selectedTab === "pills-departments-tab") {
+    $("#selectDepLoc").prop("selectedIndex", 0);
+    selectDepLoc = null;
+    console.log(selectDepLoc);
+    fillDepartmentTable(allDepartmentData);
+ 
+
+  } else if (selectedTab === "pills-locations-tab") {
+    fillLocationTable(allLocationData);
+  }
+
+
+});
+
+
+
+
+
+
+
+
+
 
 // ---------- REMOVING CLICK EVENT LISTENERS WHEN MODAL CLOSES ---------- //
 

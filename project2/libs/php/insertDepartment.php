@@ -70,8 +70,8 @@ ORDER BY d.name, l.name';
 
 $departmentDataResult = $conn->query($getDepartmentData);
 
-error_log(print_r($departmentDataResult, true));
-error_log(print_r('ran', true));
+// error_log(print_r($departmentDataResult, true));
+// error_log(print_r('ran', true));
 
 if (!$departmentDataResult) {
 	$output['status']['code'] = "400";

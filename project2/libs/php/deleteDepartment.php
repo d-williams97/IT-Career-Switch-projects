@@ -1,10 +1,6 @@
 <?php
 
-// example use from browser
-// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
-// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
 
-// remove next two lines for production
 
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
@@ -14,11 +10,10 @@ $executionStartTime = microtime(true);
 include("config.php");
 
 
-$department = $_REQUEST['department'];
 $ID = $_REQUEST['id'];
 
 // error_log(print_r($ID, true));
-// error_log(print_r($department, true));
+
 
 
 
@@ -83,7 +78,7 @@ function findDepID($val, $ID)
 	return $val['departmentID'] == $ID;
 };
 
-// error_log(print_r($findData, true));
+
 
 
 // IF ANY EMPLOYEE DEP ID'S = THE SELECTED DEP ID THEN DEPARTMENT CANNOT BE DELETED 

@@ -1,9 +1,5 @@
 <?php
 
-	// example use from browser
-	// http://localhost/companydirectory/libs/php/getPersonnelByID.php?id=<id>
-
-	// remove next two lines for production
 	
 	ini_set('display_errors', 'On');
 	error_reporting(E_ALL);
@@ -15,16 +11,22 @@
 	header('Content-Type: application/json; charset=UTF-8');
 
 
-	$employeeID = $_REQUEST['employeeID'];
+	$employeeID = $_REQUEST['personnelId'];
 	$firstName = trim(ucfirst($_REQUEST['newFirstName']));
 	$lastName = trim(ucfirst($_REQUEST['newLastName']));
 	$department = trim(ucfirst($_REQUEST['newDepartment']));
-	$departmentID = $_REQUEST['departmentID'];
+	$departmentID = $_REQUEST['newDepartmentId'];
 	$email = trim(strtolower($_REQUEST['newEmail']));
 	$job = trim(ucfirst($_REQUEST['newJobTitle']));
 
+	    error_log(print_r($employeeID, true));
+		error_log(print_r($firstName, true));
+		error_log(print_r($lastName, true));
+		error_log(print_r($department, true));
+		error_log(print_r($departmentID, true));
+		error_log(print_r($email, true));
+		error_log(print_r($job, true));
 
-		// error_log(print_r($departmentID, true));
 
 
 	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);

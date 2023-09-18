@@ -1,10 +1,5 @@
 <?php
 
-// example use from browser
-// http://localhost/companydirectory/libs/php/getPersonnelByID.php?id=<id>
-
-// remove next two lines for production
-
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
@@ -15,7 +10,6 @@ include("config.php");
 
 $department = trim(ucfirst($_REQUEST['department']));
 $departmentID = $_REQUEST['departmentID'];
-$location = trim(ucfirst($_REQUEST['location']));
 $locationID = $_REQUEST['locationID'];
 
 

@@ -705,17 +705,17 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="editEmpTitle"></h1>
+          <div class="modal-header bg-primary bg-gradient text-white">
+            <h1 class="modal-title fs-5" id="editEmpTitle"> Edit Employee</h1>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close btn-close-white"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
-          <form id="editEmpForm">
             <div class="modal-body" id="editEmpBody">
+            <form id="editEmpForm">
               <div class="row mb-3">
                 <div class="col 6">
                   <label for="editFirstName" class="form-label"
@@ -776,6 +776,7 @@
                   />
                 </div>
               </div>
+            </form>
             </div>
 
             <div id="editEmployeeFooter" class="modal-footer">
@@ -787,11 +788,10 @@
               >
                 Close
               </button>
-              <button type="submit" class="btn btn-primary" id="editEmpBtn">
+              <button type="submit" form="editEmpForm" class="btn btn-primary" id="editEmpBtn">
                 Save
               </button>
             </div>
-          </form>
         </div>
       </div>
     </div>
@@ -806,17 +806,17 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-primary bg-gradient text-white">
             <h1 class="modal-title fs-5">Edit Department</h1>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close btn-close-white"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
-          <form id="editDepForm">
             <div class="modal-body" id="editDepartmentBody">
+                <form id="editDepForm">
               <div class="row mb-2">
                 <div class="col 6">
                   <label for="editDepInput" class="form-label"
@@ -841,6 +841,7 @@
                   ></select>
                 </div>
               </div>
+            </form>
             </div>
             <div id="editDepFooter" class="modal-footer">
               <button
@@ -851,11 +852,10 @@
               >
                 Close
               </button>
-              <button type="submit" class="btn btn-primary" id="editDepBtn">
+              <button type="submit" form="editDepForm" class="btn btn-primary" id="editDepBtn">
                 Save
               </button>
             </div>
-          </form>
         </div>
       </div>
     </div>
@@ -871,11 +871,11 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-primary bg-gradient text-white">
             <h1 class="modal-title fs-5">Add Location</h1>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close btn-close-white"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
@@ -939,14 +939,14 @@
                 id="deleteEmpCancel"
                 data-bs-dismiss="modal"
               >
-                Close
+                No
               </button>
               <button
                 type="button"
                 class="btn btn-primary"
                 id="deleteEmpConfirm"
               >
-                Save
+                Yes
               </button>
             </div>
           </div>
@@ -983,20 +983,58 @@
                 id="deleteDepCancel"
                 data-bs-dismiss="modal"
               >
-                Close
+                No
               </button>
               <button
                 type="button"
                 class="btn btn-primary"
                 id="deleteDepConfirm"
               >
-                Save
+                Yes
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
+    <!----- WARNING DELETE DEPARTMENT MODAL ----->
+    <div
+    class="modal fade"
+    id="deleteDepWarningModal"
+    tabindex="-1"
+    aria-labelledby="deleteDepModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Cannot remove department</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" id="deleteDepModalBody">
+          <p class="fs-5" id="deleteDepWarningMessage"></p>
+
+          <div id="deleteDepModalFooter" class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
     <!----- DELETE LOCATION MODAL ----->
     <div
@@ -1041,52 +1079,6 @@
         </div>
       </div>
     </div>
-
-        <!----- DELETE LOCATION MODAL ----->
-    <div
-      class="modal fade"
-      id="deleteLocModal"
-      tabindex="-1"
-      aria-labelledby="deleteLocModal"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5">Warning</h1>
-            <b></b>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body" id="deleteLocModalBody">
-            <p class="fs-5" id="deleteLocMessage"></p>
-
-            <div id="deleteLocModalFooter" class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                id="deleteLocCancel"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                id="deleteLocConfirm"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
  
 

@@ -1,11 +1,5 @@
 <?php
 
-// example use from browser
-// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
-// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
-
-// remove next two lines for production
-
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
@@ -13,8 +7,6 @@ $executionStartTime = microtime(true);
 
 include("config.php");
 
-
-$location = $_REQUEST['location'];
 $ID = $_REQUEST['id'];
 
 
@@ -36,68 +28,7 @@ if (mysqli_connect_errno()) {
 }
 
 
-//  ------ GETTING FILTER DATA ------- //
-
-
-$filterDataQuery = 'SELECT d.name as department, d.locationID
-FROM department d
-LEFT JOIN location l ON (l.id = d.locationID)
-ORDER BY d.name, l.name';
-
-$filterDataResult = $conn->query($filterDataQuery);
-
-if (!$filterDataResult) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
-}
-
-
-$filterData = [];
-
-while ($row = mysqli_fetch_assoc($filterDataResult)) {
-	array_push($filterData, $row);
-};
-
-// error_log(print_r($filterData, true));
-
-
-
-$findData = array_filter($filterData, function ($val) use ($ID) {
-
-	return findLocID($val, $ID);
-});
-
-function findLocID($val, $ID)
-{
-	return $val['locationID'] == $ID;
-};
-
-
-// IF ANY DEPARTMENT LOC ID'S = THE SELECTED LOC ID THEN LOCATION CANNOT BE DELETED.
-
-if (count($findData) !== 0) {
-
-	$output['status']['code'] = "500";
-	$output['status']['name'] = "failure";
-	$output['status']['description'] = "Location is associated with departments";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
-}
-// IF SELECTED LOCATION ID IS NOT PRESENT IN DEPARTMENT DATA THEN DELETE QUERY EXECUTES.
-else {
+//  ------ DELETING LOCATION ------- //
 
 	$query = $conn->prepare('DELETE FROM location WHERE id = ?');
 
@@ -120,7 +51,7 @@ else {
 	};
 
 
-	// GET LOCATION DATA TO FILL TABLE
+	// -- GET LOCATION DATA TO FILL TABLE -- //
 
 	$getLocationData = 'SELECT l.name as location, l.id as locationID
 FROM location l
@@ -158,4 +89,4 @@ ORDER BY l.name';
 	header('Content-Type: application/json; charset=UTF-8');
 
 	echo json_encode($output);
-}
+

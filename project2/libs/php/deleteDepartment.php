@@ -34,69 +34,8 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
+// -- DELETE DEPARTMENT QUERY -- //
 
-//  ------ GETTING FILTER DATA ------- //
-
-
-$filterDataQuery = 'SELECT p.lastName, p.firstName, p.jobTitle, p.departmentID
-	FROM personnel p
-	 LEFT JOIN department d ON (d.id = p.departmentID)
-	  LEFT JOIN location l ON (l.id = d.locationID) 
-	  ORDER BY p.lastName, p.firstName, d.name, l.name';
-
-$filterDataResult = $conn->query($filterDataQuery);
-
-if (!$filterDataResult) {
-
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "executed";
-	$output['status']['description'] = "query failed";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
-}
-
-$filterData = [];
-
-while ($row = mysqli_fetch_assoc($filterDataResult)) {
-
-	array_push($filterData, $row);
-}
-
-
-$findData = array_filter($filterData, function ($val) use ($ID) {
-
-	return findDepID($val, $ID);
-});
-
-function findDepID($val, $ID)
-{
-	return $val['departmentID'] == $ID;
-};
-
-
-
-
-// IF ANY EMPLOYEE DEP ID'S = THE SELECTED DEP ID THEN DEPARTMENT CANNOT BE DELETED 
-
-if (count($findData) !== 0) {
-
-	$output['status']['code'] = "500";
-	$output['status']['name'] = "failure";
-	$output['status']['description'] = "Department is associated with employees";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-
-	exit;
-}
-// IF SELECTED DEPARTMENT ID IS NOT PRESENT IN EMPLOYEE DATA THEN DELETE QUERY EXECUTES.
 else {
 
 	$query = $conn->prepare('DELETE FROM department WHERE id = ?');

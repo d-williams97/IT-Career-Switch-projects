@@ -58,7 +58,6 @@ let addEmployeeFunc = function (selectVal, departments) {
   $("#locationInput").val(empLocInput);
 };
 
-
 let fillTable = (data) => {
   $("#employeeTableBody").empty();
   for (let i = 0; i < data.length; i++) {
@@ -128,7 +127,6 @@ let fillTable = (data) => {
 
 // ---------- EMPLOYEES TAB EVENT HANDLERS ---------- //
 
-
 // -- Delete Employee Modal Shows -- //
 $("#deleteEmpModal").on("show.bs.modal", function (e) {
   $.ajax({
@@ -142,8 +140,8 @@ $("#deleteEmpModal").on("show.bs.modal", function (e) {
       if (result.status.code == 200) {
         personnelId = result.data.personnel[0].id;
         $("#deleteEmpMessage").html(
-            `Are you sure you want to delete <b>${result.data.personnel[0].firstName} ${result.data.personnel[0].lastName}<b>?`
-          );
+          `Are you sure you want to delete <b>${result.data.personnel[0].firstName} ${result.data.personnel[0].lastName}<b>?`
+        );
       } else {
         $("#deleteEmpModal .modal-title").replaceWith("Error retrieving data");
       }
@@ -157,7 +155,7 @@ $("#deleteEmpModal").on("show.bs.modal", function (e) {
 // -- Delete Employee Confirm Routine -- //
 $("#deleteEmpConfirm").on("click", function (e) {
   $.ajax({
-    url: 'libs/php/deleteEmployee.php',
+    url: "libs/php/deleteEmployee.php",
     type: "POST",
     dataType: "json",
     data: {
@@ -168,17 +166,13 @@ $("#deleteEmpConfirm").on("click", function (e) {
         fillTable(result.data);
         $("#deleteEmpModal").modal("hide");
         delEmpToast.show();
-
       } else {
-        console.log('failed')
+        console.log("failed");
       }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-    },
+    error: function (jqXHR, textStatus, errorThrown) {},
   });
-})
-
-
+});
 
 $("#cancelEditEmpBtn").on("click", function () {
   $("#editEmpTitle").html("");
@@ -187,8 +181,6 @@ $("#cancelEditEmpBtn").on("click", function () {
   $("#editEmail").val("");
   $("#editJob").val("");
 });
-
-
 
 // -- Edit Employee Modal Shows -- //
 $("#editEmpModal").on("show.bs.modal", function (e) {
@@ -233,7 +225,7 @@ $("#editEmpModal").on("show.bs.modal", function (e) {
 
 $("#editEmpForm").on("submit", function (e) {
   e.preventDefault();
-console.log(personnelId);
+  console.log(personnelId);
   $.ajax({
     url: "libs/php/updateEmployee.php",
     type: "POST",
@@ -283,11 +275,7 @@ $("#editJob").on("keyup", function () {
 $("#editEmpDepSel").on("change", function () {
   newDepartment = $("#editEmpDepSel option:selected").text();
   newDepartmentId = $(this).val();
-
 });
-
-
-
 
 // -------------------------------- DEPARTMENTS TAB ----------------------------- //
 
@@ -301,7 +289,6 @@ let newDepLoc;
 let newDepLocId;
 let newDepDep;
 let newDepId;
-
 
 // ----- DEPARTMENTS TAB FUNCTIONS ----- //
 
@@ -325,16 +312,6 @@ function deleteDepartment(departmentName, id) {
   );
   $("#deleteDepModal").modal("show");
 }
-
-function editDepIDFunc(selectLoc) {
-  console.log(selectLoc);
-  let depObj = $.grep(locations, function (location, i) {
-    return location.location.toLowerCase() === selectLoc.toLowerCase();
-  });
-  locId = depObj[0].locationID;
-  console.log(locId);
-}
-
 
 let fillDepartmentTable = (data) => {
   // console.log(data);
@@ -381,19 +358,10 @@ let fillDepartmentTable = (data) => {
     row.append(buttonCells);
 
     $("#departmentTableBody").append(row);
-
-
-    // deleteButtons.on("click", function () {
-    //   let depId = data[i].departmentID;
-    //   let departmentName = data[i].department;
-    //   deleteDepartment(departmentName, depId);
-    // });
   }
   updateDepartmentOptions(departments);
   $("#depNumber").html(`${data.length} Departments`);
 };
-
-
 
 // ----- DEPARTMENT EVENT HANDLERS ----- //
 
@@ -404,17 +372,14 @@ $("#editDepartmentModal").on("show.bs.modal", function (e) {
     type: "POST",
     dataType: "json",
     data: {
-      id: $(e.relatedTarget).attr("data-id")
+      id: $(e.relatedTarget).attr("data-id"),
     },
     success: function (result) {
       if (result.status.code == 200) {
-
         $("#editDepLocSel").empty();
         $.map(result.locationData, function (location, i) {
           $("#editDepLocSel").append(
-            `<option value='${location.id}'>${
-              location.name
-            }</option>`
+            `<option value='${location.id}'>${location.name}</option>`
           );
         });
 
@@ -423,47 +388,47 @@ $("#editDepartmentModal").on("show.bs.modal", function (e) {
         newDepLocId = $("#editDepLocSel").val();
 
         $("#editDepInput").val(newDepDep);
-
       } else {
-        $("#editDepartmentModal .modal-title").replaceWith("Error retrieving data");
+        $("#editDepartmentModal .modal-title").replaceWith(
+          "Error retrieving data"
+        );
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      $("#editDepartmentModal .modal-title").replaceWith("Error retrieving data");
+      $("#editDepartmentModal .modal-title").replaceWith(
+        "Error retrieving data"
+      );
     },
   });
 });
 
-
 // -- Edit Dep Form Submit -- //
 $("#editDepForm").on("submit", function (e) {
   e.preventDefault();
-    $.ajax({
-      url: "libs/php/updateDepartment.php",
-      type: "POST",
-      dataType: "json",
-      data: {
-        locationID: newDepLocId,
-        department: newDepDep,
-        departmentID: newDepId,
-      },
-      success: function (result) {
-        if (result.status.name == "ok") {
-          fillTable(result.allData);
-          fillDepartmentTable(result.departmentData);
-          allDepartmentData = result.departmentData;
-          $("#editDepartmentModal").modal("hide");
-          depEditToast.show();
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-        console.log(errorThrown);
-      },
-    });
+  $.ajax({
+    url: "libs/php/updateDepartment.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      locationID: newDepLocId,
+      department: newDepDep,
+      departmentID: newDepId,
+    },
+    success: function (result) {
+      if (result.status.name == "ok") {
+        fillTable(result.allData);
+        fillDepartmentTable(result.departmentData);
+        allDepartmentData = result.departmentData;
+        $("#editDepartmentModal").modal("hide");
+        depEditToast.show();
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+    },
+  });
 });
-
-
 
 $("#editDepLocSel").on("change", function () {
   newDepLocId = $(this).val();
@@ -472,28 +437,30 @@ $("#editDepInput").on("keyup", function () {
   newDepDep = $(this).val();
 });
 
-
 // -- Delete Dep Button Click -- //
-$(document).on("click", ".deleteDepBtn", function() {
+$(document).on("click", ".deleteDepBtn", function () {
   delDepID = $(this).attr("data-id");
   $.ajax({
     url: "libs/php/deleteDepartmentByID.php",
     type: "POST",
     dataType: "json",
     data: {
-      id: $(this).attr("data-id"), 
+      id: $(this).attr("data-id"),
     },
     success: function (result) {
       console.log(result);
       if (result.status.code == 200) {
         if (result.data[0].departmentCount == 0) {
           $("#deleteDepModal").modal("show");
-          $('#deleteDepMessage').html(`Are you sure you want to delete <b>${result.data[0].departmentName}</b>?`)
+          $("#deleteDepMessage").html(
+            `Are you sure you want to delete <b>${result.data[0].departmentName}</b>?`
+          );
         } else {
           $("#deleteDepWarningModal").modal("show");
-          $('#deleteDepWarningMessage').html(`You cannot remove the entry for <b>${result.data[0].departmentName}</b> because it has <b>${result.data[0].departmentCount}</b> employees assigned to it.`)
+          $("#deleteDepWarningMessage").html(
+            `You cannot remove the entry for <b>${result.data[0].departmentName}</b> because it has <b>${result.data[0].departmentCount}</b> employees assigned to it.`
+          );
         }
-
       } else {
         $("#deleteEmpModal .modal-title").replaceWith("Error retrieving data");
       }
@@ -503,9 +470,6 @@ $(document).on("click", ".deleteDepBtn", function() {
     },
   });
 });
-
-// -- Delete Department Confirm Routine -- //
-
 
 // -- Delete Dep Confirm -- //
 $("#deleteDepConfirm").on("click", function () {
@@ -536,11 +500,6 @@ $("#deleteDepConfirm").on("click", function () {
   });
 });
 
-
-
-
-
-
 // -------------------------------- LOCATIONS TAB ----------------------------- //
 
 let delLocID;
@@ -553,24 +512,6 @@ let locations = [];
 let allLocationData;
 
 // ----- LOCATION TAB FUNCTIONS ----- //
-
-function openEditLocModal(location, locationID) {
-  newLocLoc = location;
-  locLocID = locationID;
-  $("#editLocInput").val(location);
-  $("#editLocInput").on("keyup", function () {
-    newLocLoc = $(this).val();
-  });
-}
-
-function deleteLocation(locationName, id) {
-  delLocID = id;
-  delLocName = locationName;
-  $("#deleteLocMessage").html(
-    `Are you sure you want to delete <b>${locationName}</b>?`
-  );
-  $("#deleteLocModal").modal("show");
-}
 
 let updateLocationOptions = function (locations) {
   $("#selectEmpLoc").empty();
@@ -611,7 +552,6 @@ let fillLocationTable = (data) => {
     // -- LOCATION COLUMN -- //
     let locationLocationCells = $("<td>")
       .addClass("align-middle text-nowrap")
-      .attr("data-id", i)
       .html(location.location);
 
     row.append(locationLocationCells);
@@ -621,11 +561,12 @@ let fillLocationTable = (data) => {
     let editButtons = $("<button>")
       .addClass("btn btn-none btn-sm editBtn")
       .attr("data-bs-toggle", "modal")
+      .attr("data-id", data[i].locationID)
       .attr("data-bs-target", "#editLocationModal");
     let editIcons = $("<i>").addClass("fa-solid fa-pencil fa-lg text-primary");
     let deleteButtons = $("<button>")
-      .addClass("btn btn-none btn-sm ms-3 deleteBtn")
-      .attr("data-bs-target", "#deleteDepartmentModal");
+      .addClass("btn btn-none btn-sm ms-3 deleteLocBtn")
+      .attr("data-id", data[i].locationID);
     let deleteIcons = $("<i>").addClass(
       "fa-regular fa-trash-can fa-lg text-danger"
     );
@@ -637,18 +578,6 @@ let fillLocationTable = (data) => {
     row.append(buttonCells);
 
     $("#locationTableBody").append(row);
-
-    editButtons.on("click", function () {
-      let editLocation = location.location;
-      let locationID = location.locationID;
-      openEditLocModal(editLocation, locationID);
-    });
-
-    deleteButtons.on("click", function () {
-      let locName = location.location;
-      let LocID = location.locationID;
-      deleteLocation(locName, LocID);
-    });
   }
   updateLocationOptions(locations);
   $("#locNumber").html(`${data.length} Locations`);
@@ -656,6 +585,104 @@ let fillLocationTable = (data) => {
 
 // ----- LOCATION TAB EVENT HANDLERS ----- //
 
+// -- Edit Location Modal Show -- //
+$("#editLocationModal").on("show.bs.modal", function (e) {
+  console.log($(e.relatedTarget).attr("data-id"));
+
+  $.ajax({
+    url: "libs/php/getLocationByID.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      id: $(e.relatedTarget).attr("data-id"),
+    },
+    success: function (result) {
+      if (result.status.code == 200) {
+        console.log(result);
+        newLocLoc = result.data[0].name;
+        locLocID = result.data[0].id;
+
+        $("#editLocInput").val(newLocLoc);
+      } else {
+        $("#editLocationModal .modal-title").replaceWith(
+          "Error retrieving data"
+        );
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      $("#editLocationModal .modal-title").replaceWith("Error retrieving data");
+    },
+  });
+});
+
+$("#editLocInput").on("keyup", function () {
+  newLocLoc = $(this).val();
+});
+
+// -- Edit Location Form Submit -- //
+$("#editLocForm").on("submit", function (e) {
+  e.preventDefault();
+  $.ajax({
+    url: "libs/php/updateLocation.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      location: newLocLoc,
+      locationID: locLocID,
+    },
+    success: function (result) {
+      if (result.status.name == "ok") {
+        console.log(result);
+        fillTable(result.allData);
+        fillDepartmentTable(result.departmentData);
+        fillLocationTable(result.locationData);
+        allLocationData = result.locationData;
+        $("#editLocationModal").modal("hide");
+        locEditToast.show();
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+      console.log(errorThrown);
+    },
+  });
+});
+
+// -- Delete Loc Button Click -- //
+$(document).on("click", ".deleteLocBtn", function () {
+  delLocID = $(this).attr("data-id");
+  $.ajax({
+    url: "libs/php/deleteLocationByID.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      id: $(this).attr("data-id"),
+    },
+    success: function (result) {
+      console.log(result);
+      if (result.status.code == 200) {
+        if (result.data[0].locationCount == 0) {
+          $("#deleteLocModal").modal("show");
+          $("#deleteLocMessage").html(
+            `Are you sure you want to delete <b>${result.data[0].locationName}</b>?`
+          );
+        } else {
+          $("#deleteLocWarningModal").modal("show");
+          $("#deleteLocWarningMessage").html(
+            `You cannot remove the entry for <b>${result.data[0].locationName}</b> because it has <b>${result.data[0].locationCount}</b> departments assigned to it.`
+          );
+        }
+      } else {
+        $("#deleteLocModal .modal-title").replaceWith("Error retrieving data");
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      $("#deleteLocModal .modal-title").replaceWith("Error retrieving data");
+    },
+  });
+});
+
+// -- Delete Loc Confirm -- //
 $("#deleteLocConfirm").on("click", function () {
   $.ajax({
     url: "libs/php/deleteLocation.php",
@@ -663,7 +690,6 @@ $("#deleteLocConfirm").on("click", function () {
     dataType: "json",
     data: {
       id: delLocID,
-      location: delLocName,
     },
     success: function (result) {
       if (result.status.name == "ok") {
@@ -681,47 +707,6 @@ $("#deleteLocConfirm").on("click", function () {
       console.log(errorThrown);
     },
   });
-});
-
-$("#editLocBtn").on("click", function (e) {
-  e.preventDefault();
-
-  $("#editLocForm").validate({
-    rules: {
-      editLocInput: "required",
-    },
-    messages: {
-      editLocInput: "Please enter a location.",
-    },
-  });
-  if ($("#editLocForm").valid()) {
-    $.ajax({
-      url: "libs/php/updateLocation.php",
-      type: "POST",
-      dataType: "json",
-      data: {
-        location: newLocLoc,
-        locationID: locLocID,
-      },
-      success: function (result) {
-        if (result.status.name == "ok") {
-          console.log(result);
-          fillTable(result.allData);
-          fillDepartmentTable(result.departmentData);
-          fillLocationTable(result.locationData);
-          allLocationData = result.locationData;
-          $("#editLocationModal").modal("hide");
-          locEditToast.show();
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-        console.log(errorThrown);
-      },
-    });
-  } else {
-    console.log("invalid");
-  }
 });
 
 // ---------------- GET SELECTED TAB ----------------- //
@@ -805,7 +790,6 @@ $("#filterButton").on("click", function () {
     let selectDepLoc;
     $("#selectDepLoc").on("change", function () {
       selectDepLoc = $(this).val();
-      console.log(selectDepLoc);
     });
 
     $("#depFilterSave").on("click", function () {
@@ -814,26 +798,22 @@ $("#filterButton").on("click", function () {
           return val;
         }
       });
-      console.log(filteredData);
       $("#departmentTableBody").empty();
       fillDepartmentTable(filteredData);
     });
 
     // -- EMPLOYEES TAB -- //
   } else if (selectedTab === "pills-employees-tab") {
-    console.log(selectedTab);
     $("#filterModal").modal("show");
 
     let selectEmpDep;
     $("#selectEmpDep").on("change", function () {
       selectEmpDep = $(this).val();
-      console.log(selectEmpDep);
     });
 
     let selectEmpLoc;
     $("#selectEmpLoc").on("change", function () {
       selectEmpLoc = $(this).val();
-      console.log(selectEmpLoc);
     });
 
     $("#empFilterSave").on("click", function () {
@@ -861,7 +841,6 @@ $("#filterButton").on("click", function () {
 // --- ADDING NEW EMPLOYEE --- //
 $("#plusButton").on("click", function () {
   if (selectedTab === "pills-employees-tab") {
-    console.log(selectedTab);
     $("#addEmployeeModal").modal("show");
 
     $.map(departments, function (department, i) {
@@ -886,17 +865,14 @@ $("#plusButton").on("click", function () {
 
     $("#firstNameInput").on("keyup", function () {
       empFirstName = $(this).val();
-      console.log(empFirstName);
     });
 
     $("#lastNameInput").on("keyup", function () {
       empLastName = $(this).val();
-      console.log(empLastName);
     });
 
     $("#emailInput").on("keyup", function () {
       empEmail = $(this).val();
-      console.log(empEmail);
     });
 
     $("#jobInput").on("keyup", function () {

@@ -737,7 +737,6 @@ $("#filterButton").on("click", function () {
       }
     });
 
-
     $("#depFilterSave").on("click", function () {
       if (selectDepLoc === null) {
         fillDepartmentTable(allDepartmentData);
@@ -868,10 +867,11 @@ $("#plusButton").on("click", function () {
       empJob = $(this).val();
     });
 
-    $("#cancelEmployeeBtn").on("click", function () {
+    $("#cancelEmployeeBtn, closeEmpBtn").on("click", function () {
       $("#emailInput").val("");
       $("#firstNameInput").val("");
       $("#lastNameInput").val("");
+      $("#addEmpForm").off();
     });
 
     $("#addEmpForm").on("submit", function (e) {
@@ -901,6 +901,7 @@ $("#plusButton").on("click", function () {
               $("#emailInput").val("");
               $("#jobInput").val("");
               addEmpToast.show();
+              $("#addEmpForm").off();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -936,6 +937,7 @@ $("#plusButton").on("click", function () {
     $("#cancelDepBtn, #closeDepBtn").on("click", function () {
       $("#depDepInput").val("");
       $("#addDepartmentModal").modal("hide");
+      $("#addDepForm").off();
     });
 
     // -- DEP FORM VALIDATION -- //
@@ -957,6 +959,7 @@ $("#plusButton").on("click", function () {
               $("#depDepInput").val("");
               $("#depLocSel").prop("selectedIndex", 0);
               addDepToast.show();
+              $("#addDepForm").off();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -990,6 +993,7 @@ $("#plusButton").on("click", function () {
               $("#addLocationModal").modal("hide");
               $("#locLocInput").val("");
               addLocToast.show();
+              $("#addLocForm").off();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -998,8 +1002,9 @@ $("#plusButton").on("click", function () {
           },
         });
     });
-    $("#cancelLocBtn").on("click", function () {
+    $("#cancelLocBtn, #closeLocBtn").on("click", function () {
       $("#locLocInput").val("");
+      $("#addLocForm").off();
     });
   }
 });
@@ -1022,22 +1027,8 @@ $("#refreshBtn").on("click", function () {
   }
 });
 
-// ---------- REMOVING CLICK EVENT LISTENERS WHEN MODAL CLOSES ---------- //
-
-$("#addEmployeeModal").on("hidden.bs.modal", function () {
-  $("#addEmployeeBtn").off();
-});
-
-$("#addDepartmentModal").on("hidden.bs.modal", function () {
-  $("#addDepBtn").off();
-});
-
-$("#addLocationModal").on("hidden.bs.modal", function () {
-  $("#addLocBtn").off();
-});
 
 $(document).ready(function () {
-
 
   // ----------------- FETCHING TABLE DATA ----------------- //
 

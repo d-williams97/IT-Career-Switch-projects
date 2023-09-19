@@ -834,6 +834,8 @@ $("#plusButton").on("click", function () {
   if (selectedTab === "pills-employees-tab") {
     $("#addEmployeeModal").modal("show");
 
+    // $("#departmentSelect").empty();
+    console.log(allDepartmentData);
     $.map(allDepartmentData, function (department, i) {
       $("#departmentSelect").append(
         `<option value='${department.departmentID}'>${department.department}</option>`
@@ -848,7 +850,7 @@ $("#plusButton").on("click", function () {
     $("#departmentSelect").on("change", function () {
       empDepSelectID = $(this).val();
       empDepSelect = $("#departmentSelect option:selected").text();
-      addEmployeeFunc(empDepSelect, departments);
+      addEmployeeFunc(empDepSelect, allDepartmentData);
     });
 
     $("#firstNameInput").on("keyup", function () {
@@ -867,16 +869,17 @@ $("#plusButton").on("click", function () {
       empJob = $(this).val();
     });
 
-    $("#cancelEmployeeBtn, closeEmpBtn").on("click", function () {
+    $("#cancelEmployeeBtn, #closeEmpBtn").on("click", function () {
       $("#emailInput").val("");
       $("#firstNameInput").val("");
       $("#lastNameInput").val("");
       $("#addEmpForm").off();
+      $("#departmentSelect").empty();
     });
 
+    // ---- EMP FORM SUBMIT ---- //
     $("#addEmpForm").on("submit", function (e) {
       e.preventDefault();
-      // -- EMP FORM VALIDATION -- /
         $.ajax({
           url: "libs/php/insertEmployee.php",
           type: "POST",
@@ -902,6 +905,7 @@ $("#plusButton").on("click", function () {
               $("#jobInput").val("");
               addEmpToast.show();
               $("#addEmpForm").off();
+              $("#departmentSelect").empty();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
@@ -915,7 +919,7 @@ $("#plusButton").on("click", function () {
   } else if (selectedTab === "pills-departments-tab") {
     let depDepVal;
     let depLocVal;
-  
+
     $("#depLocSel").empty();
     $.map(allLocationData, function (location, i) {
       $("#depLocSel").append(
@@ -940,7 +944,7 @@ $("#plusButton").on("click", function () {
       $("#addDepForm").off();
     });
 
-    // -- DEP FORM VALIDATION -- //
+    // -- DEP FORM SUBMIT -- //
     $("#addDepForm").on("submit", function (e) {
       e.preventDefault();
         $.ajax({
@@ -976,7 +980,7 @@ $("#plusButton").on("click", function () {
     $("#locLocInput").on("keyup", function () {
       locLocVal = $(this).val();
     });
-    // -- LOC FORM VALIDATION -- //
+    // -- LOC FORM SUBMIT -- //
     $("#addLocForm").on("submit", function (e) {
       e.preventDefault();
         $.ajax({

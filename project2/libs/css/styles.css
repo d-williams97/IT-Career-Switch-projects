@@ -95,7 +95,6 @@ section {
 
 .tab-content {
   flex: 1;
-  overflow-y: scroll;
 }
 
 tr {

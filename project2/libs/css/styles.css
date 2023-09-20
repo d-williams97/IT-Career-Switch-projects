@@ -116,60 +116,8 @@ input.error {
    align-items: center; /* This property aligns the flex items along the vertical axis (cross axis) of the flex container and centers them vertically */
  }
 
-/* --------------------------------- MEDIA QUERIES ------------------------------------- */
-
-@media screen and (max-width: 1400px) { /* 1024px or less */
-  .employeeButtons {
-    justify-content: start !important;
-
-  }
-
-
-}
-@media screen and (max-width: 1250px) { /* 1024px or less */
-  .employeeButtons {
-    justify-content: end !important;
-  }
-
-  .employeeDep {
-    display: none;
-  }
-
-  .cell-width {
-    width: 45%;
-  }
-  
-
-  .fa-filter:hover {
-    color: #000000;
-    background-color: black;
-  }
-
-
-
+ #delLocToast, #delEmpToast, #delDepToast, #empEditToast, #depEditToast, #locEditToast, #addEmpToast, #addDepToast, #addLocToast {
+  /* Other styles for your toast */
+  z-index: 9999; /* Increase the z-index value */
 }
 
-
-@media screen and (max-width: 1024px) { /* 1024px or less */
-
-}
-
-/* ============ MEDIA QUERIES (SMALL DEVCIES - MOBILE) ============= */
-
-
-
-@media screen and (max-width: 800px) {
-  .employeeEmail, .departmentLocationCells {
-    display: none;
-  }
-
-  .cell-width, .departmentDepartmentCells {
-    width: 70%;
-  }
-
-  .employeeCells, .departmentButtonCells {
-    width: 30%;
-  }
-
-  
-}
